@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ingo Steldermann">
+<meta name="dcterms.date" content="2025-07-10">
+
+<title>Shallow Water Tutorial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//images/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-704d21ae3210737ad159dfcc1d1b4892.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+MathJax = {
+  tex: {
+    tags: 'ams'
+  }
+};
+</script>
+
+
+<link rel="stylesheet" href="custom.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_text.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../docs/index.html"> 
+<span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../tutorials/index.html" aria-current="page"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../examples/index.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../playground/playground.html"> 
+<span class="menu-text">Playground</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.qmd"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth/Zoomy">
+ <span class="dropdown-text">Zoomy</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth">
+ <span class="dropdown-text">MBD</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://de.linkedin.com/company/rwth-mbd"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa6-brands:linkedin" aria-label="Icon linkedin from fa6-brands Iconify.design set." title="Icon linkedin from fa6-brands Iconify.design set."></iconify-icon></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../tutorials/swe/simple.html">Shallow Water Tutorial</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo_text.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/swe/simple.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Shallow Water Tutorial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/poisson/simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Poission Tutorial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/vam/simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VAM Tutorial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/sme/simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shallow Water Tutorial</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Shallow Water Tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ingo Steldermann </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 10, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="4f583c96" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Load packages</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jax <span class="im">import</span> numpy <span class="im">as</span> jnp</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> types <span class="im">import</span> SimpleNamespace</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> cos, pi</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Solver, Settings</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.ode <span class="im">import</span> RK1</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.reconstruction <span class="im">as</span> recon</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.timestepping <span class="im">as</span> timestepping</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.flux <span class="im">as</span> flux</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.nonconservative_flux <span class="im">as</span> nc_flux</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.boundary_conditions <span class="im">import</span> BoundaryCondition</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.basisfunctions <span class="im">import</span> Basisfunction, Legendre_shifted</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.basismatrices <span class="im">import</span> Basismatrices</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.model <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.misc.io <span class="im">as</span> io</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> compute_derivatives</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tests.pdesoft <span class="im">import</span> plots_paper</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.mesh.mesh <span class="im">as</span> petscMesh</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.postprocessing.postprocessing <span class="im">as</span> postprocessing</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> convert_mesh_to_jax</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="9d8b0a27" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"top"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"bottom"</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"left"</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"right"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic(x):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">3</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>] <span class="op">&lt;</span> <span class="fl">5.</span>, <span class="fl">0.005</span>, <span class="fl">0.001</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(custom_ic)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ShallowWater2d(</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    aux_fields<span class="op">=</span>[<span class="st">'dudx'</span>, <span class="st">'dvdy'</span>],</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">'g'</span>: <span class="fl">9.81</span>},</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{},</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_quad_2d/mesh.msh"</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SWESolver(Solver):</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        dudx <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">0</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        dvdy <span class="op">=</span> compute_derivatives(Q[<span class="dv">2</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">1</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dudx)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(dvdy)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"ShallowWater"</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    compute_dt<span class="op">=</span>timestepping.adaptive(CFL<span class="op">=</span><span class="fl">0.45</span>),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    time_end<span class="op">=</span><span class="fl">6.0</span>,</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    output_snapshots<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="ss">f"outputs/shallow_water"</span>,</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co"># mesh = convert_mesh_to_jax(mesh)</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> SWESolver()</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>Qnew, Qaux <span class="op">=</span> solver.jax_fvm_unsteady_semidiscrete(mesh, model, settings)</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a><span class="co"># postprocessing.vtk_interpolate_3d(model, settings.output_dir,  os.path.join(settings.output_dir, f"{settings.name}.h5"), scale_h=100.)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+iteration: 1.0, time: 0.05079640961073845, dt: 0.05079640961073845, time_stamp: 0.06060606060606061
+iteration: 2.0, time: 0.0991940721178376, dt: 0.048397662507099155, time_stamp: 0.06060606060606061
+iteration: 3.0, time: 0.14579477311657862, dt: 0.04660070099874103, time_stamp: 0.12121212121212122
+iteration: 4.0, time: 0.19028957823327006, dt: 0.04449480511669144, time_stamp: 0.18181818181818182
+iteration: 5.0, time: 0.2332828465618951, dt: 0.04299326832862505, time_stamp: 0.24242424242424243
+iteration: 6.0, time: 0.2754901588138795, dt: 0.04220731225198443, time_stamp: 0.24242424242424243
+iteration: 7.0, time: 0.31724625068937873, dt: 0.041756091875499245, time_stamp: 0.30303030303030304
+iteration: 8.0, time: 0.35872497540905524, dt: 0.04147872471967653, time_stamp: 0.36363636363636365
+iteration: 9.0, time: 0.40002148683976124, dt: 0.04129651143070602, time_stamp: 0.36363636363636365
+iteration: 10.0, time: 0.4411897701802836, dt: 0.04116828334052236, time_stamp: 0.42424242424242425
+iteration: 11.0, time: 0.48203506240459887, dt: 0.04084529222431527, time_stamp: 0.48484848484848486
+iteration: 12.0, time: 0.5226593328977395, dt: 0.040624270493140616, time_stamp: 0.48484848484848486
+iteration: 13.0, time: 0.563143866900379, dt: 0.040484534002639475, time_stamp: 0.5454545454545454
+iteration: 14.0, time: 0.6035373174712219, dt: 0.04039345057084283, time_stamp: 0.6060606060606061
+iteration: 15.0, time: 0.643869115662395, dt: 0.04033179819117317, time_stamp: 0.6060606060606061
+iteration: 16.0, time: 0.6841539681309065, dt: 0.040284852468511406, time_stamp: 0.6666666666666667
+iteration: 17.0, time: 0.7243201235067477, dt: 0.040166155375841193, time_stamp: 0.7272727272727273
+iteration: 18.0, time: 0.7644074432449689, dt: 0.04008731973822121, time_stamp: 0.7272727272727273
+iteration: 19.0, time: 0.8044411964328889, dt: 0.04003375318792005, time_stamp: 0.7878787878787878
+iteration: 20.0, time: 0.844437529091346, dt: 0.039996332658457014, time_stamp: 0.8484848484848485
+iteration: 21.0, time: 0.8844068558161224, dt: 0.039969326724776474, time_stamp: 0.8484848484848485
+iteration: 22.0, time: 0.9243543866976985, dt: 0.039947530881576085, time_stamp: 0.9090909090909092
+iteration: 23.0, time: 0.9642546620693815, dt: 0.039900275371682975, time_stamp: 0.9696969696969697
+iteration: 24.0, time: 1.004121100267359, dt: 0.03986643819797743, time_stamp: 0.9696969696969697
+iteration: 25.0, time: 1.0439626355078313, dt: 0.03984153524047238, time_stamp: 1.0303030303030303
+iteration: 26.0, time: 1.0837852907258279, dt: 0.03982265521799651, time_stamp: 1.0909090909090908
+iteration: 27.0, time: 1.123593188826827, dt: 0.03980789810099899, time_stamp: 1.0909090909090908
+iteration: 28.0, time: 1.1633892040216154, dt: 0.039796015194788543, time_stamp: 1.1515151515151516
+iteration: 29.0, time: 1.2031703615791718, dt: 0.03978115755755646, time_stamp: 1.2121212121212122
+iteration: 30.0, time: 1.2429339492867835, dt: 0.039763587707611736, time_stamp: 1.2121212121212122
+iteration: 31.0, time: 1.2826834833598937, dt: 0.03974953407311022, time_stamp: 1.2727272727272727
+iteration: 32.0, time: 1.3224214768222897, dt: 0.03973799346239607, time_stamp: 1.3333333333333335
+iteration: 33.0, time: 1.3621497655082586, dt: 0.03972828868596884, time_stamp: 1.3333333333333335
+iteration: 34.0, time: 1.4018697227685182, dt: 0.039719957260259564, time_stamp: 1.393939393939394
+iteration: 35.0, time: 1.4415824014807226, dt: 0.03971267871220439, time_stamp: 1.4545454545454546
+iteration: 36.0, time: 1.4812886285642994, dt: 0.03970622708357683, time_stamp: 1.4545454545454546
+iteration: 37.0, time: 1.5209890684209382, dt: 0.039700439856638826, time_stamp: 1.5151515151515151
+iteration: 38.0, time: 1.5606816526094796, dt: 0.03969258418854139, time_stamp: 1.5757575757575757
+iteration: 39.0, time: 1.600367016592373, dt: 0.03968536398289325, time_stamp: 1.5757575757575757
+iteration: 40.0, time: 1.6400459065877313, dt: 0.03967888999535837, time_stamp: 1.6363636363636365
+iteration: 41.0, time: 1.6797189340156955, dt: 0.03967302742796414, time_stamp: 1.696969696969697
+iteration: 42.0, time: 1.7193866100181452, dt: 0.03966767600244959, time_stamp: 1.696969696969697
+iteration: 43.0, time: 1.7590493693950935, dt: 0.03966275937694835, time_stamp: 1.7575757575757576
+iteration: 44.0, time: 1.7987075874608516, dt: 0.039658218065758054, time_stamp: 1.8181818181818183
+iteration: 45.0, time: 1.8383615921295486, dt: 0.03965400466869706, time_stamp: 1.8181818181818183
+iteration: 46.0, time: 1.8780116727557694, dt: 0.03965008062622084, time_stamp: 1.878787878787879
+iteration: 47.0, time: 1.9176580867417936, dt: 0.03964641398602423, time_stamp: 1.878787878787879
+iteration: 48.0, time: 1.9573010645854725, dt: 0.03964297784367881, time_stamp: 1.9393939393939394
+iteration: 49.0, time: 1.9969408138210842, dt: 0.03963974923561171, time_stamp: 2.0
+iteration: 50.0, time: 2.036577522159523, dt: 0.03963670833843859, time_stamp: 2.0
+iteration: 51.0, time: 2.076210738009337, dt: 0.03963321584981378, time_stamp: 2.0606060606060606
+iteration: 52.0, time: 2.1158404308973346, dt: 0.03962969288799771, time_stamp: 2.121212121212121
+iteration: 53.0, time: 2.155466801811092, dt: 0.03962637091375731, time_stamp: 2.121212121212121
+iteration: 54.0, time: 2.1950900343544415, dt: 0.03962323254334977, time_stamp: 2.1818181818181817
+iteration: 55.0, time: 2.234710296837744, dt: 0.03962026248330248, time_stamp: 2.2424242424242427
+iteration: 56.0, time: 2.2743277440122194, dt: 0.03961744717447549, time_stamp: 2.2424242424242427
+iteration: 57.0, time: 2.3139425185306397, dt: 0.03961477451842019, time_stamp: 2.303030303030303
+iteration: 58.0, time: 2.3535547521933773, dt: 0.039612233662737445, time_stamp: 2.3636363636363638
+iteration: 59.0, time: 2.393164567022868, dt: 0.03960981482949072, time_stamp: 2.3636363636363638
+iteration: 60.0, time: 2.4327720761985043, dt: 0.03960750917563649, time_stamp: 2.4242424242424243
+iteration: 61.0, time: 2.472377384876233, dt: 0.03960530867772855, time_stamp: 2.484848484848485
+iteration: 62.0, time: 2.5119805909116137, dt: 0.03960320603538091, time_stamp: 2.484848484848485
+iteration: 63.0, time: 2.5515817855011096, dt: 0.03960119458949585, time_stamp: 2.5454545454545454
+iteration: 64.0, time: 2.5911810537534237, dt: 0.039599268252313885, time_stamp: 2.606060606060606
+iteration: 65.0, time: 2.6307784752005, dt: 0.039597421447076654, time_stamp: 2.606060606060606
+iteration: 66.0, time: 2.6703741242561145, dt: 0.0395956490556145, time_stamp: 2.666666666666667
+iteration: 67.0, time: 2.7099680706286597, dt: 0.03959394637254521, time_stamp: 2.7272727272727275
+iteration: 68.0, time: 2.749560379693705, dt: 0.03959230906504525, time_stamp: 2.7272727272727275
+iteration: 69.0, time: 2.789151112831064, dt: 0.039590733137359016, time_stamp: 2.787878787878788
+iteration: 70.0, time: 2.828740070794836, dt: 0.0395889579637721, time_stamp: 2.8484848484848486
+iteration: 71.0, time: 2.8683272673047537, dt: 0.03958719650991755, time_stamp: 2.8484848484848486
+iteration: 72.0, time: 2.9079127687014177, dt: 0.039585501396663995, time_stamp: 2.909090909090909
+iteration: 73.0, time: 2.947496637579796, dt: 0.039583868878378586, time_stamp: 2.909090909090909
+iteration: 74.0, time: 2.987078933055725, dt: 0.03958229547592895, time_stamp: 2.9696969696969697
+iteration: 75.0, time: 3.0266597110093247, dt: 0.039580777953599676, time_stamp: 3.0303030303030303
+iteration: 76.0, time: 3.066239024307757, dt: 0.0395793132984323, time_stamp: 3.0303030303030303
+iteration: 77.0, time: 3.105816923009438, dt: 0.0395778987016809, time_stamp: 3.090909090909091
+iteration: 78.0, time: 3.1453934545515603, dt: 0.039576531542122234, time_stamp: 3.1515151515151514
+iteration: 79.0, time: 3.184968663922558, dt: 0.03957520937099773, time_stamp: 3.1515151515151514
+iteration: 80.0, time: 3.2245425938209547, dt: 0.039573929898396976, time_stamp: 3.2121212121212124
+iteration: 81.0, time: 3.2641152848018726, dt: 0.039572690980918146, time_stamp: 3.272727272727273
+iteration: 82.0, time: 3.303686775412336, dt: 0.03957149061046341, time_stamp: 3.272727272727273
+iteration: 83.0, time: 3.343257102316382, dt: 0.03957032690404585, time_stamp: 3.3333333333333335
+iteration: 84.0, time: 3.3828263004108825, dt: 0.03956919809450041, time_stamp: 3.393939393939394
+iteration: 85.0, time: 3.422394402932887, dt: 0.03956810252200482, time_stamp: 3.393939393939394
+iteration: 86.0, time: 3.461961441559215, dt: 0.03956703862632778, time_stamp: 3.4545454545454546
+iteration: 87.0, time: 3.501527446498947, dt: 0.03956600493973187, time_stamp: 3.515151515151515
+iteration: 88.0, time: 3.541092446579414, dt: 0.03956500008046682, time_stamp: 3.515151515151515
+iteration: 89.0, time: 3.58065646932621, dt: 0.039564022746796206, time_stamp: 3.5757575757575757
+iteration: 90.0, time: 3.6202195410377174, dt: 0.039563071711507095, time_stamp: 3.6363636363636367
+iteration: 91.0, time: 3.6597816868545747, dt: 0.03956214581685738, time_stamp: 3.6363636363636367
+iteration: 92.0, time: 3.6993429308244954, dt: 0.0395612439699208, time_stamp: 3.6969696969696972
+iteration: 93.0, time: 3.7389032959627886, dt: 0.039560365138293405, time_stamp: 3.757575757575758
+iteration: 94.0, time: 3.778462804308918, dt: 0.03955950834612947, time_stamp: 3.757575757575758
+iteration: 95.0, time: 3.8180214769793954, dt: 0.0395586726704776, time_stamp: 3.8181818181818183
+iteration: 96.0, time: 3.857579270469782, dt: 0.03955779349038665, time_stamp: 3.8181818181818183
+iteration: 97.0, time: 3.8971361583288484, dt: 0.039556887859066255, time_stamp: 3.878787878787879
+iteration: 98.0, time: 3.936692163518615, dt: 0.039556005189766506, time_stamp: 3.9393939393939394
+iteration: 99.0, time: 3.976247308091826, dt: 0.039555144573211284, time_stamp: 3.9393939393939394
+iteration: 100.0, time: 4.0158016132377385, dt: 0.03955430514591276, time_stamp: 4.0
+iteration: 101.0, time: 4.055355099325152, dt: 0.03955348608741352, time_stamp: 4.0606060606060606
+iteration: 102.0, time: 4.094907785942875, dt: 0.039552686617723404, time_stamp: 4.0606060606060606
+iteration: 103.0, time: 4.134459691937811, dt: 0.0395519059949352, time_stamp: 4.121212121212121
+iteration: 104.0, time: 4.174010835450815, dt: 0.03955114351300451, time_stamp: 4.181818181818182
+iteration: 105.0, time: 4.213561233950497, dt: 0.03955039849968128, time_stamp: 4.181818181818182
+iteration: 106.0, time: 4.253110904265077, dt: 0.039549670314580454, time_stamp: 4.242424242424242
+iteration: 107.0, time: 4.292659862612458, dt: 0.03954895834738135, time_stamp: 4.303030303030303
+iteration: 108.0, time: 4.332208124628604, dt: 0.039548262016145634, time_stamp: 4.303030303030303
+iteration: 109.0, time: 4.3717557053943485, dt: 0.03954758076574494, time_stamp: 4.363636363636363
+iteration: 110.0, time: 4.411302619460739, dt: 0.03954691406638984, time_stamp: 4.424242424242425
+iteration: 111.0, time: 4.450848880872991, dt: 0.03954626141225272, time_stamp: 4.424242424242425
+iteration: 112.0, time: 4.490394503193168, dt: 0.03954562232017737, time_stamp: 4.484848484848485
+iteration: 113.0, time: 4.529939499521638, dt: 0.03954499632846941, time_stamp: 4.545454545454546
+iteration: 114.0, time: 4.5694838825174, dt: 0.03954438299576132, time_stamp: 4.545454545454546
+iteration: 115.0, time: 4.609027664417346, dt: 0.039543781899946964, time_stamp: 4.606060606060606
+iteration: 116.0, time: 4.648570857054527, dt: 0.039543192637180806, time_stamp: 4.666666666666667
+iteration: 117.0, time: 4.6881134718754645, dt: 0.03954261482093703, time_stamp: 4.666666666666667
+iteration: 118.0, time: 4.727655519956589, dt: 0.0395420480811248, time_stamp: 4.7272727272727275
+iteration: 119.0, time: 4.767197012019845, dt: 0.03954149206325549, time_stamp: 4.787878787878788
+iteration: 120.0, time: 4.806737958447504, dt: 0.03954094642765869, time_stamp: 4.787878787878788
+iteration: 121.0, time: 4.846278369296247, dt: 0.039540410848743525, time_stamp: 4.848484848484849
+iteration: 122.0, time: 4.885818254310549, dt: 0.03953988501430241, time_stamp: 4.848484848484849
+iteration: 123.0, time: 4.925357622935404, dt: 0.03953936862485439, time_stamp: 4.909090909090909
+iteration: 124.0, time: 4.964896484328429, dt: 0.03953886139302567, time_stamp: 4.96969696969697
+iteration: 125.0, time: 5.004434847371394, dt: 0.03953836304296469, time_stamp: 4.96969696969697
+iteration: 126.0, time: 5.043972720681184, dt: 0.039537873309789855, time_stamp: 5.03030303030303
+iteration: 127.0, time: 5.083510112620252, dt: 0.039537391939067607, time_stamp: 5.090909090909091
+iteration: 128.0, time: 5.123047031306571, dt: 0.03953691868631919, time_stamp: 5.090909090909091
+iteration: 129.0, time: 5.162583484623125, dt: 0.03953645331655415, time_stamp: 5.151515151515151
+iteration: 130.0, time: 5.202119480226954, dt: 0.039535995603829, time_stamp: 5.212121212121212
+iteration: 131.0, time: 5.241655025557783, dt: 0.03953554533082964, time_stamp: 5.212121212121212
+iteration: 132.0, time: 5.281190127846259, dt: 0.03953510228847584, time_stamp: 5.2727272727272725
+iteration: 133.0, time: 5.320724794121806, dt: 0.03953466627554687, time_stamp: 5.333333333333334
+iteration: 134.0, time: 5.360259019568075, dt: 0.0395342254462694, time_stamp: 5.333333333333334
+iteration: 135.0, time: 5.399792786293599, dt: 0.03953376672552353, time_stamp: 5.3939393939393945
+iteration: 136.0, time: 5.439326101921822, dt: 0.03953331562822333, time_stamp: 5.454545454545455
+iteration: 137.0, time: 5.478858973869521, dt: 0.039532871947698334, time_stamp: 5.454545454545455
+iteration: 138.0, time: 5.5183914093541295, dt: 0.03953243548460873, time_stamp: 5.515151515151516
+iteration: 139.0, time: 5.557923415400762, dt: 0.03953200604663249, time_stamp: 5.575757575757576
+iteration: 140.0, time: 5.597454998848931, dt: 0.03953158344816815, time_stamp: 5.575757575757576
+iteration: 141.0, time: 5.636986166358983, dt: 0.03953116751005225, time_stamp: 5.636363636363637
+iteration: 142.0, time: 5.676516924418274, dt: 0.03953075805929067, time_stamp: 5.696969696969697
+iteration: 143.0, time: 5.716047279347077, dt: 0.03953035492880322, time_stamp: 5.696969696969697
+iteration: 144.0, time: 5.755577237304257, dt: 0.03952995795718043, time_stamp: 5.757575757575758
+iteration: 145.0, time: 5.7951068042927085, dt: 0.03952956698845211, time_stamp: 5.757575757575758
+iteration: 146.0, time: 5.834635986164575, dt: 0.039529181871867006, time_stamp: 5.818181818181818
+iteration: 147.0, time: 5.874164788626258, dt: 0.039528802461682784, time_stamp: 5.878787878787879
+iteration: 148.0, time: 5.913693217243224, dt: 0.039528428616965934, time_stamp: 5.878787878787879
+iteration: 149.0, time: 5.953221277444625, dt: 0.039528060201400976, time_stamp: 5.9393939393939394
+iteration: 150.0, time: 5.992748974527733, dt: 0.039527697083108514, time_stamp: 6.0
+iteration: 151.0, time: 6.032276313662204, dt: 0.039527339134471554, time_stamp: 6.0
+Runtime: 5.164775609970093</code></pre>
+</div>
+</div>
+<div id="a2b1acac" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_swe(os.path.join(settings.output_dir, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'length': 10.0, 'width': None, 'dx': 0.2, 'dy': None, 'ncellx': 50.0, 'ncelly': None}</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="simple_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Ingo Steldermann</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../legal.html">
+<p>Legal notice and data protection</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

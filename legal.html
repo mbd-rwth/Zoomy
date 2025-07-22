@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>legal</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href=".//images/favicon.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-704d21ae3210737ad159dfcc1d1b4892.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+MathJax = {
+  tex: {
+    tags: 'ams'
+  }
+};
+</script>
+
+
+<link rel="stylesheet" href="custom.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/logo_text.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./docs/index.html"> 
+<span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./tutorials/index.html"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./examples/index.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./playground/playground.html"> 
+<span class="menu-text">Playground</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.qmd"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth/Zoomy">
+ <span class="dropdown-text">Zoomy</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth">
+ <span class="dropdown-text">MBD</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://de.linkedin.com/company/rwth-mbd"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa6-brands:linkedin" aria-label="Icon linkedin from fa6-brands Iconify.design set." title="Icon linkedin from fa6-brands Iconify.design set."></iconify-icon></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#legal-notice-and-data-protection" id="toc-legal-notice-and-data-protection" class="nav-link active" data-scroll-target="#legal-notice-and-data-protection">Legal notice and data protection</a></li>
+  <li><a href="#disclaimer" id="toc-disclaimer" class="nav-link" data-scroll-target="#disclaimer">Disclaimer</a></li>
+  <li><a href="#privary-policy" id="toc-privary-policy" class="nav-link" data-scroll-target="#privary-policy">Privary Policy</a>
+  <ul class="collapse">
+  <li><a href="#data-protection-at-a-glance" id="toc-data-protection-at-a-glance" class="nav-link" data-scroll-target="#data-protection-at-a-glance">Data protection at a glance</a></li>
+  <li><a href="#data-collection-on-this-website" id="toc-data-collection-on-this-website" class="nav-link" data-scroll-target="#data-collection-on-this-website">Data collection on this website</a></li>
+  </ul></li>
+  <li><a href="#hosting" id="toc-hosting" class="nav-link" data-scroll-target="#hosting">Hosting</a>
+  <ul class="collapse">
+  <li><a href="#external-hosting" id="toc-external-hosting" class="nav-link" data-scroll-target="#external-hosting">External hosting</a></li>
+  </ul></li>
+  <li><a href="#general-information-and-mandatory-information" id="toc-general-information-and-mandatory-information" class="nav-link" data-scroll-target="#general-information-and-mandatory-information">General information and mandatory information</a></li>
+  <li><a href="#data-collection-on-this-website-1" id="toc-data-collection-on-this-website-1" class="nav-link" data-scroll-target="#data-collection-on-this-website-1">Data collection on this website</a></li>
+  <li><a href="#plugins-and-tools" id="toc-plugins-and-tools" class="nav-link" data-scroll-target="#plugins-and-tools">Plugins and tools</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="legal-notice-and-data-protection" class="level2">
+<h2 class="anchored" data-anchor-id="legal-notice-and-data-protection">Legal notice and data protection</h2>
+<p><strong>Responsible for the content of these pages:</strong></p>
+<p>Ingo Steldermann</p>
+<p>Ringstr. 103</p>
+<p>52078 Aachen</p>
+<p>E-Mail: info@shallowflow.com</p>
+</section>
+<section id="disclaimer" class="level2">
+<h2 class="anchored" data-anchor-id="disclaimer">Disclaimer</h2>
+<ol type="1">
+<li><strong>Content of the online offer</strong></li>
+</ol>
+<p>The author does not assume any liability for the topicality, correctness, completeness or quality of the information provided. Liability claims against the author relating to material or immaterial damage caused by the use or non-use of the information provided or by the use of incorrect and incomplete information are generally excluded, unless there is evidence of intentional or gross negligence on the part of the author. All offers are subject to change and non-binding. The author expressly reserves the right to change, supplement or delete parts of the pages or the entire offer without prior notice or to cease publication temporarily or permanently.</p>
+<ol start="2" type="1">
+<li><strong>References and links</strong></li>
+</ol>
+<p>In the case of direct or indirect references to external websites (“hyperlinks”), which lie outside the author’s area of responsibility, a liability obligation would only come into effect if the author had knowledge of the contents and it was technically possible and reasonable for him to prevent use in the event of illegal contents. The author hereby expressly declares that at the time the links were created, no illegal content was recognisable on the linked pages. The author has no influence whatsoever on the current and future design, content or authorship of the linked pages. Therefore, he hereby expressly distances himself from all contents of all linked pages that were changed after the link was set. This statement applies to all links and references set within the author’s own Internet offer as well as to external entries in guest books, discussion forums, link directories, mailing lists and in all other forms of databases set up within the author’s own Internet offer, as well as to entries by the author, which can be accessed by external write access. For illegal, incorrect or incomplete contents and in particular for damages resulting from the use or non-use of such information, the provider of the page to which reference was made is solely liable, not the one who merely refers to the respective publication via links.</p>
+<ol start="3" type="1">
+<li><strong>Copyright and trademark law</strong></li>
+</ol>
+<p>The author endeavours to observe the copyrights of the images, graphics, sound documents, video sequences and texts used in all publications, to use images, graphics, sound documents, video sequences and texts created by himself or to resort to license-free graphics, sound documents, video sequences and texts. All brands and trademarks mentioned within the Internet offer and possibly protected by third parties are subject without restriction to the provisions of the applicable trademark law and the ownership rights of the respective registered owners. The mere mention does not lead to the conclusion that trademarks are not protected by the rights of third parties! The copyright for published objects created by the author himself remains solely with the author of the pages. Any duplication or use of such graphics, sound documents, video sequences and texts in other electronic or printed publications is not permitted without the express consent of the author.</p>
+<ol start="4" type="1">
+<li><strong>Legal validity of this disclaimer</strong></li>
+</ol>
+<p>This disclaimer is to be regarded as part of the Internet offer from which reference was made to this page. If parts or individual formulations of this text do not, no longer or do not completely correspond to the current legal situation, the remaining parts of the document remain unaffected in their content and validity.</p>
+</section>
+<section id="privary-policy" class="level2">
+<h2 class="anchored" data-anchor-id="privary-policy">Privary Policy</h2>
+<section id="data-protection-at-a-glance" class="level3">
+<h3 class="anchored" data-anchor-id="data-protection-at-a-glance">Data protection at a glance</h3>
+<p>The following information provides a simple overview of what happens to your personal data when you visit this website. Personal data is all data with which you can be personally identified. Detailed information on the subject of data protection can be found in our privacy policy listed below this text.</p>
+</section>
+<section id="data-collection-on-this-website" class="level3">
+<h3 class="anchored" data-anchor-id="data-collection-on-this-website">Data collection on this website</h3>
+<p><strong>Who is responsible for data collection on this website?</strong></p>
+<p>The data processing on this website is carried out by the website operator. You can find its contact details in the section “Note on the controller” in this privacy policy.</p>
+<p><strong>How do we collect your data?</strong></p>
+<p>On the one hand, your data will be collected by you providing it with us. Here it can be e.g.&nbsp;to enter data that you enter in a contact form.</p>
+<p>Other data is collected automatically or after your consent when you visit the website by our IT systems. These are mainly technical data (e.g.&nbsp;B. Internet browser, operating system or time of page viewing). This data is collected automatically as soon as you enter this website.</p>
+<p><strong>We use your data?</strong></p>
+<p>Part of the data is collected to ensure error-free provision of the website. Other data can be used to analyse your user behaviour.</p>
+<p><strong>What rights do you have of your data?</strong></p>
+<p>You have the right to obtain information about the origin, recipient and purpose of your stored personal data free of charge at any time. You also have the right to request the correction or deletion of this data. If you have given your consent to data processing, you can revoke this consent at any time for the future. In addition, you have the right to request, in certain circumstances, to request the restriction of the processing of your personal data.</p>
+<p>Furthermore, you have the right to lodge a complaint with the competent supervisory authority. You can contact us at any time about this and other questions about data protection.</p>
+<p><strong>Third-party analysis tools and tools</strong></p>
+<p>When you visit this website, your surfing behaviour can be statistically evaluated. This is mainly done with so-called analysis programs. Detailed information on these analysis programs can be found in the following privacy policy.</p>
+</section>
+</section>
+<section id="hosting" class="level2">
+<h2 class="anchored" data-anchor-id="hosting">Hosting</h2>
+<section id="external-hosting" class="level3">
+<h3 class="anchored" data-anchor-id="external-hosting">External hosting</h3>
+<p>This website is hosted by an external service provider (hoster). The personal data collected on this website is stored on the servers of the hoster. This can be IP addresses, contact requests, meta and communication data, contract data, contact details, names, website access and other data generated via a website.</p>
+<p>The hoster is deployed for the purpose of fulfilling the contract to our potential and existing customers (Art. 6 para. 1 lit. b GDPR) and in the interest of a secure, fast and efficient provision of our online offer by a professional provider (Art. 6 para. 1 lit. f GDPR).</p>
+<p>Our host will only process your data to the extent necessary to fulfil its performance obligations and follow our instructions regarding this data.</p>
+<p>We use the following Hosters:</p>
+<p>STRATO GmbH</p>
+<p>Otto-Ostrowski-Straße 7</p>
+<p>10249 Berlin</p>
+<p><strong>Contract processing</strong></p>
+<p>We have concluded a contract for order processing (AVV) with the above-mentioned provider. This is a contract prescribed by data protection law, which guarantees that they process the personal data of our website visitors only in accordance with our instructions and in compliance with the GDPR.</p>
+</section>
+</section>
+<section id="general-information-and-mandatory-information" class="level2">
+<h2 class="anchored" data-anchor-id="general-information-and-mandatory-information">General information and mandatory information</h2>
+<p><strong>Data protection</strong></p>
+<p>The operators of these pages take the protection of your personal data very seriously. We treat your personal data confidentially and in accordance with the statutory data protection regulations and this privacy policy.</p>
+<p>If you use this website, various personal data is collected. Personal data is data with which you can be personally identified. This privacy policy explains what data we collect and what we use it for. It also explains how and for what purpose this is done. We would like to point out that data transmission over the Internet (e.g.&nbsp;when communicating by e-mail) can have security vulnerabilities. A complete protection of data against access by third parties is not possible.</p>
+<p>Note on the responsible body</p>
+<p>The responsible body for data processing on this website is:</p>
+<p>Ingo Steldermann</p>
+<p>Ringstr. 103</p>
+<p>52078 Aachen</p>
+<p>E-Mail: info@shallowflow.com</p>
+<p>The controller is the natural or legal person who, alone or jointly with others, about the purposes and means of the processing of personal data (e.g.&nbsp;B. Names, email addresses o. ethere).</p>
+<p><strong>Storage duration</strong></p>
+<p>If no more specific storage period has been specified within this privacy policy, your personal data will remain with us until the purpose for data processing is not applicable. If you assert a legitimate request for deletion or revoke your consent to data processing, your data will be deleted, unless we have any other legally permissible reasons for the storage of your personal data (e.g.&nbsp;tax or commercial retention periods); in the latter case, deletion takes place after these reasons has since then these reasons have lapsed.</p>
+<p><strong>Note on data transfer to the USA and other third countries</strong></p>
+<p>We use, among other things, tools from companies based in the USA or other third countries not secure under data protection law. If these tools are active, your personal data may be transferred to and processed there. We would like to point out that in these countries no level of data protection comparable to the EU can be guaranteed.</p>
+<p>For example, US companies are required to disclose personal data to security agencies without you as affecting being able to take legal action against this. It cannot therefore be ruled out that US authorities (e.g.&nbsp;B. Secret services) process, evaluate and permanently store your data on US servers for monitoring purposes. We have no influence on these processing activities.</p>
+<p><strong>Revocation of your consent to data processing</strong></p>
+<p>Many data processing operations are only possible with your explicit consent. You can revoke your consent at any time. The legality of the data processing carried out until the revocation remains unaffected by the revocation.</p>
+<p><strong>Right to object to data collection in special surveys and against</strong></p>
+<p><strong>Direct marketing (Art. 21 GDPR)</strong></p>
+<p>IF THE DATA PROCESSING ON GROAD OF ART. 6 ABS. 1 LIT. OR F GDPR, HAVE EVERY TIME THE RIGHT OF THE GREEN, THE GREEN OF THE YOUR SON OF SPECIAL SITUATION FEELs, AGAINST THE DISCLAIMER OF PERSONAL PERSONAL DATA SPECIAL PROSE INSTRUTH; THE PARTICULATIONS OF THE PARTICIPATION OF PARTIES. THE LEGAL LEGAL DAYS, ON THE A PROCESSING, RELEASES. IF YOU ARE NOT MORE USE, MEETING THE PERSONAL DATA NOT MORE DISTRIBUTION, IT YOU ARE INSTRUAL PROTECTIRY PROTECTS WITHIN WORKERS WITHOWN GREAT FOUNDATIONS ON THE DISPLOYMENT SECTORS, THE YOU ARE RELEASES,HUNG, EXCLUSIVE DEFENCE OF RIGHT PRODUCTS (EMPLOYMENT AFTER ART. 21 ABS. 1 GDPR).</p>
+<p>WILL BE RESPONSIBLE TO REPRESENTATION OF YOUR PERSONAL YOU HAVE THE RIGHT, EVERY PREPARATION OF THIS PROCESSING USE OF THE USE OF RECALLING BETRIMINAL PERSONE CITY DATA TO PURPOSE OF THE PURPOSE OF THE PURPOSESUCH DIRECT TERMS IN CONNECTION. IF YOU ARE BY YOU WILL BE PERSONAL DATA ONLY ONLY MORE TO OVERVIEW OF THE DIRECT WORLDING USE (EMPLOYEMENT AFTER ART. 21 ABS. 2 GDPR).</p>
+<p><strong>Right to complain at the supervisory authority</strong></p>
+<p>In the event of violations of the GDPR, the data subjects have the right to lodge a complaint with a supervisory authority, in particular in the Member State of their habitual residence, their workplace or the place of the alleged infringement. The right to lodge a complaint exists without prejudice to any other administrative or judicial remedy.</p>
+<p><strong>Right to data transfer</strong></p>
+<p>You have the right to have data that we process automatically on the basis of your consent or in fulfilment of a contract handed over to you or to a third party in a common, machine-readable format. If you request the direct transfer of the data to another controller, this will only be done if it is technically feasible.</p>
+<p><strong>SSL or TLS encryption</strong></p>
+<p>For security reasons and to protect the transmission of confidential content, such as orders or requests that you send to us as the site operator, use SSL or SSL or TLS encryption.</p>
+<p>You can recognise an encrypted connection by the fact that the address line of the browser changes from “http://” to “https://” and by the lock icon in your browser line.</p>
+<p>If the SSL or TLS encryption is activated, the data you transmit to us cannot be read by third parties.</p>
+<p><strong>Information, research and correction</strong></p>
+<p>Within the scope of the applicable statutory provisions, you have the right to free information about your stored personal data, their origin and recipients and the purpose of the data processing and, if necessary, a right to correction or deletion of this data at any time. You can contact us at any time if you have any further questions about personal data.</p>
+<p><strong>Right to rejecting the processing</strong></p>
+<p>You have the right to request the restriction of the processing of your personal data. You can contact us at any time. The right to restriction of processing exists as a result of cases: If you dispute the accuracy of your personal data stored by us, we usually need time to check this. For the duration of the examination, you have the right to request the restriction of the processing of your personal data. If the processing of your personal data has been unlawful, you may request the restriction of data processing instead of deletion. If we no longer need your personal data, but you need it to exercise, defend or assert legal claims, you have the right to request the restriction of the processing of your personal data instead of deletion.</p>
+<p>If you are opposed to Art. 21 para. 1 GDPR, a balance must be made between your interests and our interests. As long as it is not yet clear whose interests prevail, you have the right to request the restriction of the processing of your personal data.</p>
+<p>If you have restricted the processing of your personal data, this data may only be processed – with the exception of its storage – with your consent or for the establishment, exercise or defence of legal claims or for the protection of the rights of another natural or legal person or for reasons of important public interest of the European Union or a Member State.</p>
+</section>
+<section id="data-collection-on-this-website-1" class="level2">
+<h2 class="anchored" data-anchor-id="data-collection-on-this-website-1">Data collection on this website</h2>
+<p><strong>Server log files</strong></p>
+<p>The provider of the pages automatically collects and stores information in so-called server log files, which your browser automatically transmits to us. These are:</p>
+<ul>
+<li>Browser type and browser version</li>
+<li>operating system used</li>
+<li>Referrer URL</li>
+<li>Host name of the accessing computer</li>
+<li>Time of the server request</li>
+<li>IP address</li>
+</ul>
+<p>This data will not be combined with other data sources. This data is collected on the basis of Art. 6 para. 1 lit. f GDPR. The website operator has a legitimate interest in the technically error-free presentation and optimization of its website – for this purpose, the server log files must be recorded.</p>
+<p><strong>Request by e-mail</strong></p>
+<p>If you contact us by e-mail, your request, including all resulting personal data (name, request), will be stored and processed by us for the purpose of processing your request. We will not pass on this data without your consent.</p>
+<p>The processing of this data is based on Art. 6 para. 1 lit. b GDPR, if your request is related to the performance of a contract or is necessary for the implementation of pre-contractual measures. In all other cases, the processing is based on our legitimate interest in the effective processing of the inquiries addressed to us (Art. 6 para. 1 lit. f GDPR) or on your consent (Art. 6 para. 1 lit. a GDPR) if this has been queried.</p>
+<p>The data sent by you to us via contact requests will remain with us until you request its deletion, revoke your consent to its storage or the purpose for its storage no longer applies (e.g.&nbsp;after completion of your request). Mandatory legal provisions – in particular statutory retention periods – remain unaffected.</p>
+</section>
+<section id="plugins-and-tools" class="level2">
+<h2 class="anchored" data-anchor-id="plugins-and-tools">Plugins and tools</h2>
+<p><strong>Google Maps</strong></p>
+<p>This page uses the Google Maps map service. The provider is Google Ireland Limited (“Google”), GordonHouse, Barrow Street, Dublin 4, Ireland. To use the functions of Google Maps, it is necessary to store your IP address. This information is usually transmitted to a Google server in the USA and stored there.</p>
+<p>The provider of this site has no influence on this data transmission. If Google Maps is enabled, Google can use Google Web Fonts for the purpose of displaying the fonts. When calling Google Maps, your browser loads the required web fonts into your browser cache to display texts and fonts correctly.</p>
+<p>The use of Google Maps is in the interest of an appealing presentation of our online offers and an easy findability of the places indicated by us on the website. This represents a legitimate interest in the sense of Art. 6 para. 1 lit. f GDPR. If a corresponding consent has been requested, the processing is carried out exclusively on the basis of Art. 6 para. 1 lit. a GDPR; consent is revokable at any time.</p>
+<p>The data transfer to the USA is based on the standard contractual clauses of the EU Commission.</p>
+<p>Details can be found here:</p>
+<p>https://privacy.google.com/businesses/gdprcontrollerterms/ and</p>
+<p>https://privacy.google.com/businesses/gdprcontrollerterms/sccs/.</p>
+<p>More information on the handling of user data can be found in Google’s privacy policy:</p>
+<p>https://policies.google.com/privacy?hl.en.</p>
+<p><strong>Wordfence</strong></p>
+<p>We have included Wordfence on this website. Its provider is Defiant Inc., Defiant, Inc., 800 5th Ave Ste 4100, Seattle, WA 98104, USA (hereinafter Wordfence).</p>
+<p>Wordfence is used to protect our website from unwanted access or malicious cyber attacks. For this purpose, our website establishes a permanent connection to the servers of Wordfence, so that Wordfence can match and, if necessary, block its databases with the accesses made on our website.</p>
+<p>The use of Wordfence is based on Art. 6 para. 1 lit. f GDPR. The website operator has a legitimate interest in protecting its website from cyber attacks. If a corresponding consent has been requested, the processing is carried out exclusively on the basis of Art. 6 para. 1 lit. a GDPR; consent is revokable at any time.</p>
+<p>The data transfer to the USA is based on the standard contractual clauses of the EU Commission.</p>
+<p>Details can be found here:</p>
+<p><a href="https://www.wordfence.com/help/general-data-protection-regulation/">Wordfence and GDPR – General Data Protection Regulation</a></p>
+<p>Source (adapted): https://www.e-recht24.de</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Ingo Steldermann</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link active" href="./legal.html" aria-current="page">
+<p>Legal notice and data protection</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

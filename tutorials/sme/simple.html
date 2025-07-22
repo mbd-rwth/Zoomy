@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ingo Steldermann">
+<meta name="dcterms.date" content="2025-07-10">
+
+<title>Shallow Water Tutorial</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//images/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-704d21ae3210737ad159dfcc1d1b4892.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+<script>
+MathJax = {
+  tex: {
+    tags: 'ams'
+  }
+};
+</script>
+
+
+<link rel="stylesheet" href="custom.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_text.png" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../docs/index.html"> 
+<span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../tutorials/index.html" aria-current="page"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../examples/index.html"> 
+<span class="menu-text">Examples</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../playground/playground.html"> 
+<span class="menu-text">Playground</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.qmd"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth/Zoomy">
+ <span class="dropdown-text">Zoomy</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth">
+ <span class="dropdown-text">MBD</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://de.linkedin.com/company/rwth-mbd"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa6-brands:linkedin" aria-label="Icon linkedin from fa6-brands Iconify.design set." title="Icon linkedin from fa6-brands Iconify.design set."></iconify-icon></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../tutorials/sme/simple.html">Shallow Water Tutorial</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../../index.html" class="sidebar-logo-link">
+      <img src="../../images/logo_text.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/swe/simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shallow Water Tutorial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/poisson/simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Poission Tutorial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/vam/simple.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VAM Tutorial</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/sme/simple.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Shallow Water Tutorial</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Shallow Water Tutorial</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ingo Steldermann </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">July 10, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="4f583c96" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Load packages</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> jax</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jax <span class="im">import</span> numpy <span class="im">as</span> jnp</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> types <span class="im">import</span> SimpleNamespace</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> cos, pi</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Solver, Settings</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.ode <span class="im">import</span> RK1</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.reconstruction <span class="im">as</span> recon</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.timestepping <span class="im">as</span> timestepping</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.flux <span class="im">as</span> flux</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.nonconservative_flux <span class="im">as</span> nc_flux</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.boundary_conditions <span class="im">import</span> BoundaryCondition</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.basisfunctions <span class="im">import</span> Basisfunction, Legendre_shifted</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.basismatrices <span class="im">import</span> Basismatrices</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.model <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.misc.io <span class="im">as</span> io</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> compute_derivatives</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tests.pdesoft <span class="im">import</span> plots_paper</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.mesh.mesh <span class="im">as</span> petscMesh</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.postprocessing.postprocessing <span class="im">as</span> postprocessing</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> convert_mesh_to_jax</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="9d8b0a27" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>offset <span class="op">=</span> <span class="dv">1</span><span class="op">+</span>level</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>n_fields <span class="op">=</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> level</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"ShallowMoments"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"g"</span>: <span class="fl">9.81</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ex'</span>: <span class="fl">0.</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ey'</span>: <span class="fl">0.</span>,</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ez'</span>: <span class="fl">1.</span>,</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"C"</span>: <span class="fl">1.0</span>,</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"nu"</span>: <span class="fl">0.000001</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lamda"</span>: <span class="dv">7</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rho"</span>: <span class="dv">1</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eta"</span>: <span class="dv">1</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"c_slipmod"</span>: <span class="dv">1</span> <span class="op">/</span> <span class="fl">7.0</span>,</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    reconstruction<span class="op">=</span>recon.constant,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    num_flux<span class="op">=</span>flux.Zero(),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    nc_flux<span class="op">=</span>nc_flux.segmentpath(),</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    compute_dt<span class="op">=</span>timestepping.adaptive(CFL<span class="op">=</span><span class="fl">0.45</span>),</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    time_end<span class="op">=</span><span class="fl">3.0</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    output_snapshots<span class="op">=</span><span class="dv">30</span>,</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="ss">f"outputs/junction_</span><span class="sc">{</span>level<span class="sc">}</span><span class="ss">"</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>inflow_dict <span class="op">=</span> { </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: Piecewise((<span class="fl">0.1</span>, t <span class="op">&lt;</span> <span class="fl">0.2</span>),(q[<span class="dv">0</span>], <span class="va">True</span>)),</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: Piecewise((<span class="op">-</span><span class="fl">0.3</span>, t <span class="op">&lt;</span> <span class="fl">0.2</span>),(<span class="op">-</span>q[<span class="dv">1</span>], <span class="va">True</span>)),</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>                }</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>inflow_dict.update({</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span><span class="op">+</span>i: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(level)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>inflow_dict.update({</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span><span class="op">+</span>offset<span class="op">+</span>i: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(level<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        BC.Lambda(physical_tag<span class="op">=</span><span class="st">"inflow"</span>, prescribe_fields<span class="op">=</span>inflow_dict),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"wall"</span>),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic(x):</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> level, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> <span class="fl">0.01</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(custom_ic)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ShallowMoments2d(</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    fields<span class="op">=</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> level,</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    aux_fields<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>settings.parameters,</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{<span class="st">"friction"</span>: [<span class="st">"newtonian"</span>, <span class="st">"slip_mod"</span>]},</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>    basis<span class="op">=</span>Basismatrices(basis<span class="op">=</span>Legendre_shifted(order<span class="op">=</span>level<span class="op">+</span><span class="dv">1</span>)),</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_junction/mesh_2d_coarse.msh"</span>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># os.path.join(main_dir, "meshes/channel_junction/mesh_2d_fine.msh")</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> convert_mesh_to_jax(mesh)</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SMESolver(Solver):</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>        dudx <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">0</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>        dvdy <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span><span class="op">+</span>offset]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">1</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dudx)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(dvdy)</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> SMESolver()</span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>Qnew, Qaux <span class="op">=</span> solver.jax_fvm_unsteady_semidiscrete(mesh, model, settings)</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+iteration: 1.0, time: 0.013545709229399058, dt: 0.013545709229399058, time_stamp: 0.10344827586206896
+iteration: 2.0, time: 0.017829238598125588, dt: 0.004283529368726528, time_stamp: 0.10344827586206896
+iteration: 3.0, time: 0.022112767966852118, dt: 0.004283529368726528, time_stamp: 0.10344827586206896
+iteration: 4.0, time: 0.02612638814985772, dt: 0.004013620183005602, time_stamp: 0.10344827586206896
+iteration: 5.0, time: 0.02991049380891096, dt: 0.003784105659053239, time_stamp: 0.10344827586206896
+iteration: 6.0, time: 0.033612501514719596, dt: 0.00370200770580864, time_stamp: 0.10344827586206896
+iteration: 7.0, time: 0.03728158488102703, dt: 0.0036690833663074298, time_stamp: 0.10344827586206896
+iteration: 8.0, time: 0.04092637078279678, dt: 0.0036447859017697537, time_stamp: 0.10344827586206896
+iteration: 9.0, time: 0.04450964691364398, dt: 0.0035832761308471983, time_stamp: 0.10344827586206896
+iteration: 10.0, time: 0.048061795110555604, dt: 0.0035521481969116213, time_stamp: 0.10344827586206896
+iteration: 11.0, time: 0.05159961793231456, dt: 0.003537822821758955, time_stamp: 0.10344827586206896
+iteration: 12.0, time: 0.05512115600424509, dt: 0.0035215380719305312, time_stamp: 0.10344827586206896
+iteration: 13.0, time: 0.05860131228618176, dt: 0.00348015628193667, time_stamp: 0.10344827586206896
+iteration: 14.0, time: 0.06205775895598207, dt: 0.0034564466698003083, time_stamp: 0.10344827586206896
+iteration: 15.0, time: 0.0655012043618817, dt: 0.003443445405899626, time_stamp: 0.10344827586206896
+iteration: 16.0, time: 0.06893143796701734, dt: 0.003430233605135638, time_stamp: 0.10344827586206896
+iteration: 17.0, time: 0.07233877985432353, dt: 0.0034073418873062, time_stamp: 0.10344827586206896
+iteration: 18.0, time: 0.07573230524836971, dt: 0.0033935253940461786, time_stamp: 0.10344827586206896
+iteration: 19.0, time: 0.0791179336926067, dt: 0.0033856284442369848, time_stamp: 0.10344827586206896
+iteration: 20.0, time: 0.08249429972790717, dt: 0.003376366035300472, time_stamp: 0.10344827586206896
+iteration: 21.0, time: 0.08586247905530944, dt: 0.0033681793274022752, time_stamp: 0.10344827586206896
+iteration: 22.0, time: 0.08921825840708118, dt: 0.0033557793517717364, time_stamp: 0.10344827586206896
+iteration: 23.0, time: 0.0925662488619216, dt: 0.003347990454840411, time_stamp: 0.10344827586206896
+iteration: 24.0, time: 0.09590281531140867, dt: 0.0033365664494870734, time_stamp: 0.10344827586206896
+iteration: 25.0, time: 0.09923068953508446, dt: 0.0033278742236757916, time_stamp: 0.10344827586206896
+iteration: 26.0, time: 0.10255303137221364, dt: 0.0033223418371291784, time_stamp: 0.10344827586206896
+iteration: 27.0, time: 0.10586781784746041, dt: 0.0033147864752467748, time_stamp: 0.10344827586206896
+iteration: 28.0, time: 0.10917502509475523, dt: 0.0033072072472948126, time_stamp: 0.20689655172413793
+iteration: 29.0, time: 0.11247723404293156, dt: 0.003302208948176332, time_stamp: 0.20689655172413793
+iteration: 30.0, time: 0.1157763126533011, dt: 0.003299078610369539, time_stamp: 0.20689655172413793
+iteration: 31.0, time: 0.11907361884147898, dt: 0.003297306188177879, time_stamp: 0.20689655172413793
+iteration: 32.0, time: 0.12236444670461191, dt: 0.003290827863132943, time_stamp: 0.20689655172413793
+iteration: 33.0, time: 0.12564919734340133, dt: 0.003284750638789421, time_stamp: 0.20689655172413793
+iteration: 34.0, time: 0.12892970353633756, dt: 0.003280506192936236, time_stamp: 0.20689655172413793
+iteration: 35.0, time: 0.13220733972841334, dt: 0.0032776361920757594, time_stamp: 0.20689655172413793
+iteration: 36.0, time: 0.1354827992282212, dt: 0.003275459499807872, time_stamp: 0.20689655172413793
+iteration: 37.0, time: 0.1387542696148055, dt: 0.003271470386584294, time_stamp: 0.20689655172413793
+iteration: 38.0, time: 0.14202292013213896, dt: 0.0032686505173334674, time_stamp: 0.20689655172413793
+iteration: 39.0, time: 0.1452896429485316, dt: 0.0032667228163926537, time_stamp: 0.20689655172413793
+iteration: 40.0, time: 0.14855512505789925, dt: 0.0032654821093676496, time_stamp: 0.20689655172413793
+iteration: 41.0, time: 0.15181674845742146, dt: 0.003261623399522223, time_stamp: 0.20689655172413793
+iteration: 42.0, time: 0.15507192288367652, dt: 0.0032551744262550603, time_stamp: 0.20689655172413793
+iteration: 43.0, time: 0.15832082995763916, dt: 0.003248907073962649, time_stamp: 0.20689655172413793
+iteration: 44.0, time: 0.16156477392913005, dt: 0.003243943971490895, time_stamp: 0.20689655172413793
+iteration: 45.0, time: 0.16480482696085083, dt: 0.003240053031720795, time_stamp: 0.20689655172413793
+iteration: 46.0, time: 0.16804187309168123, dt: 0.0032370461308304037, time_stamp: 0.20689655172413793
+iteration: 47.0, time: 0.17127664226239606, dt: 0.003234769170714841, time_stamp: 0.20689655172413793
+iteration: 48.0, time: 0.17450973730737385, dt: 0.003233095044977796, time_stamp: 0.20689655172413793
+iteration: 49.0, time: 0.17774165571770564, dt: 0.003231918410331801, time_stamp: 0.20689655172413793
+iteration: 50.0, time: 0.18097227022098925, dt: 0.003230614503283589, time_stamp: 0.20689655172413793
+iteration: 51.0, time: 0.18419858284859264, dt: 0.0032263126276033836, time_stamp: 0.20689655172413793
+iteration: 52.0, time: 0.1874206927651558, dt: 0.0032221099165631634, time_stamp: 0.20689655172413793
+iteration: 53.0, time: 0.19063951469748933, dt: 0.0032188219323335296, time_stamp: 0.20689655172413793
+iteration: 54.0, time: 0.19385579791138496, dt: 0.003216283213895646, time_stamp: 0.20689655172413793
+iteration: 55.0, time: 0.19707015570956857, dt: 0.0032143577981836127, time_stamp: 0.20689655172413793
+iteration: 56.0, time: 0.20028308951665724, dt: 0.003212933807088683, time_stamp: 0.20689655172413793
+iteration: 57.0, time: 0.203495008523486, dt: 0.0032119190068287755, time_stamp: 0.20689655172413793
+iteration: 58.0, time: 0.206706245824214, dt: 0.0032112373007280033, time_stamp: 0.20689655172413793
+iteration: 59.0, time: 0.2099170716835837, dt: 0.0032108258593696757, time_stamp: 0.20689655172413793
+iteration: 60.0, time: 0.21312484312846208, dt: 0.003207771444878375, time_stamp: 0.3103448275862069
+iteration: 61.0, time: 0.21633019415085677, dt: 0.0032053510223946854, time_stamp: 0.3103448275862069
+iteration: 62.0, time: 0.21953369447502563, dt: 0.0032035003241688543, time_stamp: 0.3103448275862069
+iteration: 63.0, time: 0.2227358030919476, dt: 0.0032021086169219588, time_stamp: 0.3103448275862069
+iteration: 64.0, time: 0.2259368884914135, dt: 0.0032010853994658955, time_stamp: 0.3103448275862069
+iteration: 65.0, time: 0.2291372454766297, dt: 0.003200356985216214, time_stamp: 0.3103448275862069
+iteration: 66.0, time: 0.23233710890699882, dt: 0.0031998634303691182, time_stamp: 0.3103448275862069
+iteration: 67.0, time: 0.23553666504288343, dt: 0.003199556135884602, time_stamp: 0.3103448275862069
+iteration: 68.0, time: 0.23873557359671255, dt: 0.003198908553829113, time_stamp: 0.3103448275862069
+iteration: 69.0, time: 0.2419328862585947, dt: 0.003197312661882146, time_stamp: 0.3103448275862069
+iteration: 70.0, time: 0.2451289963496848, dt: 0.0031961100910901227, time_stamp: 0.3103448275862069
+iteration: 71.0, time: 0.24832421336090432, dt: 0.0031952170112195186, time_stamp: 0.3103448275862069
+iteration: 72.0, time: 0.25151878816200274, dt: 0.003194574801098392, time_stamp: 0.3103448275862069
+iteration: 73.0, time: 0.25471295019482365, dt: 0.0031941620328209057, time_stamp: 0.3103448275862069
+iteration: 74.0, time: 0.25790696416092784, dt: 0.0031940139661041735, time_stamp: 0.3103448275862069
+iteration: 75.0, time: 0.26110120475083626, dt: 0.0031942405899083874, time_stamp: 0.3103448275862069
+iteration: 76.0, time: 0.26429552436497955, dt: 0.0031943196141433054, time_stamp: 0.3103448275862069
+iteration: 77.0, time: 0.26748903894457404, dt: 0.003193514579594499, time_stamp: 0.3103448275862069
+iteration: 78.0, time: 0.270682174848047, dt: 0.0031931359034729685, time_stamp: 0.3103448275862069
+iteration: 79.0, time: 0.27387544002411396, dt: 0.0031932651760669174, time_stamp: 0.3103448275862069
+iteration: 80.0, time: 0.27706948547564336, dt: 0.003194045451529405, time_stamp: 0.3103448275862069
+iteration: 81.0, time: 0.2802651562764507, dt: 0.0031956708008073573, time_stamp: 0.3103448275862069
+iteration: 82.0, time: 0.2834604243625705, dt: 0.003195268086119783, time_stamp: 0.3103448275862069
+iteration: 83.0, time: 0.28665558210205094, dt: 0.003195157739480429, time_stamp: 0.3103448275862069
+iteration: 84.0, time: 0.2898513853686892, dt: 0.003195803266638274, time_stamp: 0.3103448275862069
+iteration: 85.0, time: 0.2930487129929722, dt: 0.0031973276242829927, time_stamp: 0.3103448275862069
+iteration: 86.0, time: 0.29624846288673434, dt: 0.0031997498937621546, time_stamp: 0.3103448275862069
+iteration: 87.0, time: 0.2994477079214849, dt: 0.003199245034750535, time_stamp: 0.3103448275862069
+iteration: 88.0, time: 0.3026471926833019, dt: 0.0031994847618170446, time_stamp: 0.3103448275862069
+iteration: 89.0, time: 0.30584790223454184, dt: 0.003200709551239911, time_stamp: 0.3103448275862069
+iteration: 90.0, time: 0.30905089790151, dt: 0.0032029956669682074, time_stamp: 0.3103448275862069
+iteration: 91.0, time: 0.31225616597324934, dt: 0.0032052680717393244, time_stamp: 0.3103448275862069
+iteration: 92.0, time: 0.3154613148059552, dt: 0.0032051488327058493, time_stamp: 0.41379310344827586
+iteration: 93.0, time: 0.3186669766226577, dt: 0.0032056618167025193, time_stamp: 0.41379310344827586
+iteration: 94.0, time: 0.3218743608296004, dt: 0.0032073842069427197, time_stamp: 0.41379310344827586
+iteration: 95.0, time: 0.3250846924250488, dt: 0.0032103315954483745, time_stamp: 0.41379310344827586
+iteration: 96.0, time: 0.3282973181610273, dt: 0.003212625735978514, time_stamp: 0.41379310344827586
+iteration: 97.0, time: 0.33151024013326247, dt: 0.003212921972235144, time_stamp: 0.41379310344827586
+iteration: 98.0, time: 0.3347237238025582, dt: 0.0032134836692957443, time_stamp: 0.41379310344827586
+iteration: 99.0, time: 0.337939224199785, dt: 0.003215500397226779, time_stamp: 0.41379310344827586
+iteration: 100.0, time: 0.34115814020708585, dt: 0.0032189160073008306, time_stamp: 0.41379310344827586
+iteration: 101.0, time: 0.34437980310320665, dt: 0.0032216628961208053, time_stamp: 0.41379310344827586
+iteration: 102.0, time: 0.3476024766125383, dt: 0.0032226735093316473, time_stamp: 0.41379310344827586
+iteration: 103.0, time: 0.3508253715411103, dt: 0.003222894928572017, time_stamp: 0.41379310344827586
+iteration: 104.0, time: 0.354050239819554, dt: 0.003224868278443682, time_stamp: 0.41379310344827586
+iteration: 105.0, time: 0.35727869279397606, dt: 0.0032284529744220484, time_stamp: 0.41379310344827586
+iteration: 106.0, time: 0.3605108219229811, dt: 0.003232129129005036, time_stamp: 0.41379310344827586
+iteration: 107.0, time: 0.3637449606163677, dt: 0.003234138693386565, time_stamp: 0.41379310344827586
+iteration: 108.0, time: 0.3669792535107377, dt: 0.0032342928943699953, time_stamp: 0.41379310344827586
+iteration: 109.0, time: 0.37021514274546374, dt: 0.0032358892347260884, time_stamp: 0.41379310344827586
+iteration: 110.0, time: 0.373454539709958, dt: 0.0032393969644942643, time_stamp: 0.41379310344827586
+iteration: 111.0, time: 0.3766991704911989, dt: 0.003244630781240862, time_stamp: 0.41379310344827586
+iteration: 112.0, time: 0.37994672185961, dt: 0.0032475513684110903, time_stamp: 0.41379310344827586
+iteration: 113.0, time: 0.3831953270685085, dt: 0.0032486052088985446, time_stamp: 0.41379310344827586
+iteration: 114.0, time: 0.3864445791082748, dt: 0.003249252039766254, time_stamp: 0.41379310344827586
+iteration: 115.0, time: 0.3896967366440694, dt: 0.0032521575357945826, time_stamp: 0.41379310344827586
+iteration: 116.0, time: 0.3929493590305703, dt: 0.0032526223865009295, time_stamp: 0.41379310344827586
+iteration: 117.0, time: 0.3962041010961321, dt: 0.0032547420655617628, time_stamp: 0.41379310344827586
+iteration: 118.0, time: 0.39946003471892716, dt: 0.0032559336227950602, time_stamp: 0.41379310344827586
+iteration: 119.0, time: 0.40271912550844, dt: 0.0032590907895128666, time_stamp: 0.41379310344827586
+iteration: 120.0, time: 0.40597791920643456, dt: 0.003258793697994532, time_stamp: 0.41379310344827586
+iteration: 121.0, time: 0.40923847592405277, dt: 0.003260556717618212, time_stamp: 0.41379310344827586
+iteration: 122.0, time: 0.4125017573339741, dt: 0.003263281409921312, time_stamp: 0.41379310344827586
+iteration: 123.0, time: 0.41576705558535915, dt: 0.0032652982513850562, time_stamp: 0.41379310344827586
+iteration: 124.0, time: 0.41903628449309, dt: 0.003269228907730835, time_stamp: 0.5172413793103449
+iteration: 125.0, time: 0.42230533168713397, dt: 0.0032690471940439955, time_stamp: 0.5172413793103449
+iteration: 126.0, time: 0.42557714214411774, dt: 0.003271810456983763, time_stamp: 0.5172413793103449
+iteration: 127.0, time: 0.4288527715191887, dt: 0.003275629375071003, time_stamp: 0.5172413793103449
+iteration: 128.0, time: 0.4321308713060313, dt: 0.0032780997868425616, time_stamp: 0.5172413793103449
+iteration: 129.0, time: 0.4354140440308888, dt: 0.003283172724857492, time_stamp: 0.5172413793103449
+iteration: 130.0, time: 0.438697382515708, dt: 0.003283338484819208, time_stamp: 0.5172413793103449
+iteration: 131.0, time: 0.44198367743505673, dt: 0.0032862949193487472, time_stamp: 0.5172413793103449
+iteration: 132.0, time: 0.4452754001362162, dt: 0.003291722701159477, time_stamp: 0.5172413793103449
+iteration: 133.0, time: 0.44856935729433234, dt: 0.0032939571581161223, time_stamp: 0.5172413793103449
+iteration: 134.0, time: 0.4518683182838057, dt: 0.003298960989473347, time_stamp: 0.5172413793103449
+iteration: 135.0, time: 0.45516918476787593, dt: 0.0033008664840702266, time_stamp: 0.5172413793103449
+iteration: 136.0, time: 0.45847268107423567, dt: 0.003303496306359723, time_stamp: 0.5172413793103449
+iteration: 137.0, time: 0.46178157210405013, dt: 0.003308891029814468, time_stamp: 0.5172413793103449
+iteration: 138.0, time: 0.46509794039706015, dt: 0.0033163682930100104, time_stamp: 0.5172413793103449
+iteration: 139.0, time: 0.46841869991797497, dt: 0.0033207595209148004, time_stamp: 0.5172413793103449
+iteration: 140.0, time: 0.47174638138269737, dt: 0.0033276814647223893, time_stamp: 0.5172413793103449
+iteration: 141.0, time: 0.47508312428832083, dt: 0.0033367429056234492, time_stamp: 0.5172413793103449
+iteration: 142.0, time: 0.47842869778245106, dt: 0.003345573494130201, time_stamp: 0.5172413793103449
+iteration: 143.0, time: 0.48178457250586365, dt: 0.0033558747234126015, time_stamp: 0.5172413793103449
+iteration: 144.0, time: 0.4851455178061211, dt: 0.0033609453002574527, time_stamp: 0.5172413793103449
+iteration: 145.0, time: 0.48851318997044946, dt: 0.0033676721643283456, time_stamp: 0.5172413793103449
+iteration: 146.0, time: 0.4918832526503121, dt: 0.0033700626798626376, time_stamp: 0.5172413793103449
+iteration: 147.0, time: 0.4952586011813019, dt: 0.0033753485309897997, time_stamp: 0.5172413793103449
+iteration: 148.0, time: 0.4986416788701494, dt: 0.0033830776888474716, time_stamp: 0.5172413793103449
+iteration: 149.0, time: 0.5020345688765937, dt: 0.003392890006444276, time_stamp: 0.5172413793103449
+iteration: 150.0, time: 0.5054390650524785, dt: 0.003404496175884824, time_stamp: 0.5172413793103449
+iteration: 151.0, time: 0.5088530150851456, dt: 0.003413950032667087, time_stamp: 0.5172413793103449
+iteration: 152.0, time: 0.5122744611197889, dt: 0.0034214460346433757, time_stamp: 0.5172413793103449
+iteration: 153.0, time: 0.5157040436970554, dt: 0.0034295825772664855, time_stamp: 0.5172413793103449
+iteration: 154.0, time: 0.5191390286069143, dt: 0.0034349849098589784, time_stamp: 0.5172413793103449
+iteration: 155.0, time: 0.5225818889036076, dt: 0.0034428602966932766, time_stamp: 0.6206896551724138
+iteration: 156.0, time: 0.5260347231611803, dt: 0.00345283425757267, time_stamp: 0.6206896551724138
+iteration: 157.0, time: 0.5294993280833906, dt: 0.003464604922210384, time_stamp: 0.6206896551724138
+iteration: 158.0, time: 0.5329756312940218, dt: 0.0034763032106312473, time_stamp: 0.6206896551724138
+iteration: 159.0, time: 0.5364600419535434, dt: 0.003484410659521516, time_stamp: 0.6206896551724138
+iteration: 160.0, time: 0.5399546003720065, dt: 0.003494558418463186, time_stamp: 0.6206896551724138
+iteration: 161.0, time: 0.5434558908186529, dt: 0.003501290446646395, time_stamp: 0.6206896551724138
+iteration: 162.0, time: 0.5469657389880842, dt: 0.00350984816943133, time_stamp: 0.6206896551724138
+iteration: 163.0, time: 0.5504861316325003, dt: 0.003520392644416104, time_stamp: 0.6206896551724138
+iteration: 164.0, time: 0.5540187633470796, dt: 0.003532631714579339, time_stamp: 0.6206896551724138
+iteration: 165.0, time: 0.5575627598041513, dt: 0.0035439964570717093, time_stamp: 0.6206896551724138
+iteration: 166.0, time: 0.5611156043550728, dt: 0.003552844550921491, time_stamp: 0.6206896551724138
+iteration: 167.0, time: 0.5646783896778933, dt: 0.00356278532282051, time_stamp: 0.6206896551724138
+iteration: 168.0, time: 0.5682497773750749, dt: 0.003571387697181597, time_stamp: 0.6206896551724138
+iteration: 169.0, time: 0.5718304679837416, dt: 0.003580690608666754, time_stamp: 0.6206896551724138
+iteration: 170.0, time: 0.5754222818728297, dt: 0.0035918138890881747, time_stamp: 0.6206896551724138
+iteration: 171.0, time: 0.5790267690070512, dt: 0.003604487134221479, time_stamp: 0.6206896551724138
+iteration: 172.0, time: 0.5826402749576293, dt: 0.003613505950578087, time_stamp: 0.6206896551724138
+iteration: 173.0, time: 0.5862608977056307, dt: 0.0036206227480014264, time_stamp: 0.6206896551724138
+iteration: 174.0, time: 0.5898893562763086, dt: 0.0036284585706778372, time_stamp: 0.6206896551724138
+iteration: 175.0, time: 0.5935275392098982, dt: 0.003638182933589599, time_stamp: 0.6206896551724138
+iteration: 176.0, time: 0.597177079406631, dt: 0.0036495401967327886, time_stamp: 0.6206896551724138
+iteration: 177.0, time: 0.6008363822159033, dt: 0.0036593028092722765, time_stamp: 0.6206896551724138
+iteration: 178.0, time: 0.6045021993550282, dt: 0.0036658171391249898, time_stamp: 0.6206896551724138
+iteration: 179.0, time: 0.6081721141897984, dt: 0.0036699148347701977, time_stamp: 0.6206896551724138
+iteration: 180.0, time: 0.6118477755264241, dt: 0.003675661336625653, time_stamp: 0.6206896551724138
+iteration: 181.0, time: 0.615531339960437, dt: 0.0036835644340128867, time_stamp: 0.6206896551724138
+iteration: 182.0, time: 0.6192247000336205, dt: 0.003693360073183532, time_stamp: 0.6206896551724138
+iteration: 183.0, time: 0.6229246102156217, dt: 0.0036999101820011774, time_stamp: 0.6206896551724138
+iteration: 184.0, time: 0.6266284859030363, dt: 0.00370387568741456, time_stamp: 0.7241379310344828
+iteration: 185.0, time: 0.6303342327572562, dt: 0.0037057468542198205, time_stamp: 0.7241379310344828
+iteration: 186.0, time: 0.634044729505519, dt: 0.0037104967482628677, time_stamp: 0.7241379310344828
+iteration: 187.0, time: 0.6377624343636654, dt: 0.0037177048581463357, time_stamp: 0.7241379310344828
+iteration: 188.0, time: 0.6414894549444029, dt: 0.0037270205807374388, time_stamp: 0.7241379310344828
+iteration: 189.0, time: 0.6452189168888346, dt: 0.0037294619444316387, time_stamp: 0.7241379310344828
+iteration: 190.0, time: 0.6489527586166851, dt: 0.003733841727850496, time_stamp: 0.7241379310344828
+iteration: 191.0, time: 0.6526885441730305, dt: 0.003735785556345302, time_stamp: 0.7241379310344828
+iteration: 192.0, time: 0.6564291686627313, dt: 0.003740624489700859, time_stamp: 0.7241379310344828
+iteration: 193.0, time: 0.6601717490189278, dt: 0.0037425803561966075, time_stamp: 0.7241379310344828
+iteration: 194.0, time: 0.6639188724756808, dt: 0.0037471234567530405, time_stamp: 0.7241379310344828
+iteration: 195.0, time: 0.667669589145398, dt: 0.003750716669717145, time_stamp: 0.7241379310344828
+iteration: 196.0, time: 0.6714238437798171, dt: 0.0037542546344191416, time_stamp: 0.7241379310344828
+iteration: 197.0, time: 0.6751830734669456, dt: 0.003759229687128517, time_stamp: 0.7241379310344828
+iteration: 198.0, time: 0.6789427841955128, dt: 0.0037597107285672286, time_stamp: 0.7241379310344828
+iteration: 199.0, time: 0.6827057699266827, dt: 0.0037629857311699965, time_stamp: 0.7241379310344828
+iteration: 200.0, time: 0.686474388251389, dt: 0.003768618324706179, time_stamp: 0.7241379310344828
+iteration: 201.0, time: 0.6902472653897893, dt: 0.00377287713840035, time_stamp: 0.7241379310344828
+iteration: 202.0, time: 0.6940246675274442, dt: 0.0037774021376549135, time_stamp: 0.7241379310344828
+iteration: 203.0, time: 0.6978062714605157, dt: 0.003781603933071469, time_stamp: 0.7241379310344828
+iteration: 204.0, time: 0.7015894355014072, dt: 0.003783164040891562, time_stamp: 0.7241379310344828
+iteration: 205.0, time: 0.7053767415938996, dt: 0.003787306092492446, time_stamp: 0.7241379310344828
+iteration: 206.0, time: 0.709170375422683, dt: 0.003793633828783385, time_stamp: 0.7241379310344828
+iteration: 207.0, time: 0.7129691373893452, dt: 0.003798761966662193, time_stamp: 0.7241379310344828
+iteration: 208.0, time: 0.7167730281850283, dt: 0.0038038907956831096, time_stamp: 0.7241379310344828
+iteration: 209.0, time: 0.7205809381964727, dt: 0.003807910011444385, time_stamp: 0.7241379310344828
+iteration: 210.0, time: 0.7243910691531239, dt: 0.003810130956651202, time_stamp: 0.7241379310344828
+iteration: 211.0, time: 0.7282058434687146, dt: 0.0038147743155907497, time_stamp: 0.8275862068965517
+iteration: 212.0, time: 0.7320273174418758, dt: 0.003821473973161146, time_stamp: 0.8275862068965517
+iteration: 213.0, time: 0.7358550133565446, dt: 0.003827695914668783, time_stamp: 0.8275862068965517
+iteration: 214.0, time: 0.7396881252886098, dt: 0.003833111932065305, time_stamp: 0.8275862068965517
+iteration: 215.0, time: 0.7435255821861497, dt: 0.003837456897539862, time_stamp: 0.8275862068965517
+iteration: 216.0, time: 0.7473655768842387, dt: 0.003839994698088949, time_stamp: 0.8275862068965517
+iteration: 217.0, time: 0.7512104124555594, dt: 0.003844835571320752, time_stamp: 0.8275862068965517
+iteration: 218.0, time: 0.7550620481718349, dt: 0.0038516357162754417, time_stamp: 0.8275862068965517
+iteration: 219.0, time: 0.7589212097841469, dt: 0.003859161612312076, time_stamp: 0.8275862068965517
+iteration: 220.0, time: 0.7627858069041228, dt: 0.003864597119975926, time_stamp: 0.8275862068965517
+iteration: 221.0, time: 0.7666555057091675, dt: 0.0038696988050446876, time_stamp: 0.8275862068965517
+iteration: 222.0, time: 0.770527769542489, dt: 0.0038722638333214907, time_stamp: 0.8275862068965517
+iteration: 223.0, time: 0.7744048133661737, dt: 0.003877043823684686, time_stamp: 0.8275862068965517
+iteration: 224.0, time: 0.7782885244052931, dt: 0.003883711039119329, time_stamp: 0.8275862068965517
+iteration: 225.0, time: 0.7821805284706012, dt: 0.0038920040653081136, time_stamp: 0.8275862068965517
+iteration: 226.0, time: 0.786078463576424, dt: 0.0038979351058227737, time_stamp: 0.8275862068965517
+iteration: 227.0, time: 0.7899826138657968, dt: 0.0039041502893728246, time_stamp: 0.8275862068965517
+iteration: 228.0, time: 0.7938891075907968, dt: 0.003906493724999912, time_stamp: 0.8275862068965517
+iteration: 229.0, time: 0.7978000963507831, dt: 0.003910988759986345, time_stamp: 0.8275862068965517
+iteration: 230.0, time: 0.8017174150388029, dt: 0.003917318688019848, time_stamp: 0.8275862068965517
+iteration: 231.0, time: 0.8056426464589053, dt: 0.003925231420102402, time_stamp: 0.8275862068965517
+iteration: 232.0, time: 0.8095753721214407, dt: 0.0039327256625354655, time_stamp: 0.8275862068965517
+iteration: 233.0, time: 0.8135146359740941, dt: 0.003939263852653403, time_stamp: 0.8275862068965517
+iteration: 234.0, time: 0.817456886766341, dt: 0.003942250792246878, time_stamp: 0.8275862068965517
+iteration: 235.0, time: 0.8214031497428573, dt: 0.0039462629765163945, time_stamp: 0.8275862068965517
+iteration: 236.0, time: 0.8253552242737396, dt: 0.003952074530882296, time_stamp: 0.8275862068965517
+iteration: 237.0, time: 0.8293146634505749, dt: 0.0039594391768352855, time_stamp: 0.8275862068965517
+iteration: 238.0, time: 0.8332828202583148, dt: 0.003968156807739885, time_stamp: 0.9310344827586207
+iteration: 239.0, time: 0.837257305641695, dt: 0.003974485383380144, time_stamp: 0.9310344827586207
+iteration: 240.0, time: 0.8412364078533999, dt: 0.003979102211704912, time_stamp: 0.9310344827586207
+iteration: 241.0, time: 0.8452188648695815, dt: 0.003982457016181641, time_stamp: 0.9310344827586207
+iteration: 242.0, time: 0.8492064551702176, dt: 0.003987590300636079, time_stamp: 0.9310344827586207
+iteration: 243.0, time: 0.8532007136479237, dt: 0.00399425847770604, time_stamp: 0.9310344827586207
+iteration: 244.0, time: 0.8572029783932615, dt: 0.004002264745337774, time_stamp: 0.9310344827586207
+iteration: 245.0, time: 0.8612131883129674, dt: 0.004010209919705937, time_stamp: 0.9310344827586207
+iteration: 246.0, time: 0.8652298093635875, dt: 0.004016621050620092, time_stamp: 0.9310344827586207
+iteration: 247.0, time: 0.8692489756967487, dt: 0.0040191663331612506, time_stamp: 0.9310344827586207
+iteration: 248.0, time: 0.873272457700116, dt: 0.0040234820033672675, time_stamp: 0.9310344827586207
+iteration: 249.0, time: 0.8773017827114243, dt: 0.004029325011308403, time_stamp: 0.9310344827586207
+iteration: 250.0, time: 0.8813382831622998, dt: 0.00403650045087548, time_stamp: 0.9310344827586207
+iteration: 251.0, time: 0.8853831311611856, dt: 0.004044847998885836, time_stamp: 0.9310344827586207
+iteration: 252.0, time: 0.8894326739277145, dt: 0.004049542766528906, time_stamp: 0.9310344827586207
+iteration: 253.0, time: 0.8934849872904514, dt: 0.00405231336273691, time_stamp: 0.9310344827586207
+iteration: 254.0, time: 0.8975366700457028, dt: 0.004051682755251401, time_stamp: 0.9310344827586207
+iteration: 255.0, time: 0.9015893711806019, dt: 0.004052701134899099, time_stamp: 0.9310344827586207
+iteration: 256.0, time: 0.9056471696767482, dt: 0.0040577984961462955, time_stamp: 0.9310344827586207
+iteration: 257.0, time: 0.9097133059744585, dt: 0.004066136297710406, time_stamp: 0.9310344827586207
+iteration: 258.0, time: 0.9137824814065991, dt: 0.004069175432140634, time_stamp: 0.9310344827586207
+iteration: 259.0, time: 0.9178554332693527, dt: 0.004072951862753582, time_stamp: 0.9310344827586207
+iteration: 260.0, time: 0.9219260903167819, dt: 0.004070657047429186, time_stamp: 0.9310344827586207
+iteration: 261.0, time: 0.9259984313144519, dt: 0.004072340997670101, time_stamp: 0.9310344827586207
+iteration: 262.0, time: 0.9300765145127392, dt: 0.004078083198287274, time_stamp: 0.9310344827586207
+iteration: 263.0, time: 0.93416355404723, dt: 0.004087039534490713, time_stamp: 0.9310344827586207
+iteration: 264.0, time: 0.9382537205954761, dt: 0.00409016654824615, time_stamp: 1.0344827586206897
+iteration: 265.0, time: 0.9423478762779214, dt: 0.004094155682445348, time_stamp: 1.0344827586206897
+iteration: 266.0, time: 0.9464390964838347, dt: 0.004091220205913376, time_stamp: 1.0344827586206897
+iteration: 267.0, time: 0.9505325283458016, dt: 0.004093431861966915, time_stamp: 1.0344827586206897
+iteration: 268.0, time: 0.9546322159783059, dt: 0.004099687632504363, time_stamp: 1.0344827586206897
+iteration: 269.0, time: 0.9587413551291888, dt: 0.0041091391508828266, time_stamp: 1.0344827586206897
+iteration: 270.0, time: 0.9628538675703231, dt: 0.004112512441134275, time_stamp: 1.0344827586206897
+iteration: 271.0, time: 0.966969788487453, dt: 0.004115920917129818, time_stamp: 1.0344827586206897
+iteration: 272.0, time: 0.9710831456862042, dt: 0.004113357198751288, time_stamp: 1.0344827586206897
+iteration: 273.0, time: 0.9751990889884936, dt: 0.004115943302289339, time_stamp: 1.0344827586206897
+iteration: 274.0, time: 0.9793216590539037, dt: 0.004122570065410113, time_stamp: 1.0344827586206897
+iteration: 275.0, time: 0.9834540440019118, dt: 0.004132384948008211, time_stamp: 1.0344827586206897
+iteration: 276.0, time: 0.9875902203962955, dt: 0.0041361763943837246, time_stamp: 1.0344827586206897
+iteration: 277.0, time: 0.9917295925771267, dt: 0.004139372180831176, time_stamp: 1.0344827586206897
+iteration: 278.0, time: 0.9958665995824886, dt: 0.004137007005361955, time_stamp: 1.0344827586206897
+iteration: 279.0, time: 1.0000064078990967, dt: 0.004139808316608044, time_stamp: 1.0344827586206897
+iteration: 280.0, time: 1.0041530677589923, dt: 0.004146659859895613, time_stamp: 1.0344827586206897
+iteration: 281.0, time: 1.00830977166267, dt: 0.0041567039036777935, time_stamp: 1.0344827586206897
+iteration: 282.0, time: 1.0124708498349106, dt: 0.004161078172240648, time_stamp: 1.0344827586206897
+iteration: 283.0, time: 1.0166352450566383, dt: 0.004164395221727695, time_stamp: 1.0344827586206897
+iteration: 284.0, time: 1.0207972990358198, dt: 0.0041620539791814995, time_stamp: 1.0344827586206897
+iteration: 285.0, time: 1.0249622111525674, dt: 0.004164912116747535, time_stamp: 1.0344827586206897
+iteration: 286.0, time: 1.0291340554097497, dt: 0.004171844257182241, time_stamp: 1.0344827586206897
+iteration: 287.0, time: 1.0333160411181, dt: 0.004181985708350185, time_stamp: 1.0344827586206897
+iteration: 288.0, time: 1.0375031354397029, dt: 0.004187094321602858, time_stamp: 1.0344827586206897
+iteration: 289.0, time: 1.041693963454809, dt: 0.004190828015106093, time_stamp: 1.1379310344827587
+iteration: 290.0, time: 1.0458823041381804, dt: 0.004188340683371368, time_stamp: 1.1379310344827587
+iteration: 291.0, time: 1.050073407020131, dt: 0.0041911028819505885, time_stamp: 1.1379310344827587
+iteration: 292.0, time: 1.0542713843701366, dt: 0.004197977350005515, time_stamp: 1.1379310344827587
+iteration: 293.0, time: 1.0584794745573176, dt: 0.004208090187180992, time_stamp: 1.1379310344827587
+iteration: 294.0, time: 1.0626935477635735, dt: 0.004214073206255955, time_stamp: 1.1379310344827587
+iteration: 295.0, time: 1.0669120296683676, dt: 0.004218481904794014, time_stamp: 1.1379310344827587
+iteration: 296.0, time: 1.071127716147388, dt: 0.004215686479020434, time_stamp: 1.1379310344827587
+iteration: 297.0, time: 1.0753459244198236, dt: 0.0042182082724355795, time_stamp: 1.1379310344827587
+iteration: 298.0, time: 1.079570819335969, dt: 0.004224894916145402, time_stamp: 1.1379310344827587
+iteration: 299.0, time: 1.0838056801142035, dt: 0.004234860778234451, time_stamp: 1.1379310344827587
+iteration: 300.0, time: 1.0880475297890932, dt: 0.004241849674889805, time_stamp: 1.1379310344827587
+iteration: 301.0, time: 1.0922938414448697, dt: 0.004246311655776549, time_stamp: 1.1379310344827587
+iteration: 302.0, time: 1.096537749035644, dt: 0.00424390759077435, time_stamp: 1.1379310344827587
+iteration: 303.0, time: 1.1007838036985838, dt: 0.0042460546629397, time_stamp: 1.1379310344827587
+iteration: 304.0, time: 1.1050362378524825, dt: 0.00425243415389867, time_stamp: 1.1379310344827587
+iteration: 305.0, time: 1.1092983843014448, dt: 0.004262146448962303, time_stamp: 1.1379310344827587
+iteration: 306.0, time: 1.1135687021627574, dt: 0.004270317861312657, time_stamp: 1.1379310344827587
+iteration: 307.0, time: 1.1178430910406705, dt: 0.004274388877913009, time_stamp: 1.1379310344827587
+iteration: 308.0, time: 1.122116177394532, dt: 0.004273086353861631, time_stamp: 1.1379310344827587
+iteration: 309.0, time: 1.1263910207520387, dt: 0.004274843357506509, time_stamp: 1.1379310344827587
+iteration: 310.0, time: 1.1306719810917345, dt: 0.004280960339695807, time_stamp: 1.1379310344827587
+iteration: 311.0, time: 1.1349625200132143, dt: 0.0042905389214798004, time_stamp: 1.1379310344827587
+iteration: 312.0, time: 1.1392653587834114, dt: 0.004302838770197191, time_stamp: 1.1379310344827587
+iteration: 313.0, time: 1.1435730551604806, dt: 0.004307696377069156, time_stamp: 1.2413793103448276
+iteration: 314.0, time: 1.147889795857238, dt: 0.00431674069675737, time_stamp: 1.2413793103448276
+iteration: 315.0, time: 1.1522127863639087, dt: 0.004322990506670705, time_stamp: 1.2413793103448276
+iteration: 316.0, time: 1.1565479611083416, dt: 0.004335174744432844, time_stamp: 1.2413793103448276
+iteration: 317.0, time: 1.1609009233257703, dt: 0.0043529622174287505, time_stamp: 1.2413793103448276
+iteration: 318.0, time: 1.1652770971373538, dt: 0.004376173811583583, time_stamp: 1.2413793103448276
+iteration: 319.0, time: 1.1696778584203131, dt: 0.004400761282959188, time_stamp: 1.2413793103448276
+iteration: 320.0, time: 1.1740912238464118, dt: 0.004413365426098738, time_stamp: 1.2413793103448276
+iteration: 321.0, time: 1.1785182615095087, dt: 0.004427037663096916, time_stamp: 1.2413793103448276
+iteration: 322.0, time: 1.1829602107552175, dt: 0.0044419492457087985, time_stamp: 1.2413793103448276
+iteration: 323.0, time: 1.1874184091215665, dt: 0.004458198366348952, time_stamp: 1.2413793103448276
+iteration: 324.0, time: 1.1918943133905486, dt: 0.004475904268982166, time_stamp: 1.2413793103448276
+iteration: 325.0, time: 1.1963872859594915, dt: 0.004492972568942802, time_stamp: 1.2413793103448276
+iteration: 326.0, time: 1.2008975008646323, dt: 0.004510214905140912, time_stamp: 1.2413793103448276
+iteration: 327.0, time: 1.205425982077928, dt: 0.004528481213295669, time_stamp: 1.2413793103448276
+iteration: 328.0, time: 1.2099738590464828, dt: 0.0045478769685547826, time_stamp: 1.2413793103448276
+iteration: 329.0, time: 1.2145423890152416, dt: 0.0045685299687588474, time_stamp: 1.2413793103448276
+iteration: 330.0, time: 1.2191329823334427, dt: 0.004590593318201039, time_stamp: 1.2413793103448276
+iteration: 331.0, time: 1.2237472308962747, dt: 0.0046142485628320115, time_stamp: 1.2413793103448276
+iteration: 332.0, time: 1.2283869396219755, dt: 0.004639708725700754, time_stamp: 1.2413793103448276
+iteration: 333.0, time: 1.2330541605160175, dt: 0.00466722089404193, time_stamp: 1.2413793103448276
+iteration: 334.0, time: 1.237751228456093, dt: 0.004697067940075616, time_stamp: 1.2413793103448276
+iteration: 335.0, time: 1.242480797292936, dt: 0.00472956883684305, time_stamp: 1.2413793103448276
+iteration: 336.0, time: 1.247237592954673, dt: 0.004756795661737215, time_stamp: 1.3448275862068966
+iteration: 337.0, time: 1.2520231758588596, dt: 0.004785582904186479, time_stamp: 1.3448275862068966
+iteration: 338.0, time: 1.2568371211537799, dt: 0.00481394529492038, time_stamp: 1.3448275862068966
+iteration: 339.0, time: 1.2616767113069667, dt: 0.004839590153186856, time_stamp: 1.3448275862068966
+iteration: 340.0, time: 1.2665433896217566, dt: 0.004866678314789931, time_stamp: 1.3448275862068966
+iteration: 341.0, time: 1.2714388553253761, dt: 0.004895465703619573, time_stamp: 1.3448275862068966
+iteration: 342.0, time: 1.276365115556664, dt: 0.004926260231287796, time_stamp: 1.3448275862068966
+iteration: 343.0, time: 1.2813245445861632, dt: 0.004959429029499103, time_stamp: 1.3448275862068966
+iteration: 344.0, time: 1.2863199490051431, dt: 0.004995404418979995, time_stamp: 1.3448275862068966
+iteration: 345.0, time: 1.291354637136171, dt: 0.005034688131028031, time_stamp: 1.3448275862068966
+iteration: 346.0, time: 1.2964258588389814, dt: 0.005071221702810274, time_stamp: 1.3448275862068966
+iteration: 347.0, time: 1.3015317004858207, dt: 0.005105841646839234, time_stamp: 1.3448275862068966
+iteration: 348.0, time: 1.3066707584045245, dt: 0.005139057918703775, time_stamp: 1.3448275862068966
+iteration: 349.0, time: 1.3118400000545078, dt: 0.00516924164998324, time_stamp: 1.3448275862068966
+iteration: 350.0, time: 1.3170413614965266, dt: 0.0052013614420188545, time_stamp: 1.3448275862068966
+iteration: 351.0, time: 1.3222772194145993, dt: 0.005235857918072707, time_stamp: 1.3448275862068966
+iteration: 352.0, time: 1.327550496691581, dt: 0.005273277276981722, time_stamp: 1.3448275862068966
+iteration: 353.0, time: 1.3328647867346415, dt: 0.005314290043060446, time_stamp: 1.3448275862068966
+iteration: 354.0, time: 1.3382244952496374, dt: 0.0053597085149958605, time_stamp: 1.3448275862068966
+iteration: 355.0, time: 1.3436229808245754, dt: 0.005398485574937964, time_stamp: 1.3448275862068966
+iteration: 356.0, time: 1.3490613841265247, dt: 0.005438403301949328, time_stamp: 1.3448275862068966
+iteration: 357.0, time: 1.3545330566463236, dt: 0.005471672519798962, time_stamp: 1.4482758620689655
+iteration: 358.0, time: 1.3600388704053497, dt: 0.00550581375902594, time_stamp: 1.4482758620689655
+iteration: 359.0, time: 1.3655816056058356, dt: 0.005542735200485971, time_stamp: 1.4482758620689655
+iteration: 360.0, time: 1.3711648381026884, dt: 0.005583232496852844, time_stamp: 1.4482758620689655
+iteration: 361.0, time: 1.3767931770303086, dt: 0.0056283389276201344, time_stamp: 1.4482758620689655
+iteration: 362.0, time: 1.382471967641857, dt: 0.0056787906115485, time_stamp: 1.4482758620689655
+iteration: 363.0, time: 1.3881909627809133, dt: 0.0057189951390562675, time_stamp: 1.4482758620689655
+iteration: 364.0, time: 1.3939357703610096, dt: 0.005744807580096291, time_stamp: 1.4482758620689655
+iteration: 365.0, time: 1.3996854923139492, dt: 0.005749721952939667, time_stamp: 1.4482758620689655
+iteration: 366.0, time: 1.4054240117476755, dt: 0.005738519433726268, time_stamp: 1.4482758620689655
+iteration: 367.0, time: 1.4111508884690764, dt: 0.00572687672140096, time_stamp: 1.4482758620689655
+iteration: 368.0, time: 1.4168713265356756, dt: 0.005720438066599169, time_stamp: 1.4482758620689655
+iteration: 369.0, time: 1.422593987707639, dt: 0.0057226611719634205, time_stamp: 1.4482758620689655
+iteration: 370.0, time: 1.4283089746307032, dt: 0.005714986923064157, time_stamp: 1.4482758620689655
+iteration: 371.0, time: 1.4340014955145381, dt: 0.005692520883835019, time_stamp: 1.4482758620689655
+iteration: 372.0, time: 1.4396664728569093, dt: 0.005664977342371139, time_stamp: 1.4482758620689655
+iteration: 373.0, time: 1.4453147819940737, dt: 0.005648309137164313, time_stamp: 1.4482758620689655
+iteration: 374.0, time: 1.4509551308439967, dt: 0.00564034884992294, time_stamp: 1.4482758620689655
+iteration: 375.0, time: 1.4565945401744258, dt: 0.005639409330429166, time_stamp: 1.5517241379310345
+iteration: 376.0, time: 1.4622387048392156, dt: 0.005644164664789706, time_stamp: 1.5517241379310345
+iteration: 377.0, time: 1.4678578257585932, dt: 0.005619120919377662, time_stamp: 1.5517241379310345
+iteration: 378.0, time: 1.4734505942626785, dt: 0.0055927685040851995, time_stamp: 1.5517241379310345
+iteration: 379.0, time: 1.4790282594107462, dt: 0.005577665148067582, time_stamp: 1.5517241379310345
+iteration: 380.0, time: 1.4845996624085045, dt: 0.005571402997758209, time_stamp: 1.5517241379310345
+iteration: 381.0, time: 1.4901718118686238, dt: 0.005572149460119225, time_stamp: 1.5517241379310345
+iteration: 382.0, time: 1.495750303658291, dt: 0.005578491789667257, time_stamp: 1.5517241379310345
+iteration: 383.0, time: 1.5013261258778814, dt: 0.005575822219590348, time_stamp: 1.5517241379310345
+iteration: 384.0, time: 1.506873485535307, dt: 0.005547359657425531, time_stamp: 1.5517241379310345
+iteration: 385.0, time: 1.5124044019031444, dt: 0.005530916367837345, time_stamp: 1.5517241379310345
+iteration: 386.0, time: 1.5179281998799037, dt: 0.0055237979767592885, time_stamp: 1.5517241379310345
+iteration: 387.0, time: 1.5234521762910722, dt: 0.005523976411168574, time_stamp: 1.5517241379310345
+iteration: 388.0, time: 1.5289820916096657, dt: 0.005529915318593447, time_stamp: 1.5517241379310345
+iteration: 389.0, time: 1.534522521917832, dt: 0.0055404303081663785, time_stamp: 1.5517241379310345
+iteration: 390.0, time: 1.5400479846464328, dt: 0.0055254627286008395, time_stamp: 1.5517241379310345
+iteration: 391.0, time: 1.5455529720996517, dt: 0.0055049874532188256, time_stamp: 1.5517241379310345
+iteration: 392.0, time: 1.551047695423307, dt: 0.005494723323655355, time_stamp: 1.5517241379310345
+iteration: 393.0, time: 1.5565400769836493, dt: 0.00549238156034225, time_stamp: 1.5517241379310345
+iteration: 394.0, time: 1.5620363155783201, dt: 0.005496238594670828, time_stamp: 1.6551724137931034
+iteration: 395.0, time: 1.5675412978028611, dt: 0.005504982224540954, time_stamp: 1.6551724137931034
+iteration: 396.0, time: 1.5730556976959964, dt: 0.005514399893135319, time_stamp: 1.6551724137931034
+iteration: 397.0, time: 1.578552161467225, dt: 0.005496463771228769, time_stamp: 1.6551724137931034
+iteration: 398.0, time: 1.5840332579551726, dt: 0.005481096487947464, time_stamp: 1.6551724137931034
+iteration: 399.0, time: 1.589507863749063, dt: 0.005474605793890299, time_stamp: 1.6551724137931034
+iteration: 400.0, time: 1.5949828801250692, dt: 0.005475016376006175, time_stamp: 1.6551724137931034
+iteration: 401.0, time: 1.600463715753855, dt: 0.005480835628785826, time_stamp: 1.6551724137931034
+iteration: 402.0, time: 1.6059546362566093, dt: 0.005490920502754196, time_stamp: 1.6551724137931034
+iteration: 403.0, time: 1.6114516659789726, dt: 0.005497029722363403, time_stamp: 1.6551724137931034
+iteration: 404.0, time: 1.6169319093110817, dt: 0.005480243332109155, time_stamp: 1.6551724137931034
+iteration: 405.0, time: 1.622400125293905, dt: 0.005468215982823338, time_stamp: 1.6551724137931034
+iteration: 406.0, time: 1.62786417348514, dt: 0.005464048191234925, time_stamp: 1.6551724137931034
+iteration: 407.0, time: 1.633330183252074, dt: 0.005466009766933839, time_stamp: 1.6551724137931034
+iteration: 408.0, time: 1.6388029686994283, dt: 0.005472785447354416, time_stamp: 1.6551724137931034
+iteration: 409.0, time: 1.644286330437668, dt: 0.005483361738239814, time_stamp: 1.6551724137931034
+iteration: 410.0, time: 1.649773124441623, dt: 0.005486794003954992, time_stamp: 1.6551724137931034
+iteration: 411.0, time: 1.655244342518066, dt: 0.005471218076443066, time_stamp: 1.6551724137931034
+iteration: 412.0, time: 1.6607058288294931, dt: 0.005461486311426955, time_stamp: 1.7586206896551724
+iteration: 413.0, time: 1.6661646278257922, dt: 0.005458798996299008, time_stamp: 1.7586206896551724
+iteration: 414.0, time: 1.6716262503977095, dt: 0.0054616225719173956, time_stamp: 1.7586206896551724
+iteration: 415.0, time: 1.6770950338933814, dt: 0.005468783495671886, time_stamp: 1.7586206896551724
+iteration: 416.0, time: 1.6825744055251892, dt: 0.005479371631807737, time_stamp: 1.7586206896551724
+iteration: 417.0, time: 1.6880548500102852, dt: 0.0054804444850960875, time_stamp: 1.7586206896551724
+iteration: 418.0, time: 1.6935206682672836, dt: 0.005465818256998457, time_stamp: 1.7586206896551724
+iteration: 419.0, time: 1.6989784367052463, dt: 0.005457768437962648, time_stamp: 1.7586206896551724
+iteration: 420.0, time: 1.704434512323836, dt: 0.005456075618589842, time_stamp: 1.7586206896551724
+iteration: 421.0, time: 1.7098938825635792, dt: 0.00545937023974313, time_stamp: 1.7586206896551724
+iteration: 422.0, time: 1.7153604799699316, dt: 0.005466597406352345, time_stamp: 1.7586206896551724
+iteration: 423.0, time: 1.7208374139553457, dt: 0.005476933985414163, time_stamp: 1.7586206896551724
+iteration: 424.0, time: 1.7263132025375554, dt: 0.005475788582209646, time_stamp: 1.7586206896551724
+iteration: 425.0, time: 1.7317749332830499, dt: 0.005461730745494605, time_stamp: 1.7586206896551724
+iteration: 426.0, time: 1.7372299347758777, dt: 0.0054550014928278455, time_stamp: 1.7586206896551724
+iteration: 427.0, time: 1.7426839623371027, dt: 0.005454027561225009, time_stamp: 1.7586206896551724
+iteration: 428.0, time: 1.7481415437078907, dt: 0.005457581370788034, time_stamp: 1.7586206896551724
+iteration: 429.0, time: 1.7536062553725003, dt: 0.005464711664609527, time_stamp: 1.7586206896551724
+iteration: 430.0, time: 1.7590803313714642, dt: 0.005474075998963943, time_stamp: 1.7586206896551724
+iteration: 431.0, time: 1.7645500725898235, dt: 0.0054697412183592874, time_stamp: 1.8620689655172413
+iteration: 432.0, time: 1.7700075545689742, dt: 0.005457481979150602, time_stamp: 1.8620689655172413
+iteration: 433.0, time: 1.7754594218465358, dt: 0.00545186727756158, time_stamp: 1.8620689655172413
+iteration: 434.0, time: 1.7809108931108737, dt: 0.005451471264337777, time_stamp: 1.8620689655172413
+iteration: 435.0, time: 1.7863660858110681, dt: 0.005455192700194495, time_stamp: 1.8620689655172413
+iteration: 436.0, time: 1.79182825897618, dt: 0.005462173165111811, time_stamp: 1.8620689655172413
+iteration: 437.0, time: 1.797296499089705, dt: 0.005468240113524975, time_stamp: 1.8620689655172413
+iteration: 438.0, time: 1.8027593143130802, dt: 0.0054628152233753505, time_stamp: 1.8620689655172413
+iteration: 439.0, time: 1.8082115267320067, dt: 0.0054522124189264436, time_stamp: 1.8620689655172413
+iteration: 440.0, time: 1.8136591451043491, dt: 0.005447618372342403, time_stamp: 1.8620689655172413
+iteration: 441.0, time: 1.8191069059920368, dt: 0.005447760887687681, time_stamp: 1.8620689655172413
+iteration: 442.0, time: 1.8245585582228767, dt: 0.005451652230839913, time_stamp: 1.8620689655172413
+iteration: 443.0, time: 1.8300170766202284, dt: 0.005458518397351705, time_stamp: 1.8620689655172413
+iteration: 444.0, time: 1.8354784545526877, dt: 0.005461377932459277, time_stamp: 1.8620689655172413
+iteration: 445.0, time: 1.8409330231062946, dt: 0.005454568553607037, time_stamp: 1.8620689655172413
+iteration: 446.0, time: 1.8463785808346989, dt: 0.005445557728404368, time_stamp: 1.8620689655172413
+iteration: 447.0, time: 1.8518205621150672, dt: 0.0054419812803682445, time_stamp: 1.8620689655172413
+iteration: 448.0, time: 1.8572632672941152, dt: 0.005442705179048063, time_stamp: 1.8620689655172413
+iteration: 449.0, time: 1.8627101117732854, dt: 0.005446844479170213, time_stamp: 1.8620689655172413
+iteration: 450.0, time: 1.8681638139840897, dt: 0.005453702210804377, time_stamp: 1.9655172413793103
+iteration: 451.0, time: 1.8736172498497776, dt: 0.005453435865687937, time_stamp: 1.9655172413793103
+iteration: 452.0, time: 1.879062230280019, dt: 0.005444980430241357, time_stamp: 1.9655172413793103
+iteration: 453.0, time: 1.8844998028944635, dt: 0.0054375726144445385, time_stamp: 1.9655172413793103
+iteration: 454.0, time: 1.8899348792971187, dt: 0.00543507640265508, time_stamp: 1.9655172413793103
+iteration: 455.0, time: 1.8953713616811656, dt: 0.005436482384047022, time_stamp: 1.9655172413793103
+iteration: 456.0, time: 1.9008123605047962, dt: 0.005440998823630662, time_stamp: 1.9655172413793103
+iteration: 457.0, time: 1.9062603023566949, dt: 0.005447941851898754, time_stamp: 1.9655172413793103
+iteration: 458.0, time: 1.9117049948388323, dt: 0.005444692482137494, time_stamp: 1.9655172413793103
+iteration: 459.0, time: 1.9171393800030045, dt: 0.005434385164172337, time_stamp: 1.9655172413793103
+iteration: 460.0, time: 1.9225680186218803, dt: 0.005428638618875868, time_stamp: 1.9655172413793103
+iteration: 461.0, time: 1.927995341879537, dt: 0.005427323257656712, time_stamp: 1.9655172413793103
+iteration: 462.0, time: 1.9334248840884687, dt: 0.005429542208931641, time_stamp: 1.9655172413793103
+iteration: 463.0, time: 1.9388594723923074, dt: 0.0054345883038386745, time_stamp: 1.9655172413793103
+iteration: 464.0, time: 1.944296982059788, dt: 0.005437509667480634, time_stamp: 1.9655172413793103
+iteration: 465.0, time: 1.9497294100078952, dt: 0.005432427948107298, time_stamp: 1.9655172413793103
+iteration: 466.0, time: 1.955152816347096, dt: 0.0054234063392006775, time_stamp: 1.9655172413793103
+iteration: 467.0, time: 1.9605722014195734, dt: 0.005419385072477473, time_stamp: 1.9655172413793103
+iteration: 468.0, time: 1.9659915524949576, dt: 0.00541935107538406, time_stamp: 1.9655172413793103
+iteration: 469.0, time: 1.9714140610550974, dt: 0.005422508560139784, time_stamp: 2.0689655172413794
+iteration: 470.0, time: 1.976842287776078, dt: 0.005428226720980585, time_stamp: 2.0689655172413794
+iteration: 471.0, time: 1.9822696533249455, dt: 0.005427365548867368, time_stamp: 2.0689655172413794
+iteration: 472.0, time: 1.9876891312812075, dt: 0.005419477956261986, time_stamp: 2.0689655172413794
+iteration: 473.0, time: 1.993101900424935, dt: 0.005412769143727643, time_stamp: 2.0689655172413794
+iteration: 474.0, time: 1.998512425801233, dt: 0.005410525376297876, time_stamp: 2.0689655172413794
+iteration: 475.0, time: 2.003924280518334, dt: 0.005411854717100931, time_stamp: 2.0689655172413794
+iteration: 476.0, time: 2.0093403329753, dt: 0.005416052456966037, time_stamp: 2.0689655172413794
+iteration: 477.0, time: 2.0147608197175826, dt: 0.00542048674228234, time_stamp: 2.0689655172413794
+iteration: 478.0, time: 2.0201778339689924, dt: 0.005417014251409924, time_stamp: 2.0689655172413794
+iteration: 479.0, time: 2.025585464164935, dt: 0.005407630195942663, time_stamp: 2.0689655172413794
+iteration: 480.0, time: 2.0309886746545187, dt: 0.005403210489583724, time_stamp: 2.0689655172413794
+iteration: 481.0, time: 2.036391434290404, dt: 0.005402759635885367, time_stamp: 2.0689655172413794
+iteration: 482.0, time: 2.0417969283070825, dt: 0.005405494016678159, time_stamp: 2.0689655172413794
+iteration: 483.0, time: 2.047207719313124, dt: 0.005410791006041359, time_stamp: 2.0689655172413794
+iteration: 484.0, time: 2.05261870388975, dt: 0.0054109845766257235, time_stamp: 2.0689655172413794
+iteration: 485.0, time: 2.058022853249158, dt: 0.005404149359407948, time_stamp: 2.0689655172413794
+iteration: 486.0, time: 2.063420421119304, dt: 0.005397567870146236, time_stamp: 2.0689655172413794
+iteration: 487.0, time: 2.068815785855303, dt: 0.005395364735998834, time_stamp: 2.0689655172413794
+iteration: 488.0, time: 2.074212458017592, dt: 0.005396672162288959, time_stamp: 2.0689655172413794
+iteration: 489.0, time: 2.079613260856052, dt: 0.005400802838460094, time_stamp: 2.1724137931034484
+iteration: 490.0, time: 2.0850187804355143, dt: 0.0054055195794622335, time_stamp: 2.1724137931034484
+iteration: 491.0, time: 2.090421268392155, dt: 0.005402487956640386, time_stamp: 2.1724137931034484
+iteration: 492.0, time: 2.0958150131455207, dt: 0.005393744753365639, time_stamp: 2.1724137931034484
+iteration: 493.0, time: 2.101204814780182, dt: 0.005389801634661207, time_stamp: 2.1724137931034484
+iteration: 494.0, time: 2.10659451658119, dt: 0.005389701801008128, time_stamp: 2.1724137931034484
+iteration: 495.0, time: 2.11198720672415, dt: 0.0053926901429595135, time_stamp: 2.1724137931034484
+iteration: 496.0, time: 2.117385371842816, dt: 0.00539816511866641, time_stamp: 2.1724137931034484
+iteration: 497.0, time: 2.122783856405195, dt: 0.0053984845623785025, time_stamp: 2.1724137931034484
+iteration: 498.0, time: 2.128175778712918, dt: 0.005391922307723007, time_stamp: 2.1724137931034484
+iteration: 499.0, time: 2.1335620065936447, dt: 0.005386227880727033, time_stamp: 2.1724137931034484
+iteration: 500.0, time: 2.138946725591803, dt: 0.005384718998158218, time_stamp: 2.1724137931034484
+iteration: 501.0, time: 2.144333294513407, dt: 0.005386568921604292, time_stamp: 2.1724137931034484
+iteration: 502.0, time: 2.14972441559794, dt: 0.005391121084533155, time_stamp: 2.1724137931034484
+iteration: 503.0, time: 2.1551198371986966, dt: 0.005395421600756515, time_stamp: 2.1724137931034484
+iteration: 504.0, time: 2.160512155118639, dt: 0.005392317919942426, time_stamp: 2.1724137931034484
+iteration: 505.0, time: 2.165896997518306, dt: 0.005384842399667281, time_stamp: 2.1724137931034484
+iteration: 506.0, time: 2.171278903301371, dt: 0.00538190578306475, time_stamp: 2.1724137931034484
+iteration: 507.0, time: 2.17666150901865, dt: 0.005382605717279104, time_stamp: 2.1724137931034484
+iteration: 508.0, time: 2.182047737070621, dt: 0.005386228051970702, time_stamp: 2.2758620689655173
+iteration: 509.0, time: 2.1874399394592303, dt: 0.00539220238860968, time_stamp: 2.2758620689655173
+iteration: 510.0, time: 2.1928322520350454, dt: 0.005392312575815114, time_stamp: 2.2758620689655173
+iteration: 511.0, time: 2.19821820904664, dt: 0.005385957011594602, time_stamp: 2.2758620689655173
+iteration: 512.0, time: 2.203599762536804, dt: 0.005381553490164115, time_stamp: 2.2758620689655173
+iteration: 513.0, time: 2.208980837976493, dt: 0.005381075439689128, time_stamp: 2.2758620689655173
+iteration: 514.0, time: 2.214364585477901, dt: 0.005383747501407889, time_stamp: 2.2758620689655173
+iteration: 515.0, time: 2.219753537714079, dt: 0.005388952236178077, time_stamp: 2.2758620689655173
+iteration: 516.0, time: 2.2251464128372977, dt: 0.005392875123218883, time_stamp: 2.2758620689655173
+iteration: 517.0, time: 2.230536517744574, dt: 0.005390104907276341, time_stamp: 2.2758620689655173
+iteration: 518.0, time: 2.2359206941410386, dt: 0.005384176396464332, time_stamp: 2.2758620689655173
+iteration: 519.0, time: 2.241303173348702, dt: 0.005382479207663167, time_stamp: 2.2758620689655173
+iteration: 520.0, time: 2.246687345034854, dt: 0.0053841716861521925, time_stamp: 2.2758620689655173
+iteration: 521.0, time: 2.2520759309288927, dt: 0.0053885858940386205, time_stamp: 2.2758620689655173
+iteration: 522.0, time: 2.25747111793219, dt: 0.005395187003297474, time_stamp: 2.2758620689655173
+iteration: 523.0, time: 2.2628667679518877, dt: 0.0053956500196977305, time_stamp: 2.2758620689655173
+iteration: 524.0, time: 2.2682574849516, dt: 0.005390716999712477, time_stamp: 2.2758620689655173
+iteration: 525.0, time: 2.2736451908354343, dt: 0.005387705883834431, time_stamp: 2.2758620689655173
+iteration: 526.0, time: 2.279033516277302, dt: 0.005388325441867753, time_stamp: 2.2758620689655173
+iteration: 527.0, time: 2.2844253641721792, dt: 0.005391847894877141, time_stamp: 2.3793103448275863
+iteration: 528.0, time: 2.289823055316014, dt: 0.005397691143835037, time_stamp: 2.3793103448275863
+iteration: 529.0, time: 2.295224571936691, dt: 0.0054015166206770274, time_stamp: 2.3793103448275863
+iteration: 530.0, time: 2.300623461555102, dt: 0.005398889618411138, time_stamp: 2.3793103448275863
+iteration: 531.0, time: 2.306016993315947, dt: 0.005393531760844763, time_stamp: 2.3793103448275863
+iteration: 532.0, time: 2.3114089575641965, dt: 0.005391964248249629, time_stamp: 2.3793103448275863
+iteration: 533.0, time: 2.316802353933012, dt: 0.005393396368815166, time_stamp: 2.3793103448275863
+iteration: 534.0, time: 2.322199553762741, dt: 0.0053971998297288985, time_stamp: 2.3793103448275863
+iteration: 535.0, time: 2.3275972100844844, dt: 0.005397656321743505, time_stamp: 2.3793103448275863
+iteration: 536.0, time: 2.3329853707621875, dt: 0.005388160677703266, time_stamp: 2.3793103448275863
+iteration: 537.0, time: 2.338363674699443, dt: 0.005378303937255612, time_stamp: 2.3793103448275863
+iteration: 538.0, time: 2.3437362991276247, dt: 0.005372624428181492, time_stamp: 2.3793103448275863
+iteration: 539.0, time: 2.349106555668702, dt: 0.005370256541077538, time_stamp: 2.3793103448275863
+iteration: 540.0, time: 2.3544770742685577, dt: 0.005370518599855596, time_stamp: 2.3793103448275863
+iteration: 541.0, time: 2.3598499429035567, dt: 0.005372868634999021, time_stamp: 2.3793103448275863
+iteration: 542.0, time: 2.3652268157337164, dt: 0.005376872830159701, time_stamp: 2.3793103448275863
+iteration: 543.0, time: 2.370608997753155, dt: 0.005382182019438805, time_stamp: 2.3793103448275863
+iteration: 544.0, time: 2.3759975116764798, dt: 0.005388513923324763, time_stamp: 2.3793103448275863
+iteration: 545.0, time: 2.3813931512673094, dt: 0.005395639590829779, time_stamp: 2.3793103448275863
+iteration: 546.0, time: 2.3867965241984725, dt: 0.005403372931163097, time_stamp: 2.4827586206896552
+iteration: 547.0, time: 2.392208086752463, dt: 0.00541156255399053, time_stamp: 2.4827586206896552
+iteration: 548.0, time: 2.3976281721029715, dt: 0.005420085350508566, time_stamp: 2.4827586206896552
+iteration: 549.0, time: 2.403057013503062, dt: 0.00542884140009013, time_stamp: 2.4827586206896552
+iteration: 550.0, time: 2.4084947633981457, dt: 0.00543774989508375, time_stamp: 2.4827586206896552
+iteration: 551.0, time: 2.4139415092523837, dt: 0.0054467458542380815, time_stamp: 2.4827586206896552
+iteration: 552.0, time: 2.4193972867050073, dt: 0.005455777452623559, time_stamp: 2.4827586206896552
+iteration: 553.0, time: 2.424862090543282, dt: 0.005464803838274471, time_stamp: 2.4827586206896552
+iteration: 554.0, time: 2.4303358838803666, dt: 0.0054737933370849695, time_stamp: 2.4827586206896552
+iteration: 555.0, time: 2.43581860585089, dt: 0.005482721970523464, time_stamp: 2.4827586206896552
+iteration: 556.0, time: 2.4413101780784925, dt: 0.0054915722276025454, time_stamp: 2.4827586206896552
+iteration: 557.0, time: 2.446810510123391, dt: 0.00550033204489851, time_stamp: 2.4827586206896552
+iteration: 558.0, time: 2.4523195040809296, dt: 0.005508993957538652, time_stamp: 2.4827586206896552
+iteration: 559.0, time: 2.4578370584718687, dt: 0.00551755439093893, time_stamp: 2.4827586206896552
+iteration: 560.0, time: 2.4633629297958257, dt: 0.005525871323956872, time_stamp: 2.4827586206896552
+iteration: 561.0, time: 2.4688915671488996, dt: 0.0055286373530738075, time_stamp: 2.4827586206896552
+iteration: 562.0, time: 2.474422465386594, dt: 0.005530898237694353, time_stamp: 2.4827586206896552
+iteration: 563.0, time: 2.47995560207275, dt: 0.005533136686155899, time_stamp: 2.4827586206896552
+iteration: 564.0, time: 2.4854920909245117, dt: 0.005536488851762126, time_stamp: 2.4827586206896552
+iteration: 565.0, time: 2.4910329062120455, dt: 0.005540815287533646, time_stamp: 2.586206896551724
+iteration: 566.0, time: 2.4965772370524477, dt: 0.00554433084040225, time_stamp: 2.586206896551724
+iteration: 567.0, time: 2.5021253826380248, dt: 0.005548145585576897, time_stamp: 2.586206896551724
+iteration: 568.0, time: 2.5076782333664465, dt: 0.0055528507284217914, time_stamp: 2.586206896551724
+iteration: 569.0, time: 2.5132365826952996, dt: 0.005558349328852992, time_stamp: 2.586206896551724
+iteration: 570.0, time: 2.5187996176347833, dt: 0.005563034939483778, time_stamp: 2.586206896551724
+iteration: 571.0, time: 2.5243678370814293, dt: 0.0055682194466460545, time_stamp: 2.586206896551724
+iteration: 572.0, time: 2.529941090691708, dt: 0.005573253610278609, time_stamp: 2.586206896551724
+iteration: 573.0, time: 2.5355192933012627, dt: 0.0055782026095545926, time_stamp: 2.586206896551724
+iteration: 574.0, time: 2.5411032769250763, dt: 0.005583983623813543, time_stamp: 2.586206896551724
+iteration: 575.0, time: 2.546693763901537, dt: 0.005590486976460883, time_stamp: 2.586206896551724
+iteration: 576.0, time: 2.552287753838572, dt: 0.00559398993703517, time_stamp: 2.586206896551724
+iteration: 577.0, time: 2.557885760748318, dt: 0.005598006909745818, time_stamp: 2.586206896551724
+iteration: 578.0, time: 2.5634866984839926, dt: 0.005600937735674903, time_stamp: 2.586206896551724
+iteration: 579.0, time: 2.5690915170795043, dt: 0.005604818595511979, time_stamp: 2.586206896551724
+iteration: 580.0, time: 2.5746982727221375, dt: 0.005606755642633206, time_stamp: 2.586206896551724
+iteration: 581.0, time: 2.5803064444798958, dt: 0.0056081717577580814, time_stamp: 2.586206896551724
+iteration: 582.0, time: 2.5859176371284627, dt: 0.005611192648566977, time_stamp: 2.586206896551724
+iteration: 583.0, time: 2.5915331915524527, dt: 0.005615554423990001, time_stamp: 2.586206896551724
+iteration: 584.0, time: 2.5971542270408743, dt: 0.005621035488421814, time_stamp: 2.689655172413793
+iteration: 585.0, time: 2.6027774471810825, dt: 0.00562322014020838, time_stamp: 2.689655172413793
+iteration: 586.0, time: 2.6084030781398386, dt: 0.00562563095875597, time_stamp: 2.689655172413793
+iteration: 587.0, time: 2.6140326376431644, dt: 0.005629559503325593, time_stamp: 2.689655172413793
+iteration: 588.0, time: 2.6196673794290315, dt: 0.005634741785866875, time_stamp: 2.689655172413793
+iteration: 589.0, time: 2.625308336200012, dt: 0.005640956770980506, time_stamp: 2.689655172413793
+iteration: 590.0, time: 2.6309555496756585, dt: 0.005647213475646799, time_stamp: 2.689655172413793
+iteration: 591.0, time: 2.636605193424895, dt: 0.005649643749236423, time_stamp: 2.689655172413793
+iteration: 592.0, time: 2.642258782677512, dt: 0.0056535892526169695, time_stamp: 2.689655172413793
+iteration: 593.0, time: 2.6479175575330283, dt: 0.005658774855515952, time_stamp: 2.689655172413793
+iteration: 594.0, time: 2.653582530840887, dt: 0.0056649733078587864, time_stamp: 2.689655172413793
+iteration: 595.0, time: 2.659254524731079, dt: 0.005671993890192082, time_stamp: 2.689655172413793
+iteration: 596.0, time: 2.6649323120152237, dt: 0.005677787284144818, time_stamp: 2.689655172413793
+iteration: 597.0, time: 2.6706132214373604, dt: 0.0056809094221365415, time_stamp: 2.689655172413793
+iteration: 598.0, time: 2.676298542663964, dt: 0.00568532122660373, time_stamp: 2.689655172413793
+iteration: 599.0, time: 2.681989324342359, dt: 0.005690781678394895, time_stamp: 2.689655172413793
+iteration: 600.0, time: 2.687686416045269, dt: 0.005697091702910017, time_stamp: 2.689655172413793
+iteration: 601.0, time: 2.693390500593216, dt: 0.0057040845479471, time_stamp: 2.689655172413793
+iteration: 602.0, time: 2.699100636450539, dt: 0.005710135857323012, time_stamp: 2.793103448275862
+iteration: 603.0, time: 2.704813720724766, dt: 0.005713084274226752, time_stamp: 2.793103448275862
+iteration: 604.0, time: 2.7105308936881904, dt: 0.005717172963424584, time_stamp: 2.793103448275862
+iteration: 605.0, time: 2.7162530814821846, dt: 0.005722187793994354, time_stamp: 2.793103448275862
+iteration: 606.0, time: 2.721981034255048, dt: 0.005727952772863673, time_stamp: 2.793103448275862
+iteration: 607.0, time: 2.7277153549928395, dt: 0.005734320737791208, time_stamp: 2.793103448275862
+iteration: 608.0, time: 2.7334565238516473, dt: 0.0057411688588078396, time_stamp: 2.793103448275862
+iteration: 609.0, time: 2.7392009639966437, dt: 0.005744440144996279, time_stamp: 2.793103448275862
+iteration: 610.0, time: 2.744948654648788, dt: 0.00574769065214447, time_stamp: 2.793103448275862
+iteration: 611.0, time: 2.750700456713023, dt: 0.005751802064235159, time_stamp: 2.793103448275862
+iteration: 612.0, time: 2.7564570730557074, dt: 0.005756616342684242, time_stamp: 2.793103448275862
+iteration: 613.0, time: 2.7622190751781606, dt: 0.005762002122453057, time_stamp: 2.793103448275862
+iteration: 614.0, time: 2.76798692510149, dt: 0.005767849923329528, time_stamp: 2.793103448275862
+iteration: 615.0, time: 2.77375857272284, dt: 0.005771647621350003, time_stamp: 2.793103448275862
+iteration: 616.0, time: 2.779531862594469, dt: 0.005773289871629157, time_stamp: 2.793103448275862
+iteration: 617.0, time: 2.7853062605143255, dt: 0.0057743979198561805, time_stamp: 2.793103448275862
+iteration: 618.0, time: 2.791082301692905, dt: 0.005776041178579522, time_stamp: 2.793103448275862
+iteration: 619.0, time: 2.7968592016176648, dt: 0.0057768999247596875, time_stamp: 2.793103448275862
+iteration: 620.0, time: 2.802635499377346, dt: 0.0057762977596814095, time_stamp: 2.896551724137931
+iteration: 621.0, time: 2.808411276811573, dt: 0.005775777434226999, time_stamp: 2.896551724137931
+iteration: 622.0, time: 2.8141858354560334, dt: 0.005774558644460371, time_stamp: 2.896551724137931
+iteration: 623.0, time: 2.819961961681681, dt: 0.005776126225647763, time_stamp: 2.896551724137931
+iteration: 624.0, time: 2.8257419726527533, dt: 0.0057800109710719975, time_stamp: 2.896551724137931
+iteration: 625.0, time: 2.831526223477458, dt: 0.005784250824704907, time_stamp: 2.896551724137931
+iteration: 626.0, time: 2.837311995034274, dt: 0.005785771556815575, time_stamp: 2.896551724137931
+iteration: 627.0, time: 2.843095674317613, dt: 0.005783679283339049, time_stamp: 2.896551724137931
+iteration: 628.0, time: 2.848880373619372, dt: 0.005784699301759367, time_stamp: 2.896551724137931
+iteration: 629.0, time: 2.8546687871506498, dt: 0.005788413531277368, time_stamp: 2.896551724137931
+iteration: 630.0, time: 2.8604631307205866, dt: 0.005794343569936627, time_stamp: 2.896551724137931
+iteration: 631.0, time: 2.8662626945410197, dt: 0.005799563820432898, time_stamp: 2.896551724137931
+iteration: 632.0, time: 2.872063865354671, dt: 0.005801170813651096, time_stamp: 2.896551724137931
+iteration: 633.0, time: 2.8778649465314214, dt: 0.005801081176750467, time_stamp: 2.896551724137931
+iteration: 634.0, time: 2.88366912054845, dt: 0.005804174017028891, time_stamp: 2.896551724137931
+iteration: 635.0, time: 2.889478977220928, dt: 0.005809856672477867, time_stamp: 2.896551724137931
+iteration: 636.0, time: 2.8952966240801365, dt: 0.005817646859208527, time_stamp: 2.896551724137931
+iteration: 637.0, time: 2.901119676995377, dt: 0.005823052915240393, time_stamp: 2.896551724137931
+iteration: 638.0, time: 2.9069439391054113, dt: 0.005824262110034351, time_stamp: 3.0
+iteration: 639.0, time: 2.912770035398031, dt: 0.005826096292619635, time_stamp: 3.0
+iteration: 640.0, time: 2.9186010593488456, dt: 0.005831023950814939, time_stamp: 3.0
+iteration: 641.0, time: 2.9244395115272708, dt: 0.005838452178425214, time_stamp: 3.0
+iteration: 642.0, time: 2.9302874132333394, dt: 0.005847901706068712, time_stamp: 3.0
+iteration: 643.0, time: 2.936140710284627, dt: 0.005853297051287855, time_stamp: 3.0
+iteration: 644.0, time: 2.9419957781978208, dt: 0.005855067913193795, time_stamp: 3.0
+iteration: 645.0, time: 2.9478549488241304, dt: 0.00585917062630964, time_stamp: 3.0
+iteration: 646.0, time: 2.9537214319430873, dt: 0.005866483118956819, time_stamp: 3.0
+iteration: 647.0, time: 2.9595978969994254, dt: 0.005876465056338274, time_stamp: 3.0
+iteration: 648.0, time: 2.9654866003581715, dt: 0.005888703358746184, time_stamp: 3.0
+iteration: 649.0, time: 2.9713858039075154, dt: 0.005899203549343936, time_stamp: 3.0
+iteration: 650.0, time: 2.9772886000483068, dt: 0.005902796140791346, time_stamp: 3.0
+iteration: 651.0, time: 2.983195573727052, dt: 0.005906973678745065, time_stamp: 3.0
+iteration: 652.0, time: 2.9891073126574064, dt: 0.0059117389303545076, time_stamp: 3.0
+iteration: 653.0, time: 2.995024416594527, dt: 0.0059171039371204645, time_stamp: 3.0
+iteration: 654.0, time: 3.0009475036128226, dt: 0.005923087018295991, time_stamp: 3.0
+Runtime: 15.590314149856567</code></pre>
+</div>
+</div>
+<div id="91f0af61" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>postprocessing.vtk_interpolate_3d(model, settings.output_dir,  os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>), Nz<span class="op">=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>converted 0
+converted 1
+converted 2
+converted 3
+converted 4
+converted 5
+converted 6
+converted 7
+converted 8
+converted 9
+converted 10
+converted 11
+converted 12
+converted 13
+converted 14
+converted 15
+converted 16
+converted 17
+converted 18
+converted 19
+converted 20
+converted 21
+converted 22
+converted 23
+converted 24
+converted 25
+converted 26
+converted 27
+converted 28
+converted 29
+write 3d: /home/ingo/Git/sms/outputs/junction_4/fields3d.h5</code></pre>
+</div>
+</div>
+<div id="a2b1acac" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyvista <span class="im">as</span> pv</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vtk_path <span class="op">=</span> os.path.join(main_dir, os.path.join(settings.output_dir, <span class="st">"out.7.vtk"</span>))</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> pv.read(vtk_path)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mesh.cell_data.keys())</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> <span class="fl">4.</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>scale_v <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> mesh[<span class="st">'1'</span>]  <span class="co"># component in x (iHat)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>f2 <span class="op">=</span> mesh[<span class="st">'2'</span>]  <span class="co"># component in y (jHat)</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a 2D vector field (z-component is zero)</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>vectors <span class="op">=</span> np.column_stack((f1, f2, np.zeros_like(f1)))</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>mesh[<span class="st">'V'</span>] <span class="op">=</span> vectors</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> mesh.cell_data_to_point_data()</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Get current point coordinates</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>points <span class="op">=</span> mesh.points.copy()</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>idx <span class="op">=</span> ((points[:, <span class="dv">0</span>] <span class="op">-</span> x_fixed)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (points[:, <span class="dv">1</span>] <span class="op">-</span> y_fixed)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (points[:, <span class="dv">2</span>] <span class="op">-</span> <span class="fl">1.</span>)<span class="op">**</span><span class="dv">2</span>).argmin()</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace the z-coordinate</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>points[:, <span class="dv">2</span>] <span class="op">=</span> mesh[<span class="st">'0'</span>]  <span class="op">*</span> points[:, <span class="dv">2</span>] <span class="op">*</span> scale <span class="co"># index 2 is the z-component</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Apply the modified coordinates back to the mesh</span></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>mesh.points <span class="op">=</span> points</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a line along z from 0 to 1 at fixed (x, y)</span></span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>x_fixed, y_fixed <span class="op">=</span> <span class="fl">0.3</span>, <span class="fl">0.05</span>   <span class="co"># choose based on your domain</span></span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>n_points <span class="op">=</span> <span class="dv">10</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract their z-coordinates</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>z_fixed <span class="op">=</span> points[idx, <span class="dv">2</span>]</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> (x_fixed, y_fixed, <span class="fl">0.0</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>end <span class="op">=</span> (x_fixed, y_fixed, z_fixed)</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>line <span class="op">=</span> pv.Line(start, end, resolution<span class="op">=</span>n_points <span class="op">-</span> <span class="dv">1</span>)</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="co"># # Sample vector field along the line</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>sampled <span class="op">=</span> line.sample(mesh)</span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sampled[<span class="st">'V'</span>].shape)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="co"># # Compute magnitude of vectors (for scaling)</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>sampled[<span class="st">'V_mag'</span>] <span class="op">=</span> np.linalg.norm(sampled[<span class="st">'V'</span>], axis<span class="op">=</span><span class="dv">1</span>) <span class="op">*</span> scale_v</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a><span class="co"># # Generate glyphs scaled by magnitude</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>glyphs <span class="op">=</span> sampled.glyph(orient<span class="op">=</span><span class="st">'V'</span>, scale<span class="op">=</span><span class="st">'V_mag'</span>)</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a plotter and add mesh and glyphs</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>plotter <span class="op">=</span> pv.Plotter()</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Add mesh with 50% transparency</span></span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>plotter.add_mesh(mesh, scalars<span class="op">=</span><span class="st">'V'</span>, opacity<span class="op">=</span><span class="fl">0.5</span>, show_scalar_bar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Add solid glyphs (arrows)</span></span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>plotter.add_mesh(glyphs, color<span class="op">=</span><span class="st">'white'</span>)  <span class="co"># or any other color you like</span></span>
+<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the scene</span></span>
+<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a>plotter.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['0', '1', '2', '3', '4', 'aux_0']
+0.06547667161931342
+(10, 3)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id":"8d2f70e8cb3843eda634b34e8a4cb36d","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+</script>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Ingo Steldermann</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../legal.html">
+<p>Legal notice and data protection</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
