@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "api/fvm.solver.Settings.html",
+    "href": "api/fvm.solver.Settings.html",
+    "title": "fvm.solver.Settings",
+    "section": "",
+    "text": "fvm.solver.Settings\nfvm.solver.Settings()"
+  },
+  {
     "objectID": "research.html",
     "href": "research.html",
     "title": "Research",
@@ -230,5 +237,12 @@
     "title": "",
     "section": "Plugins and tools",
     "text": "Plugins and tools\nGoogle Maps\nThis page uses the Google Maps map service. The provider is Google Ireland Limited (“Google”), GordonHouse, Barrow Street, Dublin 4, Ireland. To use the functions of Google Maps, it is necessary to store your IP address. This information is usually transmitted to a Google server in the USA and stored there.\nThe provider of this site has no influence on this data transmission. If Google Maps is enabled, Google can use Google Web Fonts for the purpose of displaying the fonts. When calling Google Maps, your browser loads the required web fonts into your browser cache to display texts and fonts correctly.\nThe use of Google Maps is in the interest of an appealing presentation of our online offers and an easy findability of the places indicated by us on the website. This represents a legitimate interest in the sense of Art. 6 para. 1 lit. f GDPR. If a corresponding consent has been requested, the processing is carried out exclusively on the basis of Art. 6 para. 1 lit. a GDPR; consent is revokable at any time.\nThe data transfer to the USA is based on the standard contractual clauses of the EU Commission.\nDetails can be found here:\nhttps://privacy.google.com/businesses/gdprcontrollerterms/ and\nhttps://privacy.google.com/businesses/gdprcontrollerterms/sccs/.\nMore information on the handling of user data can be found in Google’s privacy policy:\nhttps://policies.google.com/privacy?hl.en.\nWordfence\nWe have included Wordfence on this website. Its provider is Defiant Inc., Defiant, Inc., 800 5th Ave Ste 4100, Seattle, WA 98104, USA (hereinafter Wordfence).\nWordfence is used to protect our website from unwanted access or malicious cyber attacks. For this purpose, our website establishes a permanent connection to the servers of Wordfence, so that Wordfence can match and, if necessary, block its databases with the accesses made on our website.\nThe use of Wordfence is based on Art. 6 para. 1 lit. f GDPR. The website operator has a legitimate interest in protecting its website from cyber attacks. If a corresponding consent has been requested, the processing is carried out exclusively on the basis of Art. 6 para. 1 lit. a GDPR; consent is revokable at any time.\nThe data transfer to the USA is based on the standard contractual clauses of the EU Commission.\nDetails can be found here:\nWordfence and GDPR – General Data Protection Regulation\nSource (adapted): https://www.e-recht24.de"
+  },
+  {
+    "objectID": "api/index.html",
+    "href": "api/index.html",
+    "title": "Function reference",
+    "section": "",
+    "text": "Function reference\n\n\n\nfvm.solver.Settings"
   }
 ]
