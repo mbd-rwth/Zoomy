@@ -1,0 +1,18 @@
+name: sms-game
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - attrs
+  - numpy
+  - panel
+  - holoviews
+  - pip
+  - tol-colors
+    - dotenv
+
+variables:
+  SMS: '/home/mbd/Maschinenbautag/shallow-moments-simulation'
+  PYTHONPATH: ':/home/mbd/Maschinenbautag/shallow-moments-simulation'
+
+

@@ -1,0 +1,42 @@
+name: sms
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+    - sympy>=1.13.3
+    - attrs
+    - numpy
+    - ipython
+    - ipykernel
+    - matplotlib
+    - pytest
+    - meshio
+    - scipy
+    - h5py
+    - pyprog
+    - mpi4py
+    - petsc
+    - petsc4py
+    - pyvista
+    - trame
+    - trame-vtk
+    - trame-vuetify
+    - seaborn
+    - jax
+    - jaxlib
+    - jaxopt
+    - panel
+    - watchfiles
+    - pygments
+    # - pyprecice
+    - tol-colors
+    - dotenv
+variables:
+  PETSC_DIR: '/home/ingo/Git/petsc'
+  PETSC_ARCH: 'linux-gnu'
+  SMS: '/home/ingo/Git/sms'
+  PYTHONPATH: ':/home/ingo/Git/sms'
+
+
