@@ -144,7 +144,8 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="custom.css">
+<link rel="stylesheet" href="../../custom.css">
+<link rel="stylesheet" href="../notebook.css">
 </head>
 
 <body class="nav-sidebar floating nav-fixed quarto-light">
@@ -165,6 +166,14 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../playground/playground.html"> 
+<span class="menu-text">Playground</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link" href="../../docs/index.html"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
@@ -173,24 +182,12 @@ window.Quarto = {
 <span class="menu-text">Tutorials</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../examples/index.html"> 
-<span class="menu-text">Examples</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../playground/playground.html"> 
-<span class="menu-text">Playground</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../software.html"> 
-<span class="menu-text">Software</span></a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="../../api/index.html"> 
-<span class="menu-text">API</span></a>
-  </li>  
-  <li class="nav-item">
     <a class="nav-link" href="../../publications.html"> 
 <span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -286,7 +283,12 @@ window.Quarto = {
   <li><a href="#imports" id="toc-imports" class="nav-link active" data-scroll-target="#imports">Imports</a></li>
   <li><a href="#model-definition" id="toc-model-definition" class="nav-link" data-scroll-target="#model-definition">Model definition</a></li>
   <li><a href="#linear-stability-analysis" id="toc-linear-stability-analysis" class="nav-link" data-scroll-target="#linear-stability-analysis">Linear stability analysis</a></li>
-  <li><a href="#numerical-solution" id="toc-numerical-solution" class="nav-link" data-scroll-target="#numerical-solution">Numerical solution</a></li>
+  <li><a href="#numerical-solution" id="toc-numerical-solution" class="nav-link" data-scroll-target="#numerical-solution">Numerical solution</a>
+  <ul class="collapse">
+  <li><a href="#solver-definitions" id="toc-solver-definitions" class="nav-link" data-scroll-target="#solver-definitions">Solver definitions</a></li>
+  <li><a href="#simulation" id="toc-simulation" class="nav-link" data-scroll-target="#simulation">Simulation</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -324,13 +326,13 @@ window.Quarto = {
 </header>
 
 
-<div class="callout callout-style-default callout-note callout-titled" title="&quot;Reference">
+<div class="callout callout-style-default callout-note callout-titled" title="Reference">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-“Reference
+Reference
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -351,7 +353,7 @@ window.Quarto = {
 </div>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
-<div id="4f583c96" class="cell" data-execution_count="1">
+<div id="4f583c96" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>Load packages</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -392,7 +394,7 @@ window.Quarto = {
 </section>
 <section id="model-definition" class="level2">
 <h2 class="anchored" data-anchor-id="model-definition">Model definition</h2>
-<div id="9d8b0a27" class="cell" data-execution_count="2">
+<div id="9d8b0a27" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> VAMHyperbolic(Model):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
@@ -545,24 +547,25 @@ window.Quarto = {
 <span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a>        </span>
 <span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="31f8e1fb" class="cell" data-execution_count="3">
+<div id="31f8e1fb" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> VAMHyperbolic()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="linear-stability-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="linear-stability-analysis">Linear stability analysis</h2>
-<div id="776ad0e1" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> analysis.ModelAnalyser(model)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>h0, b0 <span class="op">=</span> symbols(<span class="st">'h_c b_c'</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> analyzer.get_eps()</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>h, u0, u1, w0, w1, w2, p0, p1 <span class="op">=</span> analyzer.create_functions_from_list([<span class="st">'h'</span>, <span class="st">'u_0'</span>, <span class="st">'u_1'</span>, <span class="st">'w_0'</span>, <span class="st">'w_1'</span>, <span class="st">'w_2'</span>, <span class="st">'p_0'</span>, <span class="st">'p_1'</span>])</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>t, x, y, z <span class="op">=</span> analyzer.get_time_space()</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> Matrix([h0 <span class="op">+</span> eps <span class="op">*</span> h, (h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> u0, (h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> u1, (h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> w0, (h0 <span class="op">+</span> eps <span class="op">*</span> h)<span class="op">*</span> eps <span class="op">*</span> w1, b0])</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Qaux <span class="op">=</span> Matrix([(h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps<span class="op">*</span>w2, eps<span class="op">*</span>p0, eps<span class="op">*</span>p1, diff(b0, x), diff(h0 <span class="op">+</span> eps <span class="op">*</span> h, x), diff((h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> p0, x), diff((h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> p1, x)])</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>linearized_system <span class="op">=</span> analyzer.linearize_system(Q, Qaux, constraints <span class="op">=</span> model.constraints())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="776ad0e1" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>analyzer <span class="op">=</span> analysis.ModelAnalyser(model)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>h0, b0 <span class="op">=</span> symbols(<span class="st">'h_c b_c'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> analyzer.get_eps()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>h, u0, u1, w0, w1, w2, p0, p1 <span class="op">=</span> analyzer.create_functions_from_list([<span class="st">'h'</span>, <span class="st">'u_0'</span>, <span class="st">'u_1'</span>, <span class="st">'w_0'</span>, <span class="st">'w_1'</span>, <span class="st">'w_2'</span>, <span class="st">'p_0'</span>, <span class="st">'p_1'</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>t, x, y, z <span class="op">=</span> analyzer.get_time_space()</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> Matrix([h0 <span class="op">+</span> eps <span class="op">*</span> h, (h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> u0, (h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> u1, (h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> w0, (h0 <span class="op">+</span> eps <span class="op">*</span> h)<span class="op">*</span> eps <span class="op">*</span> w1, b0])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Qaux <span class="op">=</span> Matrix([(h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps<span class="op">*</span>w2, eps<span class="op">*</span>p0, eps<span class="op">*</span>p1, diff(b0, x), diff(h0 <span class="op">+</span> eps <span class="op">*</span> h, x), diff((h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> p0, x), diff((h0 <span class="op">+</span> eps <span class="op">*</span> h) <span class="op">*</span> eps <span class="op">*</span> p1, x)])</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>linearized_system <span class="op">=</span> analyzer.linearize_system(Q, Qaux, constraints <span class="op">=</span> model.constraints())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="ab35bbd2" class="cell" data-execution_count="5">
+<div id="ab35bbd2" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>analyzer.print_equations()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown">
 <p><span class="math inline">\(h_{c} \frac{\partial}{\partial X_{0}} u_{0}{\left(t,X_{0},X_{1},X_{2} \right)} + \frac{\partial}{\partial t} h{\left(t,X_{0},X_{1},X_{2} \right)} = 0\)</span></p>
@@ -592,10 +595,10 @@ window.Quarto = {
 <p><span class="math inline">\(h_{c} \frac{\partial}{\partial X_{0}} u_{0}{\left(t,X_{0},X_{1},X_{2} \right)} + 2 w_{0}{\left(t,X_{0},X_{1},X_{2} \right)} + 2 w_{2}{\left(t,X_{0},X_{1},X_{2} \right)} = 0\)</span></p>
 </div>
 </div>
-<div id="47f95432" class="cell" data-execution_count="6">
+<div id="47f95432" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>linearized_system <span class="op">=</span> analyzer.delete_equations([<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="832ceaed" class="cell" data-execution_count="7">
+<div id="832ceaed" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>analyzer.print_equations()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown">
 <p><span class="math inline">\(h_{c} \frac{\partial}{\partial X_{0}} u_{0}{\left(t,X_{0},X_{1},X_{2} \right)} + \frac{\partial}{\partial t} h{\left(t,X_{0},X_{1},X_{2} \right)} = 0\)</span></p>
@@ -622,10 +625,10 @@ window.Quarto = {
 <p><span class="math inline">\(h_{c} \frac{\partial}{\partial X_{0}} u_{0}{\left(t,X_{0},X_{1},X_{2} \right)} + 2 w_{0}{\left(t,X_{0},X_{1},X_{2} \right)} + 2 w_{2}{\left(t,X_{0},X_{1},X_{2} \right)} = 0\)</span></p>
 </div>
 </div>
-<div id="2a7d316e" class="cell" data-execution_count="8">
+<div id="2a7d316e" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>analyzer.insert_plane_wave_ansatz([h, u0, u1, w0, w1])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="dbef3d68" class="cell" data-execution_count="9">
+<div id="dbef3d68" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>analyzer.print_equations()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown">
 <p><span class="math inline">\(- i \bar{h} \omega e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} + i \bar{u_0} h_{c} k_{x} e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} = 0\)</span></p>
@@ -652,13 +655,13 @@ window.Quarto = {
 <p><span class="math inline">\(i \bar{u_0} h_{c} k_{x} e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} + 2 \bar{w_0} e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} + 2 w_{2}{\left(t,X_{0},X_{1},X_{2} \right)} = 0\)</span></p>
 </div>
 </div>
-<div id="9f4d3854" class="cell" data-execution_count="10">
+<div id="9f4d3854" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>analyzer.solve_for_constraints([<span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">7</span>], [p0, p1, w2])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="10">
 <p><span class="math inline">\(\displaystyle \left\{ p_{0}{\left(t,X_{0},X_{1},X_{2} \right)} : - \frac{i \bar{w_0} h_{c} \omega e^{i X_{0} k_{x}} e^{i X_{1} k_{y}} e^{i X_{2} k_{z}} e^{- i \omega t}}{2} + \frac{i \bar{w_1} h_{c} \omega e^{i X_{0} k_{x}} e^{i X_{1} k_{y}} e^{i X_{2} k_{z}} e^{- i \omega t}}{6}, \  p_{1}{\left(t,X_{0},X_{1},X_{2} \right)} : - \frac{i \bar{w_0} h_{c} \omega e^{i X_{0} k_{x}} e^{i X_{1} k_{y}} e^{i X_{2} k_{z}} e^{- i \omega t}}{2}, \  w_{2}{\left(t,X_{0},X_{1},X_{2} \right)} : - \frac{i \bar{u_0} h_{c} k_{x} e^{i X_{0} k_{x}} e^{i X_{1} k_{y}} e^{i X_{2} k_{z}} e^{- i \omega t}}{2} - \bar{w_0} e^{i X_{0} k_{x}} e^{i X_{1} k_{y}} e^{i X_{2} k_{z}} e^{- i \omega t}\right\}\)</span></p>
 </div>
 </div>
-<div id="c9a17303" class="cell" data-execution_count="11">
+<div id="c9a17303" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>analyzer.print_equations()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown">
 <p><span class="math inline">\(- i \bar{h} \omega e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} + i \bar{u_0} h_{c} k_{x} e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} = 0\)</span></p>
@@ -676,10 +679,10 @@ window.Quarto = {
 <p><span class="math inline">\(i \bar{u_0} h_{c} k_{x} e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} - 2 \bar{w_1} e^{i \left(X_{0} k_{x} + X_{1} k_{y} + X_{2} k_{z} - \omega t\right)} = 0\)</span></p>
 </div>
 </div>
-<div id="2082e0e4" class="cell" data-execution_count="12">
+<div id="2082e0e4" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>analyzer.remove_exponential()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="c17a14b0" class="cell" data-execution_count="13">
+<div id="c17a14b0" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>analyzer.print_equations()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown">
 <p><span class="math inline">\(i \left(- \bar{h} \omega + \bar{u_0} h_{c} k_{x}\right) = 0\)</span></p>
@@ -697,14 +700,14 @@ window.Quarto = {
 <p><span class="math inline">\(i \bar{u_0} h_{c} k_{x} - 2 \bar{w_1} = 0\)</span></p>
 </div>
 </div>
-<div id="8b7dcb8f" class="cell" data-execution_count="14">
+<div id="8b7dcb8f" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>dispersion_relation <span class="op">=</span> analyzer.solve_for_dispersion_relation()</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>dispersion_relation</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="14">
 <p><span class="math inline">\(\displaystyle \left[ 0, \  - 2 \sqrt{3} k_{x} \sqrt{\frac{g h_{c} \left(h_{c}^{2} k_{x}^{2} + 12\right)}{h_{c}^{4} k_{x}^{4} + 60 h_{c}^{2} k_{x}^{2} + 144}}, \  2 \sqrt{3} k_{x} \sqrt{\frac{g h_{c} \left(h_{c}^{2} k_{x}^{2} + 12\right)}{h_{c}^{4} k_{x}^{4} + 60 h_{c}^{2} k_{x}^{2} + 144}}\right]\)</span></p>
 </div>
 </div>
-<div id="b75e8cef" class="cell" data-execution_count="15">
+<div id="b75e8cef" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>group_velocity <span class="op">=</span> dispersion_relation[<span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> model.parameters.g <span class="op">/</span> h0</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>group_velocity</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="15">
@@ -714,7 +717,7 @@ window.Quarto = {
 </section>
 <section id="numerical-solution" class="level2">
 <h2 class="anchored" data-anchor-id="numerical-solution">Numerical solution</h2>
-<div id="fbecce08" class="cell" data-execution_count="16">
+<div id="fbecce08" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> VAMPoisson(Model):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
@@ -783,7 +786,9 @@ window.Quarto = {
 <span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a>        ev <span class="op">=</span> Matrix([<span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.n_fields)])</span>
 <span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> ev</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="05937caa" class="cell" data-execution_count="17">
+<section id="solver-definitions" class="level3">
+<h3 class="anchored" data-anchor-id="solver-definitions">Solver definitions</h3>
+<div id="05937caa" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HyperbolicSolver(Solver):</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
@@ -827,35 +832,34 @@ window.Quarto = {
 <span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> Q <span class="op">+</span> dt <span class="op">*</span> dQ</span>
 <span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> f</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="6485e0cc" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PoissonSolver(Solver):</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        p0 <span class="op">=</span> Q[<span class="dv">0</span>]</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        p1 <span class="op">=</span> Q[<span class="dv">1</span>]</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">#  aux_fields=[ 'dp0dx', 'ddp0dxx', 'dp1dx', 'ddp1dxx', 'h', 'dbdx', 'ddbdxx', 'dhdx', 'ddhdxx', 'u0', 'du0dx', 'w0', 'w1', 'u1', 'du1dx', 'dt'],</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        dp0dx <span class="op">=</span> compute_derivatives(p0, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">1</span>]]))[:, <span class="dv">0</span>]</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        ddp0dxx <span class="op">=</span> compute_derivatives(p0, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">2</span>]]))[:, <span class="dv">0</span>]</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        dp1dx <span class="op">=</span> compute_derivatives(p1, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">1</span>]]))[:, <span class="dv">0</span>]</span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        ddp1dxx <span class="op">=</span> compute_derivatives(p1, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">2</span>]]))[:, <span class="dv">0</span>]</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        d4p0dx4 <span class="op">=</span> compute_derivatives(p0, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">4</span>]]))[:, <span class="dv">0</span>]</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        d4p1dx4 <span class="op">=</span> compute_derivatives(p1, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">4</span>]]))[:, <span class="dv">0</span>]</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dp0dx)</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(ddp0dxx)</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">2</span>].<span class="bu">set</span>(dp1dx)</span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">3</span>].<span class="bu">set</span>(ddp1dxx)</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">4</span>].<span class="bu">set</span>(d4p0dx4)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">5</span>].<span class="bu">set</span>(d4p1dx4)</span>
-<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6485e0cc" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PoissonSolver(Solver):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        p0 <span class="op">=</span> Q[<span class="dv">0</span>]</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        p1 <span class="op">=</span> Q[<span class="dv">1</span>]</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        <span class="co">#  aux_fields=[ 'dp0dx', 'ddp0dxx', 'dp1dx', 'ddp1dxx', 'h', 'dbdx', 'ddbdxx', 'dhdx', 'ddhdxx', 'u0', 'du0dx', 'w0', 'w1', 'u1', 'du1dx', 'dt'],</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        dp0dx <span class="op">=</span> compute_derivatives(p0, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">1</span>]]))[:, <span class="dv">0</span>]</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        ddp0dxx <span class="op">=</span> compute_derivatives(p0, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">2</span>]]))[:, <span class="dv">0</span>]</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        dp1dx <span class="op">=</span> compute_derivatives(p1, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">1</span>]]))[:, <span class="dv">0</span>]</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        ddp1dxx <span class="op">=</span> compute_derivatives(p1, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">2</span>]]))[:, <span class="dv">0</span>]</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        d4p0dx4 <span class="op">=</span> compute_derivatives(p0, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">4</span>]]))[:, <span class="dv">0</span>]</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        d4p1dx4 <span class="op">=</span> compute_derivatives(p1, mesh, derivatives_multi_index<span class="op">=</span>([[<span class="dv">4</span>]]))[:, <span class="dv">0</span>]</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dp0dx)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(ddp0dxx)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">2</span>].<span class="bu">set</span>(dp1dx)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">3</span>].<span class="bu">set</span>(ddp1dxx)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">4</span>].<span class="bu">set</span>(d4p0dx4)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">5</span>].<span class="bu">set</span>(d4p1dx4)</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="d2393202" class="cell" data-execution_count="19">
+<div id="d2393202" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_vam(</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    mesh, model1, model2, settings, ode_solver_flux<span class="op">=</span>RK1, ode_solver_source<span class="op">=</span>RK1</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>):</span>
@@ -1094,81 +1098,82 @@ window.Quarto = {
 <span id="cb20-236"><a href="#cb20-236" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> P, Paux</span>
 <span id="cb20-237"><a href="#cb20-237" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="b58df51e" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"VAM"</span>,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    compute_dt<span class="op">=</span>timestepping.adaptive(CFL<span class="op">=</span><span class="fl">0.4</span>),</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    time_end<span class="op">=</span><span class="fl">50.</span>,</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    output_snapshots<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"outputs/vam"</span>,</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>bc_tags <span class="op">=</span> [<span class="st">"left"</span>, <span class="st">"right"</span>]</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>bc_tags_periodic_to <span class="op">=</span> [<span class="st">"right"</span>, <span class="st">"left"</span>]</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>bcs1 <span class="op">=</span> BC.BoundaryConditions(</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        BC.Lambda(physical_tag<span class="op">=</span><span class="st">'left'</span>, prescribe_fields<span class="op">=</span>{</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">.11197</span>,</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            <span class="dv">2</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">0.</span>,</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>            <span class="dv">3</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">0.</span>,</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>            <span class="dv">4</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">0.</span></span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        }),</span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        BC.Extrapolation(physical_tag<span class="op">=</span><span class="st">'right'</span>)</span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>bcs2 <span class="op">=</span> BC.BoundaryConditions(</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>        BC.Extrapolation(physical_tag<span class="op">=</span><span class="st">'left'</span>),</span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>        BC.Extrapolation(physical_tag<span class="op">=</span><span class="st">'right'</span>),</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic1(x):</span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">6</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">1</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">5</span> <span class="op">&lt;</span> <span class="dv">1</span>, <span class="fl">0.0</span>, <span class="fl">0.</span>)</span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">5</span>] <span class="op">=</span> <span class="fl">0.20</span><span class="op">*</span>np.exp(<span class="op">-</span>(x[<span class="dv">0</span>]<span class="op">-</span><span class="fl">0.</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">2</span><span class="op">*</span><span class="fl">0.2</span><span class="op">**</span><span class="dv">2</span>)) </span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>] <span class="op">&lt;</span> <span class="dv">1</span>, <span class="fl">0.34</span>, <span class="fl">0.015</span>) <span class="op">-</span> Q[<span class="dv">5</span>]</span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(Q[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="fl">0.015</span>, Q[<span class="dv">0</span>], <span class="fl">0.015</span>)</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Q[0] = np.where(x[0]**2 &lt; 0.5, 0.2, 0.1)</span></span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
-<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic2(x):</span>
-<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
-<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>ic1 <span class="op">=</span> IC.UserFunction(custom_ic1)</span>
-<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>ic2 <span class="op">=</span> IC.UserFunction(custom_ic2)</span>
-<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>model1 <span class="op">=</span> VAMHyperbolic(</span>
-<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">"g"</span>: <span class="fl">9.81</span>},</span>
-<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs1,</span>
-<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic1,</span>
-<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{},</span>
-<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> VAMPoisson(</span>
-<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">"g"</span>: <span class="fl">9.81</span>},</span>
-<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs2,</span>
-<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic2,</span>
-<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{},</span>
-<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>)</span>
+</section>
+<section id="simulation" class="level3">
+<h3 class="anchored" data-anchor-id="simulation">Simulation</h3>
+<div id="b58df51e" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"VAM"</span>,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    compute_dt<span class="op">=</span>timestepping.adaptive(CFL<span class="op">=</span><span class="fl">0.4</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    time_end<span class="op">=</span><span class="fl">50.</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    output_snapshots<span class="op">=</span><span class="dv">100</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="st">"outputs/vam"</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>bc_tags <span class="op">=</span> [<span class="st">"left"</span>, <span class="st">"right"</span>]</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>bc_tags_periodic_to <span class="op">=</span> [<span class="st">"right"</span>, <span class="st">"left"</span>]</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>bcs1 <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        BC.Lambda(physical_tag<span class="op">=</span><span class="st">'left'</span>, prescribe_fields<span class="op">=</span>{</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">.11197</span>,</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>            <span class="dv">2</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">0.</span>,</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>            <span class="dv">3</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">0.</span>,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>            <span class="dv">4</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: <span class="fl">0.</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>        }),</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        BC.Extrapolation(physical_tag<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>bcs2 <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>        BC.Extrapolation(physical_tag<span class="op">=</span><span class="st">'left'</span>),</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>        BC.Extrapolation(physical_tag<span class="op">=</span><span class="st">'right'</span>),</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic1(x):</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">6</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">1</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>]<span class="op">-</span><span class="dv">5</span> <span class="op">&lt;</span> <span class="dv">1</span>, <span class="fl">0.0</span>, <span class="fl">0.</span>)</span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">5</span>] <span class="op">=</span> <span class="fl">0.20</span><span class="op">*</span>np.exp(<span class="op">-</span>(x[<span class="dv">0</span>]<span class="op">-</span><span class="fl">0.</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">2</span><span class="op">*</span><span class="fl">0.2</span><span class="op">**</span><span class="dv">2</span>)) </span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>] <span class="op">&lt;</span> <span class="dv">1</span>, <span class="fl">0.34</span>, <span class="fl">0.015</span>) <span class="op">-</span> Q[<span class="dv">5</span>]</span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(Q[<span class="dv">0</span>] <span class="op">&gt;</span> <span class="fl">0.015</span>, Q[<span class="dv">0</span>], <span class="fl">0.015</span>)</span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Q[0] = np.where(x[0]**2 &lt; 0.5, 0.2, 0.1)</span></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic2(x):</span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">2</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>ic1 <span class="op">=</span> IC.UserFunction(custom_ic1)</span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>ic2 <span class="op">=</span> IC.UserFunction(custom_ic2)</span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>model1 <span class="op">=</span> VAMHyperbolic(</span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">"g"</span>: <span class="fl">9.81</span>},</span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs1,</span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic1,</span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{},</span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>model2 <span class="op">=</span> VAMPoisson(</span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">"g"</span>: <span class="fl">9.81</span>},</span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs2,</span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic2,</span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{},</span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.create_1d((<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>), <span class="dv">60</span>, lsq_degree<span class="op">=</span><span class="dv">2</span>)</span>
 <span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.create_1d((<span class="op">-</span><span class="fl">1.5</span>, <span class="fl">1.5</span>), <span class="dv">60</span>, lsq_degree<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>Q, Qaux <span class="op">=</span> solve_vam(</span>
-<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>    mesh,</span>
-<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>    model1,</span>
-<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>    model2,</span>
-<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>    settings,</span>
-<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
-<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>Q, Qaux <span class="op">=</span> solve_vam(</span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>    mesh,</span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>    model1,</span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>    model2,</span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>    settings,</span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>iteration: 1.0, time: 0.01095105684851627, dt: 0.01095105684851627, i_snapshot: 1.0, time_stamp: 1.0101010101010102
 Newton Iter 0: residual norm = 0.000e+00
@@ -27111,10 +27116,13 @@ Newton Iter 0: residual norm = 3.868e-08
 iteration: 6731.0, time: 50.00611532264986, dt: 0.007407374676354556, i_snapshot: 98.0, time_stamp: 50.0
 Newton Iter 0: residual norm = 9.645e-08
 Newton Iter 0: residual norm = 3.250e-07
-Runtime: 48.37842774391174</code></pre>
+Runtime: 43.84843111038208</code></pre>
 </div>
 </div>
-<div id="a2b1acac" class="cell" data-execution_count="21">
+</section>
+<section id="visualization" class="level3">
+<h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
+<div id="a2b1acac" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_vam(os.path.join(settings.output_dir, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -27126,6 +27134,7 @@ Runtime: 48.37842774391174</code></pre>
 </div>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
