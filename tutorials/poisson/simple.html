@@ -283,6 +283,12 @@ MathJax = {
  <span class="menu-text">Simple</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/sme/minimal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Minimal</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -404,9 +410,9 @@ MathJax = {
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    mesh <span class="op">=</span> convert_mesh_to_jax(mesh)</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    pde, bcs <span class="op">=</span> solver._load_runtime_model(model)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    pde, bcs <span class="op">=</span> solver.transform_in_place(model)</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    output_hdf5_path <span class="op">=</span> os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    output_hdf5_path <span class="op">=</span> os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>)</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    save_fields <span class="op">=</span> io.get_save_fields(output_hdf5_path, settings.output_write_all)</span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> model.dimension <span class="op">==</span> mesh.dimension</span>
@@ -415,7 +421,7 @@ MathJax = {
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    i_snapshot <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    io.init_output_directory(settings.output_dir, settings.output_clean_dir)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    io.init_output_directory(settings.output.directory, settings.output_clean_dir)</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    mesh.write_to_hdf5(output_hdf5_path)</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    i_snapshot <span class="op">=</span> save_fields(time, <span class="fl">0.0</span>, i_snapshot, Q, Qaux)</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
@@ -487,7 +493,7 @@ MathJax = {
 <span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    model,</span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    settings,</span>
 <span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Newton Iter 0: residual norm = 9.394e+04
 Newton Iter 1: residual norm = 1.487e-01
@@ -496,7 +502,7 @@ Runtime: 7.152557373046875e-07</code></pre>
 </div>
 </div>
 <div id="a2b1acac" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_poisson(os.path.join(settings.output_dir, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_poisson(os.path.join(settings.output.directory, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

@@ -312,6 +312,12 @@ window.Quarto = {
  <span class="menu-text">Simple</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/sme/minimal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Minimal</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -927,9 +933,9 @@ Reference
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    mesh <span class="op">=</span> convert_mesh_to_jax(mesh)</span>
 <span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    pde1, bcs1 <span class="op">=</span> solverQ._load_runtime_model(model1)</span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    pde2, bcs2 <span class="op">=</span> solverP._load_runtime_model(model2)</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    output_hdf5_path <span class="op">=</span> os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    pde1, bcs1 <span class="op">=</span> solverQ.transform_in_place(model1)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    pde2, bcs2 <span class="op">=</span> solverP.transform_in_place(model2)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    output_hdf5_path <span class="op">=</span> os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>)</span>
 <span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    save_fields <span class="op">=</span> io.get_save_fields(output_hdf5_path, settings.output_write_all)</span>
 <span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(Q, Qaux, parameters1, pde1, bcs1, P, Paux, parameters2, pde2, bcs2):</span>
@@ -940,7 +946,7 @@ Reference
 <span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        i_snapshot <span class="op">=</span> <span class="fl">0.0</span></span>
 <span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>        dt_snapshot <span class="op">=</span> settings.time_end <span class="op">/</span> (settings.output_snapshots <span class="op">-</span> <span class="dv">1</span>)</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>        io.init_output_directory(settings.output_dir, settings.output_clean_dir)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>        io.init_output_directory(settings.output.directory, settings.output_clean_dir)</span>
 <span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>        mesh.write_to_hdf5(output_hdf5_path)</span>
 <span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>        _ <span class="op">=</span> save_fields(time, <span class="fl">0.0</span>, i_snapshot, Q, Qaux)</span>
 <span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>        i_snapshot <span class="op">=</span> save_fields(time, <span class="fl">0.0</span>, i_snapshot, Q, Qaux)</span>
@@ -957,7 +963,7 @@ Reference
 <span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>        compute_max_abs_eigenvalue <span class="op">=</span> solverQ.get_compute_max_abs_eigenvalue(</span>
 <span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>            mesh, pde1, settings</span>
 <span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>        space_solution_operator <span class="op">=</span> solverQ.get_space_solution_operator(</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>        flux_operator <span class="op">=</span> solverQ.get_flux_operator(</span>
 <span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>            mesh, pde1, bcs1, settings</span>
 <span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>        )</span>
 <span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a>        source_operator <span class="op">=</span> solverQ.get_compute_source(mesh, pde1, settings)</span>
@@ -990,7 +996,7 @@ Reference
 <span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a>                        Q, Qaux, Qold, Qauxold, mesh, pde1, parameters1, time, dt</span>
 <span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a>                    )</span>
 <span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>                    Q1 <span class="op">=</span> ode_solver_flux(</span>
-<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a>                        space_solution_operator, Q, Qauxnew, parameters1, dt</span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a>                        flux_operator, Q, Qauxnew, parameters1, dt</span>
 <span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a>                    )</span>
 <span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a>                    Q1 <span class="op">=</span> Q1.at[<span class="dv">5</span>].<span class="bu">set</span>(Q0[<span class="dv">5</span>])</span>
@@ -1221,7 +1227,7 @@ Reference
 <span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>    model2,</span>
 <span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>    settings,</span>
 <span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output_dir, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
 <span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>iteration: 1.0, time: 0.01095105684851627, dt: 0.01095105684851627, i_snapshot: 1.0, time_stamp: 1.0101010101010102
@@ -27172,7 +27178,7 @@ Runtime: 43.84843111038208</code></pre>
 <section id="visualization" class="level3">
 <h3 class="anchored" data-anchor-id="visualization">Visualization</h3>
 <div id="a2b1acac" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_vam(os.path.join(settings.output_dir, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_vam(os.path.join(settings.output.directory, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
