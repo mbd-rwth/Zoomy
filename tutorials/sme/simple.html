@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5e55b319c65dd65de41cfb485baffa3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-94b94ef0a96b463afeb049f9cb89c0a0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -308,6 +308,9 @@ MathJax = {
   <li><a href="#shallow-moment-tutorial-simple" id="toc-shallow-moment-tutorial-simple" class="nav-link active" data-scroll-target="#shallow-moment-tutorial-simple">Shallow Moment Tutorial (Simple)</a>
   <ul class="collapse">
   <li><a href="#imports" id="toc-imports" class="nav-link" data-scroll-target="#imports">Imports</a></li>
+  <li><a href="#model" id="toc-model" class="nav-link" data-scroll-target="#model">Model</a></li>
+  <li><a href="#solve" id="toc-solve" class="nav-link" data-scroll-target="#solve">Solve</a></li>
+  <li><a href="#visualization" id="toc-visualization" class="nav-link" data-scroll-target="#visualization">Visualization</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.dev/mbd-rwth/Zoomy/web/blob/main/tutorials/sme/simple.ipynb" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
@@ -387,35 +390,33 @@ MathJax = {
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="ad87e829-022c-4468-a8b1-55f0965a2e07" class="cell" data-tags="[]" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">4</span></span>
+</section>
+<section id="model" class="level2">
+<h2 class="anchored" data-anchor-id="model">Model</h2>
+<div id="ad87e829-022c-4468-a8b1-55f0965a2e07" class="cell" data-tags="[]" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>level <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>offset <span class="op">=</span> <span class="dv">1</span><span class="op">+</span>level</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>n_fields <span class="op">=</span> <span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> level</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"SME"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    model<span class="op">=</span>Zstruct(</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        level<span class="op">=</span>level,</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        parameters<span class="op">=</span>Zstruct.from_dict({</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"g"</span>: <span class="fl">9.81</span>,</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ex'</span>: <span class="fl">0.</span>,</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ey'</span>: <span class="fl">0.</span>,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">'ez'</span>: <span class="fl">1.</span>,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"C"</span>: <span class="fl">1.0</span>,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"nu"</span>: <span class="fl">0.000001</span>,</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"lamda"</span>: <span class="dv">7</span>,</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"rho"</span>: <span class="dv">1</span>,</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="st">"eta"</span>: <span class="dv">1</span>,</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="st">"c_slipmod"</span>: <span class="dv">1</span> <span class="op">/</span> <span class="fl">7.0</span>,</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    }),</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    solver<span class="op">=</span>Zstruct(time_end<span class="op">=</span><span class="fl">.1</span>, CFL<span class="op">=</span><span class="fl">0.45</span>),</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    output<span class="op">=</span>Zstruct(</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>        directory<span class="op">=</span><span class="ss">f"outputs/junction_</span><span class="sc">{</span>level<span class="sc">}</span><span class="ss">"</span>, filename<span class="op">=</span><span class="st">"SME"</span>, output_snapshots<span class="op">=</span><span class="dv">30</span></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"SME"</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    output<span class="op">=</span>Zstruct(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        directory<span class="op">=</span><span class="ss">f"outputs/junction_</span><span class="sc">{</span>level<span class="sc">}</span><span class="ss">"</span>, filename<span class="op">=</span><span class="st">"SME"</span>, output_snapshots<span class="op">=</span><span class="dv">30</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">2025-08-08 06:21:39.648</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">136</span> - <span class="ansi-yellow-fg ansi-bold">No 'solver' Zstruct found in Settings. Default: empty Zstruct</span>
+
+<span class="ansi-green-fg">2025-08-08 06:21:39.649</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">139</span> - <span class="ansi-yellow-fg ansi-bold">No 'model' Zstruct found in Settings. Default: empty Zstruct</span>
+
+<span class="ansi-green-fg">2025-08-08 06:21:39.649</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">153</span> - <span class="ansi-yellow-fg ansi-bold">No 'clean_directory' attribute found in output Zstruct. Default: False</span>
+
+<span class="ansi-green-fg">2025-08-08 06:21:39.649</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">156</span> - <span class="ansi-yellow-fg ansi-bold">No 'parameters' attribute found in model Zstruct. Default: empty Zstruct</span>
+</pre>
 </div>
-<div id="fd25e4e2-4653-441c-a82b-4d4c2e4c013b" class="cell" data-tags="[]" data-execution_count="3">
+</div>
+</div>
+<div id="fd25e4e2-4653-441c-a82b-4d4c2e4c013b" class="cell" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>inflow_dict <span class="op">=</span> { </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: Piecewise((<span class="fl">0.1</span>, t <span class="op">&lt;</span> <span class="fl">0.2</span>),(q[<span class="dv">0</span>], <span class="va">True</span>)),</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="dv">1</span>: <span class="kw">lambda</span> t, x, dx, q, qaux, p, n: Piecewise((<span class="op">-</span><span class="fl">0.3</span>, t <span class="op">&lt;</span> <span class="fl">0.2</span>),(<span class="op">-</span>q[<span class="dv">1</span>], <span class="va">True</span>)),</span>
@@ -442,348 +443,442 @@ MathJax = {
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(custom_ic)</span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ShallowMoments2d(</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    fields<span class="op">=</span><span class="dv">3</span> <span class="op">+</span> <span class="dv">2</span> <span class="op">*</span> level,</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    aux_fields<span class="op">=</span><span class="dv">2</span>,</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>settings.model.parameters.as_dict(),</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{<span class="st">"friction"</span>: [<span class="st">"newtonian"</span>, <span class="st">"slip_mod"</span>]},</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    basis<span class="op">=</span>Basismatrices(basis<span class="op">=</span>Legendre_shifted(order<span class="op">=</span>level<span class="op">+</span><span class="dv">1</span>)),</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_junction/mesh_2d_coarse.msh"</span>)</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># os.path.join(main_dir, "meshes/channel_junction/mesh_2d_fine.msh")</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> convert_mesh_to_jax(mesh)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SMESolver(HyperbolicSolver):</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        dudx <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">0</span>]])[:,<span class="dv">0</span>]</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>        dvdy <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span><span class="op">+</span>offset]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">1</span>]])[:,<span class="dv">0</span>]</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dudx)</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(dvdy)</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> SMESolver(settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    level<span class="op">=</span>level,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_junction/mesh_2d_coarse.msh"</span>)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># os.path.join(main_dir, "meshes/channel_junction/mesh_2d_fine.msh")</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> convert_mesh_to_jax(mesh)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SMESolver(HyperbolicSolver):</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        dudx <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">0</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        dvdy <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span><span class="op">+</span>offset]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">1</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dudx)</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(dvdy)</span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> SMESolver(settings<span class="op">=</span>settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code></code></pre>
 </div>
 </div>
-<div id="34211aa2-8f9a-4e1d-bb55-1af32668f51e" class="cell">
+</section>
+<section id="solve" class="level2">
+<h2 class="anchored" data-anchor-id="solve">Solve</h2>
+<div id="34211aa2-8f9a-4e1d-bb55-1af32668f51e" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Qnew, Qaux <span class="op">=</span> solver.solve(mesh, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <div class="ansi-escaped-output">
-<pre>2025-07-25 15:31:45.111674: E external/xla/xla/python/profiler/internal/python_hooks.cc:412] Can't import tensorflow.python.profiler.trace
+<pre><span class="ansi-green-fg">2025-08-08 06:22:47.778</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 1, time: 0.006773, dt: 0.006773, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:46.492</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.io</span>:<span class="ansi-cyan-fg">write_dict_to_hdf5</span>:<span class="ansi-cyan-fg">50</span> - <span class="ansi-yellow-fg ansi-bold">Skipping unsupported type for key: num_flux -&gt; &lt;class 'function'&gt;</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.797</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 2, time: 0.007304, dt: 0.000532, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:46.493</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.io</span>:<span class="ansi-cyan-fg">write_dict_to_hdf5</span>:<span class="ansi-cyan-fg">50</span> - <span class="ansi-yellow-fg ansi-bold">Skipping unsupported type for key: nc_flux -&gt; &lt;class 'function'&gt;</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.817</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 3, time: 0.007836, dt: 0.000532, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:56.695</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 1, time: 0.003386, dt: 0.003386, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.841</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 4, time: 0.008368, dt: 0.000532, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:56.915</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 2, time: 0.004457, dt: 0.001071, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.858</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 5, time: 0.008899, dt: 0.000532, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:57.118</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 3, time: 0.005528, dt: 0.001071, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.879</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 6, time: 0.009431, dt: 0.000532, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:57.325</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 4, time: 0.006532, dt: 0.001003, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.897</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 7, time: 0.009962, dt: 0.000531, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:57.492</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 5, time: 0.007478, dt: 0.000946, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.918</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 8, time: 0.010494, dt: 0.000531, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:57.651</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 6, time: 0.008403, dt: 0.000925, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.942</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 9, time: 0.011025, dt: 0.000531, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:57.822</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 7, time: 0.009320, dt: 0.000917, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:47.969</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 10, time: 0.011557, dt: 0.000531, next write at time: 0.011111</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:58.009</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 8, time: 0.010232, dt: 0.000911, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.000</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 11, time: 0.012088, dt: 0.000531, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:58.220</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 9, time: 0.011127, dt: 0.000896, next write at time: 0.011111</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.042</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 12, time: 0.012620, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:58.424</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 10, time: 0.012015, dt: 0.000888, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.067</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 13, time: 0.013151, dt: 0.000531, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:58.638</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 11, time: 0.012900, dt: 0.000884, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.091</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 14, time: 0.013683, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:58.817</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 12, time: 0.013780, dt: 0.000880, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.114</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 15, time: 0.014214, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:59.017</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 13, time: 0.014650, dt: 0.000870, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.134</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 16, time: 0.014746, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:59.186</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 14, time: 0.015514, dt: 0.000864, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.152</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 17, time: 0.015277, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:59.370</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 15, time: 0.016374, dt: 0.000861, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.175</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 18, time: 0.015809, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:59.546</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 16, time: 0.017232, dt: 0.000857, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.198</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 19, time: 0.016340, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:59.725</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 17, time: 0.018083, dt: 0.000852, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.224</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 20, time: 0.016872, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:31:59.901</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 18, time: 0.018931, dt: 0.000848, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.246</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 21, time: 0.017404, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:00.084</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 19, time: 0.019777, dt: 0.000846, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.272</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 22, time: 0.017935, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:00.263</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 20, time: 0.020621, dt: 0.000844, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.294</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 23, time: 0.018467, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:00.434</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 21, time: 0.021463, dt: 0.000842, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.308</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 24, time: 0.018998, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:00.640</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 22, time: 0.022301, dt: 0.000839, next write at time: 0.022222</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.328</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 25, time: 0.019530, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:00.814</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 23, time: 0.023138, dt: 0.000837, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.343</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 26, time: 0.020061, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:00.996</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 24, time: 0.023971, dt: 0.000833, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.369</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 27, time: 0.020593, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:01.217</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 25, time: 0.024802, dt: 0.000831, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.393</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 28, time: 0.021125, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:01.399</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 26, time: 0.025632, dt: 0.000830, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.411</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 29, time: 0.021656, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:01.593</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 27, time: 0.026460, dt: 0.000828, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.425</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 30, time: 0.022188, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:01.817</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 28, time: 0.027286, dt: 0.000826, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.442</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 31, time: 0.022719, dt: 0.000532, next write at time: 0.022222</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:02.007</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 29, time: 0.028110, dt: 0.000824, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.468</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 32, time: 0.023251, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:02.229</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 30, time: 0.028934, dt: 0.000824, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.492</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 33, time: 0.023783, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:02.424</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 31, time: 0.029757, dt: 0.000823, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.520</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 34, time: 0.024314, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:02.608</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 32, time: 0.030578, dt: 0.000821, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.537</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 35, time: 0.024846, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:02.801</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 33, time: 0.031398, dt: 0.000820, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.559</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 36, time: 0.025377, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:02.977</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 34, time: 0.032216, dt: 0.000819, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.575</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 37, time: 0.025909, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:03.152</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 35, time: 0.033034, dt: 0.000818, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.596</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 38, time: 0.026441, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:03.333</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 36, time: 0.033851, dt: 0.000817, next write at time: 0.033333</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.613</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 39, time: 0.026972, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:03.543</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 37, time: 0.034667, dt: 0.000816, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.631</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 40, time: 0.027504, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:03.726</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 38, time: 0.035482, dt: 0.000815, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.650</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 41, time: 0.028035, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:03.902</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 39, time: 0.036296, dt: 0.000814, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.668</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 42, time: 0.028567, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:04.089</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 40, time: 0.037110, dt: 0.000814, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.688</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 43, time: 0.029099, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:04.255</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 41, time: 0.037924, dt: 0.000814, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.717</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 44, time: 0.029630, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:04.467</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 42, time: 0.038736, dt: 0.000813, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.738</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 45, time: 0.030162, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:04.683</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 43, time: 0.039548, dt: 0.000812, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.761</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 46, time: 0.030693, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:04.916</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 44, time: 0.040359, dt: 0.000811, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.775</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 47, time: 0.031225, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:05.095</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 45, time: 0.041170, dt: 0.000811, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.791</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 48, time: 0.031757, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:05.286</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 46, time: 0.041980, dt: 0.000810, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.812</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 49, time: 0.032288, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:05.450</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 47, time: 0.042790, dt: 0.000810, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.828</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 50, time: 0.032820, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:05.647</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 48, time: 0.043599, dt: 0.000809, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.852</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 51, time: 0.033351, dt: 0.000532, next write at time: 0.033333</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:05.846</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 49, time: 0.044408, dt: 0.000809, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.874</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 52, time: 0.033883, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:06.032</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 50, time: 0.045216, dt: 0.000809, next write at time: 0.044444</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.893</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 53, time: 0.034415, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:06.236</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 51, time: 0.046025, dt: 0.000808, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.909</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 54, time: 0.034946, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:06.443</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 52, time: 0.046832, dt: 0.000808, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.933</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 55, time: 0.035478, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:06.632</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 53, time: 0.047640, dt: 0.000807, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.954</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 56, time: 0.036009, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:06.839</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 54, time: 0.048446, dt: 0.000807, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.975</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 57, time: 0.036541, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:07.050</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 55, time: 0.049253, dt: 0.000807, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:48.996</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 58, time: 0.037073, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:07.237</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 56, time: 0.050059, dt: 0.000806, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.012</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 59, time: 0.037604, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:07.463</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 57, time: 0.050865, dt: 0.000806, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.036</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 60, time: 0.038136, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:07.639</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 58, time: 0.051671, dt: 0.000806, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.052</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 61, time: 0.038667, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:07.863</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 59, time: 0.052476, dt: 0.000805, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.076</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 62, time: 0.039199, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:08.038</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 60, time: 0.053281, dt: 0.000805, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.091</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 63, time: 0.039731, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:08.222</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 61, time: 0.054086, dt: 0.000805, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.114</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 64, time: 0.040262, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:08.406</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 62, time: 0.054891, dt: 0.000805, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.131</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 65, time: 0.040794, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:08.589</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 63, time: 0.055695, dt: 0.000804, next write at time: 0.055556</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.150</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 66, time: 0.041325, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:08.800</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 64, time: 0.056499, dt: 0.000804, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.168</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 67, time: 0.041857, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:09.003</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 65, time: 0.057303, dt: 0.000804, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.194</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 68, time: 0.042389, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:09.257</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 66, time: 0.058107, dt: 0.000804, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.241</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 69, time: 0.042920, dt: 0.000532, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:09.483</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 67, time: 0.058910, dt: 0.000803, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.280</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 70, time: 0.043451, dt: 0.000531, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:09.706</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 68, time: 0.059713, dt: 0.000803, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.304</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 71, time: 0.043980, dt: 0.000529, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:09.927</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 69, time: 0.060516, dt: 0.000803, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.320</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 72, time: 0.044509, dt: 0.000528, next write at time: 0.044444</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:10.134</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 70, time: 0.061319, dt: 0.000803, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.341</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 73, time: 0.045035, dt: 0.000526, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:10.325</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 71, time: 0.062121, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.358</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 74, time: 0.045560, dt: 0.000525, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:10.502</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 72, time: 0.062923, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.379</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 75, time: 0.046083, dt: 0.000523, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:10.713</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 73, time: 0.063726, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.397</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 76, time: 0.046606, dt: 0.000523, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:10.945</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 74, time: 0.064528, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.425</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 77, time: 0.047127, dt: 0.000521, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:11.165</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 75, time: 0.065330, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.441</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 78, time: 0.047647, dt: 0.000521, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:11.386</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 76, time: 0.066132, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.461</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 79, time: 0.048166, dt: 0.000519, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:11.618</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 77, time: 0.066933, dt: 0.000802, next write at time: 0.066667</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.484</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 80, time: 0.048685, dt: 0.000518, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:11.836</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 78, time: 0.067735, dt: 0.000802, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.501</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 81, time: 0.049201, dt: 0.000517, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:12.018</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 79, time: 0.068536, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.527</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 82, time: 0.049718, dt: 0.000517, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:12.237</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 80, time: 0.069337, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.548</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 83, time: 0.050234, dt: 0.000516, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:12.451</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 81, time: 0.070138, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.569</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 84, time: 0.050750, dt: 0.000516, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:12.675</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 82, time: 0.070939, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.591</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 85, time: 0.051265, dt: 0.000515, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:12.866</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 83, time: 0.071740, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.612</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 86, time: 0.051780, dt: 0.000514, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:13.084</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 84, time: 0.072541, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.648</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 87, time: 0.052293, dt: 0.000513, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:13.350</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 85, time: 0.073341, dt: 0.000801, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.671</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 88, time: 0.052807, dt: 0.000514, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:13.557</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 86, time: 0.074142, dt: 0.000800, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.688</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 89, time: 0.053321, dt: 0.000514, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:13.774</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 87, time: 0.074942, dt: 0.000800, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.708</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 90, time: 0.053834, dt: 0.000514, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:14.025</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 88, time: 0.075742, dt: 0.000800, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.731</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 91, time: 0.054347, dt: 0.000513, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:14.230</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 89, time: 0.076543, dt: 0.000800, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.747</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 92, time: 0.054860, dt: 0.000513, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:14.436</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 90, time: 0.077343, dt: 0.000800, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.765</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 93, time: 0.055372, dt: 0.000512, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:14.669</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 91, time: 0.078143, dt: 0.000800, next write at time: 0.077778</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.783</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 94, time: 0.055885, dt: 0.000513, next write at time: 0.055556</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:14.893</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 92, time: 0.078943, dt: 0.000800, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.804</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 95, time: 0.056398, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:15.112</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 93, time: 0.079743, dt: 0.000800, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.827</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 96, time: 0.056910, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:15.344</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 94, time: 0.080543, dt: 0.000800, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.852</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 97, time: 0.057422, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:15.569</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 95, time: 0.081342, dt: 0.000800, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.886</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 98, time: 0.057934, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:15.807</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 96, time: 0.082142, dt: 0.000800, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.907</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 99, time: 0.058445, dt: 0.000511, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:16.049</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 97, time: 0.082941, dt: 0.000800, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.931</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 100, time: 0.058959, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:16.257</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 98, time: 0.083741, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.946</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 101, time: 0.059472, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:16.446</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 99, time: 0.084540, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.965</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 102, time: 0.059983, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:16.677</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 100, time: 0.085339, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:49.987</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 103, time: 0.060495, dt: 0.000511, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:16.876</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 101, time: 0.086139, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.005</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 104, time: 0.061007, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:17.062</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 102, time: 0.086938, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.024</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 105, time: 0.061519, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:17.263</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 103, time: 0.087737, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.041</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 106, time: 0.062032, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:17.481</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 104, time: 0.088535, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.059</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 107, time: 0.062544, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:17.707</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 105, time: 0.089334, dt: 0.000799, next write at time: 0.088889</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.080</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 108, time: 0.063056, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:17.899</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 106, time: 0.090133, dt: 0.000799, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.097</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 109, time: 0.063567, dt: 0.000511, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:18.093</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 107, time: 0.090932, dt: 0.000799, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.121</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 110, time: 0.064080, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:18.296</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 108, time: 0.091730, dt: 0.000799, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.141</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 111, time: 0.064593, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:18.542</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 109, time: 0.092529, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.162</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 112, time: 0.065106, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:18.737</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 110, time: 0.093327, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.182</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 113, time: 0.065617, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:18.952</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 111, time: 0.094125, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.201</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 114, time: 0.066129, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:19.176</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 112, time: 0.094923, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.220</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 115, time: 0.066641, dt: 0.000512, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:19.402</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 113, time: 0.095722, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.238</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 116, time: 0.067154, dt: 0.000513, next write at time: 0.066667</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:19.614</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 114, time: 0.096520, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.258</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 117, time: 0.067666, dt: 0.000512, next write at time: 0.077778</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:20.014</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 115, time: 0.097318, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.279</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 118, time: 0.068178, dt: 0.000512, next write at time: 0.077778</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:20.311</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 116, time: 0.098116, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.293</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 119, time: 0.068689, dt: 0.000511, next write at time: 0.077778</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:20.701</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 117, time: 0.098913, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.314</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 120, time: 0.069203, dt: 0.000513, next write at time: 0.077778</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:21.031</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 118, time: 0.099711, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.342</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 121, time: 0.069715, dt: 0.000513, next write at time: 0.077778</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:21.260</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback</span>:<span class="ansi-cyan-fg">37</span> - <span class="ansi-bold">iteration: 119, time: 0.100509, dt: 0.000798, next write at time: 0.100000</span>
+<span class="ansi-green-fg">2025-08-08 06:22:50.365</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 122, time: 0.070227, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.382</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 123, time: 0.070738, dt: 0.000511, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.405</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 124, time: 0.071250, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.418</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 125, time: 0.071762, dt: 0.000511, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.445</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 126, time: 0.072274, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.461</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 127, time: 0.072786, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.478</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 128, time: 0.073297, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.501</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 129, time: 0.073808, dt: 0.000511, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.525</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 130, time: 0.074321, dt: 0.000513, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.547</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 131, time: 0.074834, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.572</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 132, time: 0.075345, dt: 0.000511, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.601</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 133, time: 0.075856, dt: 0.000511, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.623</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 134, time: 0.076368, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.642</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 135, time: 0.076879, dt: 0.000511, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.664</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 136, time: 0.077391, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.689</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 137, time: 0.077902, dt: 0.000512, next write at time: 0.077778</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.716</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 138, time: 0.078414, dt: 0.000511, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.751</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 139, time: 0.078925, dt: 0.000511, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.769</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 140, time: 0.079438, dt: 0.000513, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.793</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 141, time: 0.079950, dt: 0.000512, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.815</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 142, time: 0.080462, dt: 0.000512, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.837</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 143, time: 0.080973, dt: 0.000511, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.892</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 144, time: 0.081485, dt: 0.000512, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.918</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 145, time: 0.081997, dt: 0.000512, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.946</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 146, time: 0.082510, dt: 0.000513, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.963</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 147, time: 0.083023, dt: 0.000513, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:50.983</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 148, time: 0.083535, dt: 0.000512, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.007</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 149, time: 0.084047, dt: 0.000512, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.025</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 150, time: 0.084561, dt: 0.000514, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.046</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 151, time: 0.085074, dt: 0.000513, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.064</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 152, time: 0.085588, dt: 0.000514, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.091</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 153, time: 0.086102, dt: 0.000514, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.110</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 154, time: 0.086615, dt: 0.000513, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.132</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 155, time: 0.087128, dt: 0.000513, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.148</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 156, time: 0.087645, dt: 0.000517, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.167</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 157, time: 0.088161, dt: 0.000516, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.193</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 158, time: 0.088677, dt: 0.000515, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.208</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 159, time: 0.089192, dt: 0.000515, next write at time: 0.088889</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.234</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 160, time: 0.089707, dt: 0.000516, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.259</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 161, time: 0.090223, dt: 0.000516, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.286</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 162, time: 0.090741, dt: 0.000517, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.320</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 163, time: 0.091257, dt: 0.000516, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.344</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 164, time: 0.091772, dt: 0.000515, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.365</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 165, time: 0.092287, dt: 0.000515, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.391</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 166, time: 0.092801, dt: 0.000514, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.408</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 167, time: 0.093315, dt: 0.000514, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.427</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 168, time: 0.093829, dt: 0.000514, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.447</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 169, time: 0.094343, dt: 0.000514, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.464</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 170, time: 0.094856, dt: 0.000513, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.493</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 171, time: 0.095368, dt: 0.000513, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.509</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 172, time: 0.095881, dt: 0.000513, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.530</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 173, time: 0.096393, dt: 0.000512, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.549</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 174, time: 0.096906, dt: 0.000513, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.587</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 175, time: 0.097420, dt: 0.000513, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.605</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 176, time: 0.097932, dt: 0.000512, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.626</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 177, time: 0.098444, dt: 0.000512, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.645</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 178, time: 0.098956, dt: 0.000512, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.663</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 179, time: 0.099468, dt: 0.000512, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.681</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 180, time: 0.099981, dt: 0.000514, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.703</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_hyperbolic</span>:<span class="ansi-cyan-fg">43</span> - <span class="ansi-bold">iteration: 181, time: 0.100495, dt: 0.000513, next write at time: 0.100000</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:51.733</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.fvm.solver</span>:<span class="ansi-cyan-fg">log_callback_execution_time</span>:<span class="ansi-cyan-fg">55</span> - <span class="ansi-bold">Finished simulation with in 4.893 seconds</span>
 </pre>
 </div>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Runtime: 35.05084300041199</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>2025-07-25 15:32:21.711860: E external/xla/xla/python/profiler/internal/python_hooks.cc:412] Can't import tensorflow.python.profiler.trace</code></pre>
-</div>
-</div>
-<div id="91f0af61" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>postprocessing.vtk_interpolate_3d(model, settings, Nz<span class="op">=</span><span class="dv">20</span>, filename<span class="op">=</span><span class="st">'out_3d'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="visualization" class="level2">
+<h2 class="anchored" data-anchor-id="visualization">Visualization</h2>
+<div id="91f0af61" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>output<span class="sc">.</span>filename<span class="sc">}</span><span class="ss">.h5"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>postprocessing.vtk_interpolate_3d(model, settings, Nz<span class="op">=</span><span class="dv">20</span>, filename<span class="op">=</span><span class="st">'out_3d'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">2025-07-25 15:32:48.712</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 0/10</span>
+<pre><span class="ansi-green-fg">2025-08-08 06:22:58.053</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 0/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.742</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 1/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.079</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 1/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.770</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 2/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.102</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 2/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.800</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 3/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.125</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 3/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.832</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 4/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.151</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 4/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.865</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 5/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.179</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 5/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.898</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 6/10</span>
-</pre>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>converted 0
-converted 1
-converted 2
-converted 3
-converted 4
-converted 5
-converted 6</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">2025-07-25 15:32:48.931</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 7/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.207</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 6/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.965</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 8/10</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.233</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 7/10</span>
 
-<span class="ansi-green-fg">2025-07-25 15:32:48.998</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">64</span> - <span class="ansi-bold">Converted snapshot 9/10</span>
-</pre>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>converted 7
-converted 8
-converted 9</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">2025-07-25 15:32:49.742</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">67</span> - <span class="ansi-bold">Output is written to: /home/ingo/Git/Zoomy/outputs/junction_4/out_3d.h5/out_3d.*.vtk</span>
+<span class="ansi-green-fg">2025-08-08 06:22:58.258</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 8/10</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:58.284</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">62</span> - <span class="ansi-bold">Converted snapshot 9/10</span>
+
+<span class="ansi-green-fg">2025-08-08 06:22:59.128</span> | <span class="ansi-bold">INFO    </span> | <span class="ansi-cyan-fg">library.postprocessing.postprocessing</span>:<span class="ansi-cyan-fg">vtk_interpolate_3d</span>:<span class="ansi-cyan-fg">65</span> - <span class="ansi-bold">Output is written to: /home/ingo/Git/Zoomy/outputs/junction_0/out_3d.h5/out_3d.*.vtk</span>
 </pre>
 </div>
 </div>
 </div>
-<div id="9998344a" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>visu.pyvista_3d(settings.output.directory, scale<span class="op">=</span><span class="fl">1.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div id="9998344a" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>visu.pyvista_3d(settings.output.directory, scale<span class="op">=</span><span class="fl">1.0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id":"20506cd5615049a0a76644d4040580ff","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
+{"model_id":"3d28911d68f645ff9f2d6be72031891a","version_major":2,"version_minor":0,"quarto_mimetype":"application/vnd.jupyter.widget-view+json"}
 </script>
 </div>
 </div>

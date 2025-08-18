@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.7.33">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -74,10 +74,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5e55b319c65dd65de41cfb485baffa3d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-94b94ef0a96b463afeb049f9cb89c0a0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
@@ -371,7 +371,7 @@ Reference
 </div>
 <section id="imports" class="level2">
 <h2 class="anchored" data-anchor-id="imports">Imports</h2>
-<div id="4f583c96" class="cell" data-execution_count="2">
+<div id="4f583c96" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>Load packages</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
@@ -380,23 +380,23 @@ Reference
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> jax <span class="im">import</span> numpy <span class="im">as</span> jnp</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pytest</span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> types <span class="im">import</span> SimpleNamespace</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> cos, pi</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> cos, pi, Matrix</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Solver, Settings</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> HyperbolicSolver, Settings</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.ode <span class="im">import</span> RK1</span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.reconstruction <span class="im">as</span> recon</span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.timestepping <span class="im">as</span> timestepping</span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.flux <span class="im">as</span> flux</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.fvm.nonconservative_flux <span class="im">as</span> nc_flux</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.boundary_conditions <span class="im">import</span> BoundaryCondition</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.basisfunctions <span class="im">import</span> Basisfunction, Legendre_shifted</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.basismatrices <span class="im">import</span> Basismatrices</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.model <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.misc.io <span class="im">as</span> io</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> compute_derivatives</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.base <span class="im">import</span> Model</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> attr <span class="im">import</span> field, define</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># from library.model.model import *</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.misc.io <span class="im">as</span> io</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> compute_derivatives</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.misc.misc <span class="im">import</span> Zstruct</span>
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tests.pdesoft <span class="im">import</span> plots_paper</span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
@@ -406,225 +406,100 @@ Reference
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> argparse</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<div id="9d8b0a27" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> BC.BoundaryConditions(</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    [</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"top"</span>),</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"bottom"</span>),</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"left"</span>),</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"right"</span>),</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<div id="9155543c" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">@define</span>(frozen<span class="op">=</span><span class="va">True</span>, slots<span class="op">=</span><span class="va">True</span>, kw_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SWE(Model):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    dimension: <span class="bu">int</span> <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    variables: Zstruct <span class="op">=</span> field(init<span class="op">=</span><span class="va">False</span>, default<span class="op">=</span>dimension <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    aux_variables: Zstruct <span class="op">=</span> field(default<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    _default_parameters: <span class="bu">dict</span> <span class="op">=</span> field(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>        init<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>        factory<span class="op">=</span><span class="kw">lambda</span>: {<span class="st">"g"</span>: <span class="fl">9.81</span>, <span class="st">"ex"</span>: <span class="fl">0.0</span>, <span class="st">"ey"</span>: <span class="fl">0.0</span>, <span class="st">"ez"</span>: <span class="fl">1.0</span>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic(x):</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">3</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>] <span class="op">&lt;</span> <span class="fl">5.</span>, <span class="fl">0.005</span>, <span class="fl">0.001</span>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(custom_ic)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ShallowWater2d(</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    aux_fields<span class="op">=</span>[<span class="st">'dudx'</span>, <span class="st">'dvdy'</span>],</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    parameters<span class="op">=</span>{<span class="st">'g'</span>: <span class="fl">9.81</span>},</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    settings<span class="op">=</span>{},</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_quad_2d/mesh.msh"</span>)</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SWESolver(Solver):</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        dudx <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">0</span>]])[:,<span class="dv">0</span>]</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        dvdy <span class="op">=</span> compute_derivatives(Q[<span class="dv">2</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">1</span>]])[:,<span class="dv">0</span>]</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dudx)</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(dvdy)</span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"ShallowWater"</span>,</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>    compute_dt<span class="op">=</span>timestepping.adaptive(CFL<span class="op">=</span><span class="fl">0.45</span>),</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>    time_end<span class="op">=</span><span class="fl">6.0</span>,</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>    output_snapshots<span class="op">=</span><span class="dv">100</span>,</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    output_dir<span class="op">=</span><span class="ss">f"outputs/shallow_water"</span>,</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co"># mesh = convert_mesh_to_jax(mesh)</span></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> SWESolver()</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>Qnew, Qaux <span class="op">=</span> solver.jax_fvm_unsteady_semidiscrete(mesh, model, settings)</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>io.generate_vtk(os.path.join(settings.output.directory, <span class="ss">f"</span><span class="sc">{</span>settings<span class="sc">.</span>name<span class="sc">}</span><span class="ss">.h5"</span>))</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a><span class="co"># postprocessing.vtk_interpolate_3d(model, settings.output.directory,  os.path.join(settings.output.directory, f"{settings.name}.h5"), scale_h=100.)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> interpolate_3d(<span class="va">self</span>):</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> Matrix([<span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>)])</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>        dim <span class="op">=</span> <span class="va">self</span>.dimension</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> <span class="va">self</span>.position_3d[<span class="dv">0</span>]</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> <span class="va">self</span>.position_3d[<span class="dv">1</span>]</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>        z <span class="op">=</span> <span class="va">self</span>.position_3d[<span class="dv">2</span>]</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="va">self</span>.variables[<span class="dv">0</span>]</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>        U <span class="op">=</span> [hu <span class="op">/</span> h <span class="cf">for</span> hu <span class="kw">in</span> <span class="va">self</span>.variables[<span class="dv">1</span>:<span class="dv">1</span><span class="op">+</span>dim]]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>        rho_w <span class="op">=</span> <span class="fl">1000.</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>        g <span class="op">=</span> <span class="fl">9.81</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>        out[<span class="dv">0</span>] <span class="op">=</span> h</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>        out[<span class="dv">1</span>] <span class="op">=</span> U[<span class="dv">0</span>]</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>        out[<span class="dv">2</span>] <span class="op">=</span> <span class="dv">0</span> <span class="cf">if</span> dim <span class="op">==</span> <span class="dv">1</span> <span class="cf">else</span> U[<span class="dv">1</span>]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>        out[<span class="dv">3</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>        out[<span class="dv">4</span>] <span class="op">=</span> rho_w <span class="op">*</span> g <span class="op">*</span> h <span class="op">*</span> (<span class="dv">1</span><span class="op">-</span>z)</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> out</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> flux(<span class="va">self</span>):</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>        dim <span class="op">=</span> <span class="va">self</span>.dimension</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>        h <span class="op">=</span> <span class="va">self</span>.variables[<span class="dv">0</span>]</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>        U <span class="op">=</span> Matrix([hu <span class="op">/</span> h <span class="cf">for</span> hu <span class="kw">in</span> <span class="va">self</span>.variables[<span class="dv">1</span>:<span class="dv">1</span><span class="op">+</span>dim]])</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>        g <span class="op">=</span> <span class="va">self</span>.parameters.g</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        I <span class="op">=</span> Matrix.eye(dim)</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        F <span class="op">=</span> Matrix.zeros(<span class="va">self</span>.variables.length(), dim)</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>        F[<span class="dv">0</span>, :] <span class="op">=</span> (h <span class="op">*</span> U).T</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>        F[<span class="dv">1</span>:, :] <span class="op">=</span> h <span class="op">*</span> U <span class="op">*</span> U.T <span class="op">+</span> g<span class="op">/</span><span class="dv">2</span> <span class="op">*</span> h<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> I</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> [F[:, d] <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(dim)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9d8b0a27" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"top"</span>),</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"bottom"</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"left"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"right"</span>),</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic(x):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">3</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>] <span class="op">&lt;</span> <span class="fl">5.</span>, <span class="fl">0.005</span>, <span class="fl">0.001</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(custom_ic)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> SWE(</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    dimension<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"SMS"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_quad_2d/mesh.msh"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> SWESolver(HyperbolicSolver):</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_qaux(<span class="va">self</span>, Q, Qaux, Qold, Qauxold, mesh, model, parameters, time, dt):</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>        dudx <span class="op">=</span> compute_derivatives(Q[<span class="dv">1</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">0</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>        dvdy <span class="op">=</span> compute_derivatives(Q[<span class="dv">2</span>]<span class="op">/</span>Q[<span class="dv">0</span>], mesh, derivatives_multi_index<span class="op">=</span>[[<span class="dv">0</span>, <span class="dv">1</span>]])[:,<span class="dv">0</span>]</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">0</span>].<span class="bu">set</span>(dudx)</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a>        Qaux <span class="op">=</span> Qaux.at[<span class="dv">1</span>].<span class="bu">set</span>(dvdy)</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Qaux</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(name<span class="op">=</span><span class="st">"ShallowWater"</span>, output<span class="op">=</span>Zstruct(directory<span class="op">=</span><span class="st">"outputs/shallow_water"</span>, filename<span class="op">=</span><span class="st">"swe.h5"</span>))</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> SWESolver(time_end<span class="op">=</span><span class="dv">6</span>, settings<span class="op">=</span>settings)</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>Qnew, Qaux <span class="op">=</span> solver.solve(mesh, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-iteration: 1.0, time: 0.05079640961073845, dt: 0.05079640961073845, time_stamp: 0.06060606060606061
-iteration: 2.0, time: 0.0991940721178376, dt: 0.04839766250709915, time_stamp: 0.06060606060606061
-iteration: 3.0, time: 0.14579477311657857, dt: 0.04660070099874097, time_stamp: 0.12121212121212122
-iteration: 4.0, time: 0.19028957823327008, dt: 0.04449480511669153, time_stamp: 0.18181818181818182
-iteration: 5.0, time: 0.23328284656189519, dt: 0.04299326832862509, time_stamp: 0.24242424242424243
-iteration: 6.0, time: 0.2754901588138796, dt: 0.042207312251984444, time_stamp: 0.24242424242424243
-iteration: 7.0, time: 0.3172462506893789, dt: 0.041756091875499265, time_stamp: 0.30303030303030304
-iteration: 8.0, time: 0.3587249754090554, dt: 0.04147872471967653, time_stamp: 0.36363636363636365
-iteration: 9.0, time: 0.4000214868397614, dt: 0.04129651143070602, time_stamp: 0.36363636363636365
-iteration: 10.0, time: 0.44118977018028377, dt: 0.04116828334052236, time_stamp: 0.42424242424242425
-iteration: 11.0, time: 0.48203506240459904, dt: 0.04084529222431529, time_stamp: 0.48484848484848486
-iteration: 12.0, time: 0.5226593328977397, dt: 0.04062427049314063, time_stamp: 0.48484848484848486
-iteration: 13.0, time: 0.5631438669003792, dt: 0.040484534002639475, time_stamp: 0.5454545454545454
-iteration: 14.0, time: 0.6035373174712221, dt: 0.04039345057084283, time_stamp: 0.6060606060606061
-iteration: 15.0, time: 0.6438691156623952, dt: 0.04033179819117317, time_stamp: 0.6060606060606061
-iteration: 16.0, time: 0.6841539681309067, dt: 0.04028485246851143, time_stamp: 0.6666666666666667
-iteration: 17.0, time: 0.7243201235067479, dt: 0.04016615537584122, time_stamp: 0.7272727272727273
-iteration: 18.0, time: 0.7644074432449691, dt: 0.04008731973822123, time_stamp: 0.7272727272727273
-iteration: 19.0, time: 0.8044411964328892, dt: 0.040033753187920074, time_stamp: 0.7878787878787878
-iteration: 20.0, time: 0.8444375290913463, dt: 0.039996332658457034, time_stamp: 0.8484848484848485
-iteration: 21.0, time: 0.8844068558161228, dt: 0.03996932672477648, time_stamp: 0.8484848484848485
-iteration: 22.0, time: 0.9243543866976989, dt: 0.039947530881576106, time_stamp: 0.9090909090909092
-iteration: 23.0, time: 0.9642546620693818, dt: 0.039900275371682975, time_stamp: 0.9696969696969697
-iteration: 24.0, time: 1.0041211002673593, dt: 0.03986643819797744, time_stamp: 0.9696969696969697
-iteration: 25.0, time: 1.0439626355078317, dt: 0.03984153524047239, time_stamp: 1.0303030303030303
-iteration: 26.0, time: 1.0837852907258283, dt: 0.039822655217996515, time_stamp: 1.0909090909090908
-iteration: 27.0, time: 1.1235931888268273, dt: 0.039807898100998995, time_stamp: 1.0909090909090908
-iteration: 28.0, time: 1.1633892040216158, dt: 0.039796015194788543, time_stamp: 1.1515151515151516
-iteration: 29.0, time: 1.2031703615791722, dt: 0.03978115755755646, time_stamp: 1.2121212121212122
-iteration: 30.0, time: 1.242933949286784, dt: 0.039763587707611736, time_stamp: 1.2121212121212122
-iteration: 31.0, time: 1.2826834833598941, dt: 0.03974953407311023, time_stamp: 1.2727272727272727
-iteration: 32.0, time: 1.3224214768222902, dt: 0.03973799346239607, time_stamp: 1.3333333333333335
-iteration: 33.0, time: 1.362149765508259, dt: 0.03972828868596884, time_stamp: 1.3333333333333335
-iteration: 34.0, time: 1.4018697227685186, dt: 0.039719957260259564, time_stamp: 1.393939393939394
-iteration: 35.0, time: 1.441582401480723, dt: 0.03971267871220439, time_stamp: 1.4545454545454546
-iteration: 36.0, time: 1.4812886285642999, dt: 0.03970622708357683, time_stamp: 1.4545454545454546
-iteration: 37.0, time: 1.5209890684209386, dt: 0.039700439856638826, time_stamp: 1.5151515151515151
-iteration: 38.0, time: 1.56068165260948, dt: 0.03969258418854139, time_stamp: 1.5757575757575757
-iteration: 39.0, time: 1.6003670165923733, dt: 0.03968536398289325, time_stamp: 1.5757575757575757
-iteration: 40.0, time: 1.6400459065877317, dt: 0.03967888999535836, time_stamp: 1.6363636363636365
-iteration: 41.0, time: 1.679718934015696, dt: 0.039673027427964136, time_stamp: 1.696969696969697
-iteration: 42.0, time: 1.7193866100181454, dt: 0.03966767600244958, time_stamp: 1.696969696969697
-iteration: 43.0, time: 1.7590493693950937, dt: 0.03966275937694835, time_stamp: 1.7575757575757576
-iteration: 44.0, time: 1.7987075874608518, dt: 0.039658218065758054, time_stamp: 1.8181818181818183
-iteration: 45.0, time: 1.8383615921295489, dt: 0.03965400466869706, time_stamp: 1.8181818181818183
-iteration: 46.0, time: 1.8780116727557696, dt: 0.039650080626220836, time_stamp: 1.878787878787879
-iteration: 47.0, time: 1.9176580867417938, dt: 0.03964641398602423, time_stamp: 1.878787878787879
-iteration: 48.0, time: 1.9573010645854727, dt: 0.03964297784367881, time_stamp: 1.9393939393939394
-iteration: 49.0, time: 1.9969408138210845, dt: 0.03963974923561171, time_stamp: 2.0
-iteration: 50.0, time: 2.036577522159523, dt: 0.03963670833843859, time_stamp: 2.0
-iteration: 51.0, time: 2.076210738009337, dt: 0.039633215849813774, time_stamp: 2.0606060606060606
-iteration: 52.0, time: 2.1158404308973346, dt: 0.039629692887997704, time_stamp: 2.121212121212121
-iteration: 53.0, time: 2.155466801811092, dt: 0.0396263709137573, time_stamp: 2.121212121212121
-iteration: 54.0, time: 2.1950900343544415, dt: 0.03962323254334976, time_stamp: 2.1818181818181817
-iteration: 55.0, time: 2.234710296837744, dt: 0.03962026248330247, time_stamp: 2.2424242424242427
-iteration: 56.0, time: 2.2743277440122194, dt: 0.03961744717447548, time_stamp: 2.2424242424242427
-iteration: 57.0, time: 2.3139425185306397, dt: 0.03961477451842019, time_stamp: 2.303030303030303
-iteration: 58.0, time: 2.3535547521933773, dt: 0.03961223366273744, time_stamp: 2.3636363636363638
-iteration: 59.0, time: 2.393164567022868, dt: 0.03960981482949071, time_stamp: 2.3636363636363638
-iteration: 60.0, time: 2.4327720761985043, dt: 0.03960750917563649, time_stamp: 2.4242424242424243
-iteration: 61.0, time: 2.472377384876233, dt: 0.039605308677728546, time_stamp: 2.484848484848485
-iteration: 62.0, time: 2.5119805909116137, dt: 0.03960320603538091, time_stamp: 2.484848484848485
-iteration: 63.0, time: 2.5515817855011096, dt: 0.03960119458949585, time_stamp: 2.5454545454545454
-iteration: 64.0, time: 2.5911810537534237, dt: 0.039599268252313885, time_stamp: 2.606060606060606
-iteration: 65.0, time: 2.6307784752005, dt: 0.039597421447076654, time_stamp: 2.606060606060606
-iteration: 66.0, time: 2.6703741242561145, dt: 0.0395956490556145, time_stamp: 2.666666666666667
-iteration: 67.0, time: 2.7099680706286597, dt: 0.03959394637254521, time_stamp: 2.7272727272727275
-iteration: 68.0, time: 2.749560379693705, dt: 0.039592309065045246, time_stamp: 2.7272727272727275
-iteration: 69.0, time: 2.789151112831064, dt: 0.039590733137359016, time_stamp: 2.787878787878788
-iteration: 70.0, time: 2.828740070794836, dt: 0.039588957963772105, time_stamp: 2.8484848484848486
-iteration: 71.0, time: 2.8683272673047537, dt: 0.03958719650991756, time_stamp: 2.8484848484848486
-iteration: 72.0, time: 2.9079127687014177, dt: 0.039585501396663995, time_stamp: 2.909090909090909
-iteration: 73.0, time: 2.947496637579796, dt: 0.039583868878378586, time_stamp: 2.909090909090909
-iteration: 74.0, time: 2.987078933055725, dt: 0.03958229547592895, time_stamp: 2.9696969696969697
-iteration: 75.0, time: 3.0266597110093247, dt: 0.039580777953599676, time_stamp: 3.0303030303030303
-iteration: 76.0, time: 3.066239024307757, dt: 0.0395793132984323, time_stamp: 3.0303030303030303
-iteration: 77.0, time: 3.105816923009438, dt: 0.03957789870168091, time_stamp: 3.090909090909091
-iteration: 78.0, time: 3.1453934545515603, dt: 0.03957653154212224, time_stamp: 3.1515151515151514
-iteration: 79.0, time: 3.184968663922558, dt: 0.03957520937099773, time_stamp: 3.1515151515151514
-iteration: 80.0, time: 3.2245425938209547, dt: 0.039573929898396976, time_stamp: 3.2121212121212124
-iteration: 81.0, time: 3.2641152848018726, dt: 0.039572690980918146, time_stamp: 3.272727272727273
-iteration: 82.0, time: 3.303686775412336, dt: 0.03957149061046341, time_stamp: 3.272727272727273
-iteration: 83.0, time: 3.343257102316382, dt: 0.03957032690404585, time_stamp: 3.3333333333333335
-iteration: 84.0, time: 3.3828263004108825, dt: 0.03956919809450041, time_stamp: 3.393939393939394
-iteration: 85.0, time: 3.422394402932887, dt: 0.03956810252200482, time_stamp: 3.393939393939394
-iteration: 86.0, time: 3.461961441559215, dt: 0.03956703862632778, time_stamp: 3.4545454545454546
-iteration: 87.0, time: 3.501527446498947, dt: 0.039566004939731864, time_stamp: 3.515151515151515
-iteration: 88.0, time: 3.541092446579414, dt: 0.03956500008046681, time_stamp: 3.515151515151515
-iteration: 89.0, time: 3.58065646932621, dt: 0.039564022746796206, time_stamp: 3.5757575757575757
-iteration: 90.0, time: 3.6202195410377174, dt: 0.039563071711507095, time_stamp: 3.6363636363636367
-iteration: 91.0, time: 3.6597816868545747, dt: 0.03956214581685738, time_stamp: 3.6363636363636367
-iteration: 92.0, time: 3.6993429308244954, dt: 0.0395612439699208, time_stamp: 3.6969696969696972
-iteration: 93.0, time: 3.7389032959627886, dt: 0.039560365138293405, time_stamp: 3.757575757575758
-iteration: 94.0, time: 3.778462804308918, dt: 0.03955950834612947, time_stamp: 3.757575757575758
-iteration: 95.0, time: 3.8180214769793954, dt: 0.0395586726704776, time_stamp: 3.8181818181818183
-iteration: 96.0, time: 3.857579270469782, dt: 0.03955779349038665, time_stamp: 3.8181818181818183
-iteration: 97.0, time: 3.8971361583288484, dt: 0.039556887859066255, time_stamp: 3.878787878787879
-iteration: 98.0, time: 3.936692163518615, dt: 0.039556005189766506, time_stamp: 3.9393939393939394
-iteration: 99.0, time: 3.976247308091826, dt: 0.039555144573211284, time_stamp: 3.9393939393939394
-iteration: 100.0, time: 4.0158016132377385, dt: 0.03955430514591276, time_stamp: 4.0
-iteration: 101.0, time: 4.055355099325152, dt: 0.03955348608741352, time_stamp: 4.0606060606060606
-iteration: 102.0, time: 4.094907785942875, dt: 0.039552686617723404, time_stamp: 4.0606060606060606
-iteration: 103.0, time: 4.134459691937811, dt: 0.039551905994935195, time_stamp: 4.121212121212121
-iteration: 104.0, time: 4.174010835450815, dt: 0.03955114351300451, time_stamp: 4.181818181818182
-iteration: 105.0, time: 4.213561233950497, dt: 0.03955039849968128, time_stamp: 4.181818181818182
-iteration: 106.0, time: 4.253110904265077, dt: 0.039549670314580454, time_stamp: 4.242424242424242
-iteration: 107.0, time: 4.292659862612458, dt: 0.03954895834738135, time_stamp: 4.303030303030303
-iteration: 108.0, time: 4.332208124628604, dt: 0.039548262016145634, time_stamp: 4.303030303030303
-iteration: 109.0, time: 4.3717557053943485, dt: 0.03954758076574494, time_stamp: 4.363636363636363
-iteration: 110.0, time: 4.411302619460739, dt: 0.03954691406638984, time_stamp: 4.424242424242425
-iteration: 111.0, time: 4.450848880872991, dt: 0.03954626141225272, time_stamp: 4.424242424242425
-iteration: 112.0, time: 4.490394503193168, dt: 0.03954562232017737, time_stamp: 4.484848484848485
-iteration: 113.0, time: 4.529939499521638, dt: 0.03954499632846941, time_stamp: 4.545454545454546
-iteration: 114.0, time: 4.5694838825174, dt: 0.03954438299576132, time_stamp: 4.545454545454546
-iteration: 115.0, time: 4.609027664417346, dt: 0.039543781899946964, time_stamp: 4.606060606060606
-iteration: 116.0, time: 4.648570857054527, dt: 0.0395431926371808, time_stamp: 4.666666666666667
-iteration: 117.0, time: 4.6881134718754645, dt: 0.03954261482093703, time_stamp: 4.666666666666667
-iteration: 118.0, time: 4.727655519956589, dt: 0.0395420480811248, time_stamp: 4.7272727272727275
-iteration: 119.0, time: 4.767197012019845, dt: 0.03954149206325548, time_stamp: 4.787878787878788
-iteration: 120.0, time: 4.806737958447504, dt: 0.03954094642765869, time_stamp: 4.787878787878788
-iteration: 121.0, time: 4.846278369296247, dt: 0.03954041084874352, time_stamp: 4.848484848484849
-iteration: 122.0, time: 4.885818254310549, dt: 0.039539885014302396, time_stamp: 4.848484848484849
-iteration: 123.0, time: 4.925357622935404, dt: 0.03953936862485439, time_stamp: 4.909090909090909
-iteration: 124.0, time: 4.964896484328429, dt: 0.03953886139302566, time_stamp: 4.96969696969697
-iteration: 125.0, time: 5.004434847371394, dt: 0.03953836304296469, time_stamp: 4.96969696969697
-iteration: 126.0, time: 5.043972720681184, dt: 0.03953787330978985, time_stamp: 5.03030303030303
-iteration: 127.0, time: 5.083510112620252, dt: 0.039537391939067607, time_stamp: 5.090909090909091
-iteration: 128.0, time: 5.123047031306571, dt: 0.03953691868631919, time_stamp: 5.090909090909091
-iteration: 129.0, time: 5.162583484623125, dt: 0.03953645331655415, time_stamp: 5.151515151515151
-iteration: 130.0, time: 5.202119480226954, dt: 0.039535995603829, time_stamp: 5.212121212121212
-iteration: 131.0, time: 5.241655025557783, dt: 0.03953554533082963, time_stamp: 5.212121212121212
-iteration: 132.0, time: 5.281190127846259, dt: 0.03953510228847584, time_stamp: 5.2727272727272725
-iteration: 133.0, time: 5.320724794121806, dt: 0.03953466627554687, time_stamp: 5.333333333333334
-iteration: 134.0, time: 5.360259019568075, dt: 0.0395342254462694, time_stamp: 5.333333333333334
-iteration: 135.0, time: 5.399792786293599, dt: 0.03953376672552352, time_stamp: 5.3939393939393945
-iteration: 136.0, time: 5.439326101921822, dt: 0.03953331562822333, time_stamp: 5.454545454545455
-iteration: 137.0, time: 5.478858973869521, dt: 0.03953287194769833, time_stamp: 5.454545454545455
-iteration: 138.0, time: 5.5183914093541295, dt: 0.03953243548460873, time_stamp: 5.515151515151516
-iteration: 139.0, time: 5.557923415400762, dt: 0.03953200604663249, time_stamp: 5.575757575757576
-iteration: 140.0, time: 5.597454998848931, dt: 0.03953158344816815, time_stamp: 5.575757575757576
-iteration: 141.0, time: 5.636986166358983, dt: 0.03953116751005224, time_stamp: 5.636363636363637
-iteration: 142.0, time: 5.676516924418274, dt: 0.03953075805929067, time_stamp: 5.696969696969697
-iteration: 143.0, time: 5.716047279347077, dt: 0.03953035492880322, time_stamp: 5.696969696969697
-iteration: 144.0, time: 5.755577237304257, dt: 0.03952995795718043, time_stamp: 5.757575757575758
-iteration: 145.0, time: 5.795106804292709, dt: 0.039529566988452114, time_stamp: 5.757575757575758
-iteration: 146.0, time: 5.834635986164576, dt: 0.03952918187186702, time_stamp: 5.818181818181818
-iteration: 147.0, time: 5.874164788626259, dt: 0.039528802461682784, time_stamp: 5.878787878787879
-iteration: 148.0, time: 5.913693217243225, dt: 0.039528428616965934, time_stamp: 5.878787878787879
-iteration: 149.0, time: 5.953221277444626, dt: 0.039528060201400976, time_stamp: 5.9393939393939394
-iteration: 150.0, time: 5.992748974527734, dt: 0.039527697083108514, time_stamp: 6.0
-iteration: 151.0, time: 6.032276313662205, dt: 0.039527339134471554, time_stamp: 6.0
-Runtime: 3.7513206005096436</code></pre>
+<pre><code></code></pre>
 </div>
 </div>
 <div id="a2b1acac" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_swe(os.path.join(settings.output.directory, settings.name <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plots_paper.plot_swe(os.path.join(settings.output.directory, settings.output.filename <span class="op">+</span> <span class="st">".h5"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{'length': 10.0, 'width': None, 'dx': 0.2, 'dy': None, 'ncellx': 50.0, 'ncelly': None}</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="simple_files/figure-html/cell-4-output-2.png" class="img-fluid figure-img"></p>
+<p><img src="simple_files/figure-html/cell-5-output-2.png" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
