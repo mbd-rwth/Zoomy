@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.23">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Ingo Steldermann">
+<meta name="dcterms.date" content="2025-08-19">
+
+<title>Transformation to UFL Code</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-226bd0f977fa82dfae4534cac220d79a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3289a1c0eea969fea9a887a3e7302bd0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script>
+MathJax = {
+  tex: {
+    tags: 'ams'
+  }
+};
+</script>
+<script data-goatcounter="https://ingosteldermann.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
+
+
+<link rel="stylesheet" href="../../custom.css">
+<link rel="stylesheet" href="../notebook.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_no_text.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../playground/playground.html"> 
+<span class="menu-text">Playground</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../docs/index.html"> 
+<span class="menu-text">Documentation</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../tutorials/index.html"> 
+<span class="menu-text">Tutorials</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-bi-github" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-bi-github">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth/Zoomy">
+ <span class="dropdown-text">Zoomy</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://github.com/mbd-rwth">
+ <span class="dropdown-text">MBD</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://de.linkedin.com/company/rwth-mbd"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa6-brands:linkedin" aria-label="Icon linkedin from fa6-brands Iconify.design set." title="Icon linkedin from fa6-brands Iconify.design set."></iconify-icon></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#imports" id="toc-imports" class="nav-link active" data-scroll-target="#imports">Imports</a></li>
+  <li><a href="#load-mesh-with-correct-boundary-function-indices-at-facets" id="toc-load-mesh-with-correct-boundary-function-indices-at-facets" class="nav-link" data-scroll-target="#load-mesh-with-correct-boundary-function-indices-at-facets">Load Mesh with correct boundary function indices at facets</a></li>
+  <li><a href="#transformation-to-ufl-code-medium" id="toc-transformation-to-ufl-code-medium" class="nav-link" data-scroll-target="#transformation-to-ufl-code-medium">Transformation to UFL Code (Medium)</a>
+  <ul class="collapse">
+  <li><a href="#map-from-sympy-to-ufl" id="toc-map-from-sympy-to-ufl" class="nav-link" data-scroll-target="#map-from-sympy-to-ufl">Map from Sympy to UFL</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.dev/mbd-rwth/Zoomy/web/blob/main/tutorials/code_printers/to_ufl.ipynb" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Transformation to UFL Code</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ingo Steldermann </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 19, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="imports" class="level2">
+<h2 class="anchored" data-anchor-id="imports">Imports</h2>
+<div id="601a29cb" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Load packages</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.utilities.lambdify <span class="im">import</span> lambdify</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpi4py <span class="im">import</span> MPI</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.io <span class="im">import</span> gmshio</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># import gmsh</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># import dolfinx</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx <span class="im">import</span> fem</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> basix</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tqdm</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> petsc4py <span class="im">import</span> PETSc</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ufl</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># import pyvista</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span>  dolfinx.fem <span class="im">import</span> petsc</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># import sys</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># from dolfinx import mesh</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ufl <span class="im">import</span> (</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    TestFunction,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    TrialFunction,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    dx,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    inner,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dolfinx</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.fem.petsc <span class="im">import</span> LinearProblem</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.mesh <span class="im">import</span> locate_entities_boundary, meshtags</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx <span class="im">import</span> mesh <span class="im">as</span> dolfinx_mesh</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.typing <span class="im">as</span> npt</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Settings</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.shallow_water <span class="im">import</span> ShallowWaterEquations</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> Mesh</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.misc.misc <span class="im">import</span> Zstruct</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.transformation.to_ufl <span class="im">as</span> trafo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div id="d3442026" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.sympy2c_new <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy <span class="im">import</span> symbols</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>x, y <span class="op">=</span> symbols(<span class="st">"x y"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> x <span class="op">+</span> y</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> [symbols(<span class="st">"out"</span>), x, y]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>write_plain_c_module(<span class="st">"test_module"</span>, [(<span class="st">"f"</span>, expr, args)], <span class="st">"./build"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">TypeError</span>                                 Traceback (most recent call last)
+<span class="ansi-cyan-fg">Cell</span><span class="ansi-cyan-fg"> </span><span class="ansi-green-fg">In[5]</span><span class="ansi-green-fg">, line 8</span>
+<span class="ansi-green-fg">      5</span> expr = x + y
+<span class="ansi-green-fg">      6</span> args = [symbols(<span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">out</span><span class="ansi-yellow-fg">"</span>), x, y]
+<span class="ansi-green-fg">----&gt; </span><span class="ansi-green-fg">8</span> <span class="ansi-yellow-bg">write_plain_c_module</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">test_module</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">f</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">expr</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">)</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-fg ansi-yellow-bg">./build</span><span class="ansi-yellow-fg ansi-yellow-bg">"</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/Git/Zoomy/library/model/sympy2c_new.py:46</span>, in <span class="ansi-cyan-fg">write_plain_c_module</span><span class="ansi-blue-fg">(module_name, expression_name_tuples, directory)</span>
+<span class="ansi-green-fg">     43</span> c_code = <span class="ansi-yellow-fg">"</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">     45</span> <span style="font-weight:bold;color:rgb(0,135,0)">for</span> name, expr, args <span style="font-weight:bold;color:rgb(175,0,255)">in</span> expression_name_tuples:
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">46</span>     routine = <span class="ansi-yellow-bg">make_plain_routine</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">expr</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">)</span>
+<span class="ansi-green-fg">     47</span>     c_code += printer._print_Routine(routine) + <span class="ansi-yellow-fg">"</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span style="font-weight:bold;color:rgb(175,95,0)">\n</span><span class="ansi-yellow-fg">"</span>
+<span class="ansi-green-fg">     49</span> <span style="font-style:italic;color:rgb(95,135,135)"># Write C file</span>
+
+<span class="ansi-cyan-fg">File </span><span class="ansi-green-fg">~/Git/Zoomy/library/model/sympy2c_new.py:35</span>, in <span class="ansi-cyan-fg">make_plain_routine</span><span class="ansi-blue-fg">(name, expr, args)</span>
+<span class="ansi-green-fg">     33</span> output_arg = args[<span class="ansi-green-fg">0</span>]
+<span class="ansi-green-fg">     34</span> assign = Assignment(output_arg, expr)
+<span class="ansi-green-fg">---&gt; </span><span class="ansi-green-fg">35</span> <span style="font-weight:bold;color:rgb(0,135,0)">return</span> <span class="ansi-yellow-bg">Routine</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">name</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">[</span><span class="ansi-yellow-bg">assign</span><span class="ansi-yellow-bg">]</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">args</span><span class="ansi-yellow-bg">)</span>
+
+<span class="ansi-red-fg">TypeError</span>: Routine.__init__() missing 2 required positional arguments: 'local_vars' and 'global_vars'</pre>
+</div>
+</div>
+</div>
+</section>
+<section id="load-mesh-with-correct-boundary-function-indices-at-facets" class="level2">
+<h2 class="anchored" data-anchor-id="load-mesh-with-correct-boundary-function-indices-at-facets">Load Mesh with correct boundary function indices at facets</h2>
+<div id="e46280f0" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_mesh(path_to_mesh):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    mesh <span class="op">=</span> Mesh.from_gmsh(path_to_mesh)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    min_inradius <span class="op">=</span> np.<span class="bu">min</span>(mesh.cell_inradius)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    tags <span class="op">=</span> [<span class="bu">int</span>(v) <span class="cf">for</span> v <span class="kw">in</span> mesh.boundary_conditions_sorted_physical_tags]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    tags.sort()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    map_tag_to_id <span class="op">=</span> {v: i <span class="cf">for</span> i, v <span class="kw">in</span> <span class="bu">enumerate</span>(tags)}</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    mesh, cell_tags, facet_tags <span class="op">=</span> gmshio.read_from_msh(</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>        path_to_mesh, MPI.COMM_WORLD, <span class="dv">0</span>, gdim<span class="op">=</span><span class="dv">2</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    unique_facet_tags <span class="op">=</span> np.unique(facet_tags.values)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    facet_boundary_function_id <span class="op">=</span> np.array([map_tag_to_id[tag] <span class="cf">for</span> tag <span class="kw">in</span> facet_tags.values[:]])</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mesh, cell_tags, facet_tags, unique_facet_tags, facet_boundary_function_id, min_inradius</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fee281a0" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"ZOOMY_DIR"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>path_to_mesh <span class="op">=</span> os.path.join(main_dir, <span class="st">"meshes"</span>, <span class="st">"channel_quad_2d"</span>, <span class="st">"mesh_coarse.msh"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="transformation-to-ufl-code-medium" class="level1">
+<h1>Transformation to UFL Code (Medium)</h1>
+<section id="map-from-sympy-to-ufl" class="level3">
+<h3 class="anchored" data-anchor-id="map-from-sympy-to-ufl">Map from Sympy to UFL</h3>
+<div id="f07b3724" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="top"),</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="bottom"),</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="left"),</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="right"),</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"top"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"bottom"</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"left"</span>),</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"right"</span>),</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> custom_ic(x):</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    Q <span class="op">=</span> np.zeros(<span class="dv">3</span>, dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    Q[<span class="dv">0</span>] <span class="op">=</span> np.where(x[<span class="dv">0</span>] <span class="op">&lt;</span> <span class="fl">5.</span>, <span class="fl">0.005</span>, <span class="fl">0.001</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Q</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(custom_ic)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ShallowWaterEquations(</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    dimension<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="3eb7fafa" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_function_space(domain):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    elem_Q <span class="op">=</span> basix.ufl.element(<span class="st">"DG"</span>, domain.topology.cell_name(), <span class="dv">0</span>, shape<span class="op">=</span>(<span class="dv">3</span>,))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    space_Q <span class="op">=</span> fem.functionspace(domain, elem_Q)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    elem_Qaux<span class="op">=</span> basix.ufl.element(<span class="st">"DG"</span>, domain.topology.cell_name(), <span class="dv">0</span>, shape<span class="op">=</span>(<span class="dv">2</span>,))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    space_Qaux <span class="op">=</span> fem.functionspace(domain, elem_Qaux)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> space_Q, space_Qaux</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="411daee6" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. interior facets – single value per facet</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_on_all_interior_facets_midpoint(</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        expr : ufl.core.expr.Expr,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>        domain : dolfinx_mesh.Mesh,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        side : <span class="bu">str</span> <span class="op">=</span> <span class="st">"+"</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[npt.NDArray[np.floating],  <span class="co"># X_mid  (N, gdim)</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>           npt.NDArray[np.inexact]]:   <span class="co"># values (N, …)</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Mid-point evaluation of `expr` on *all* interior facets owned by this</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">    MPI rank.</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">    Parameters</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">    ----------</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">    expr   : UFL expression (may contain u("+"), u("-"), jump(u), …)</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">    domain : dolfinx mesh</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">    side   : "+"  – take value from the first adjacent cell  (default)</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co">             "-"  – take value from the second adjacent cell</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co">             "avg" – arithmetic mean of + and -</span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co">    -------</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co">    X_mid  : coordinates of facet mid-points</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a><span class="co">    values : expression evaluated according to `side`</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> side <span class="kw">in</span> {<span class="st">"+"</span>, <span class="st">"-"</span>, <span class="st">"avg"</span>}</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    tdim, fdim <span class="op">=</span> domain.topology.dim, domain.topology.dim <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- identify interior facets -------------------------------------</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    domain.topology.create_connectivity(fdim, tdim)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    f_to_c <span class="op">=</span> domain.topology.connectivity(fdim, tdim)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    n_loc_facets <span class="op">=</span> domain.topology.index_map(fdim).size_local</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    interior_facets <span class="op">=</span> np.array(</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>        [f <span class="cf">for</span> f <span class="kw">in</span> <span class="bu">range</span>(n_loc_facets) <span class="cf">if</span> <span class="bu">len</span>(f_to_c.links(f)) <span class="op">==</span> <span class="dv">2</span>],</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span>np.int32)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> interior_facets.size <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># nothing on this rank</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>        shape_val <span class="op">=</span> expr.ufl_shape <span class="kw">or</span> ()</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (np.empty((<span class="dv">0</span>, domain.geometry.dim)),</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>                np.empty((<span class="dv">0</span>, <span class="op">*</span>shape_val)))</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- reference mid-point of one facet -----------------------------</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>    facet_type <span class="op">=</span> basix.cell.subentity_types(domain.basix_cell())[fdim][<span class="dv">0</span>]</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>    xi_facet_mid <span class="op">=</span> basix.cell.geometry(facet_type).mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>    xi_cell <span class="op">=</span> np.zeros((<span class="dv">1</span>, tdim))</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>    xi_cell[<span class="dv">0</span>, :xi_facet_mid.shape[<span class="dv">0</span>]] <span class="op">=</span> xi_facet_mid</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>    expr_comp  <span class="op">=</span> fem.Expression(expr, xi_cell)</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>    coord_comp <span class="op">=</span> fem.Expression(ufl.SpatialCoordinate(domain), xi_cell)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- (cell, local_facet) pairs for interior facets ----------------</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>    cell_facet <span class="op">=</span> fem.compute_integration_domains(</span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>        fem.IntegralType.interior_facet, domain.topology, interior_facets, fdim)</span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>    <span class="co"># --- evaluate (+ and - in one call) --------------------------------</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>    values_2 <span class="op">=</span> expr_comp.<span class="bu">eval</span>(domain, cell_facet)     <span class="co"># shape (2N, …)</span></span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>    X_2      <span class="op">=</span> coord_comp.<span class="bu">eval</span>(domain, cell_facet)    <span class="co"># shape (2N, gdim)</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>    <span class="co"># UFL/FFC order: first cell → “+”, second cell → “-”</span></span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>    val_plus  <span class="op">=</span> values_2[<span class="dv">0</span>::<span class="dv">2</span>]</span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>    val_minus <span class="op">=</span> values_2[<span class="dv">1</span>::<span class="dv">2</span>]</span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>    X_mid     <span class="op">=</span> X_2[<span class="dv">0</span>::<span class="dv">2</span>]        <span class="co"># same coordinates twice</span></span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> side <span class="op">==</span> <span class="st">"+"</span>:</span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> val_plus</span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> side <span class="op">==</span> <span class="st">"-"</span>:</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> val_minus</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:                         <span class="co"># "avg"</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a>        values <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>(val_plus <span class="op">+</span> val_minus)</span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X_mid, values</span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. exterior facets – one value per facet</span></span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------</span></span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_on_all_exterior_facets_midpoint(</span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a>        expr   : ufl.core.expr.Expr,</span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a>        domain : dolfinx_mesh.Mesh</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[npt.NDArray[np.floating],  <span class="co"># X_mid  (N, gdim)</span></span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a>           npt.NDArray[np.inexact]]:   <span class="co"># values (N, …)</span></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a><span class="co">    Mid-point evaluation of `expr` on all boundary (exterior) facets</span></span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a><span class="co">    owned by this rank.</span></span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>    tdim, fdim <span class="op">=</span> domain.topology.dim, domain.topology.dim <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>    domain.topology.create_connectivity(fdim, tdim)</span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>    f_to_c <span class="op">=</span> domain.topology.connectivity(fdim, tdim)</span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a>    n_loc_facets <span class="op">=</span> domain.topology.index_map(fdim).size_local</span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a>    exterior_facets <span class="op">=</span> np.array(</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a>        [f <span class="cf">for</span> f <span class="kw">in</span> <span class="bu">range</span>(n_loc_facets) <span class="cf">if</span> <span class="bu">len</span>(f_to_c.links(f)) <span class="op">==</span> <span class="dv">1</span>],</span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span>np.int32)</span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> exterior_facets.size <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a>        shape_val <span class="op">=</span> expr.ufl_shape <span class="kw">or</span> ()</span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (np.empty((<span class="dv">0</span>, domain.geometry.dim)),</span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a>                np.empty((<span class="dv">0</span>, <span class="op">*</span>shape_val)))</span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a>    facet_type <span class="op">=</span> basix.cell.subentity_types(domain.basix_cell())[fdim][<span class="dv">0</span>]</span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a>    xi_facet_mid <span class="op">=</span> basix.cell.geometry(facet_type).mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a>    xi_cell <span class="op">=</span> np.zeros((<span class="dv">1</span>, tdim))</span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a>    xi_cell[<span class="dv">0</span>, :xi_facet_mid.shape[<span class="dv">0</span>]] <span class="op">=</span> xi_facet_mid</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a>    expr_comp  <span class="op">=</span> fem.Expression(expr, xi_cell)</span>
+<span id="cb7-116"><a href="#cb7-116" aria-hidden="true" tabindex="-1"></a>    coord_comp <span class="op">=</span> fem.Expression(ufl.SpatialCoordinate(domain), xi_cell)</span>
+<span id="cb7-117"><a href="#cb7-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-118"><a href="#cb7-118" aria-hidden="true" tabindex="-1"></a>    cell_facet <span class="op">=</span> fem.compute_integration_domains(</span>
+<span id="cb7-119"><a href="#cb7-119" aria-hidden="true" tabindex="-1"></a>        fem.IntegralType.exterior_facet, domain.topology, exterior_facets, fdim)</span>
+<span id="cb7-120"><a href="#cb7-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-121"><a href="#cb7-121" aria-hidden="true" tabindex="-1"></a>    values <span class="op">=</span> expr_comp.<span class="bu">eval</span>(domain, cell_facet)   <span class="co"># shape (N, …)</span></span>
+<span id="cb7-122"><a href="#cb7-122" aria-hidden="true" tabindex="-1"></a>    X_mid  <span class="op">=</span> coord_comp.<span class="bu">eval</span>(domain, cell_facet)  <span class="co"># shape (N, gdim)</span></span>
+<span id="cb7-123"><a href="#cb7-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-124"><a href="#cb7-124" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X_mid, values</span>
+<span id="cb7-125"><a href="#cb7-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-126"><a href="#cb7-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-127"><a href="#cb7-127" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------</span></span>
+<span id="cb7-128"><a href="#cb7-128" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. interior + exterior combined  (two outputs only)</span></span>
+<span id="cb7-129"><a href="#cb7-129" aria-hidden="true" tabindex="-1"></a><span class="co"># ---------------------------------------------------------------------</span></span>
+<span id="cb7-130"><a href="#cb7-130" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> evaluate_on_all_facets_midpoint(</span>
+<span id="cb7-131"><a href="#cb7-131" aria-hidden="true" tabindex="-1"></a>        expr   : ufl.core.expr.Expr,</span>
+<span id="cb7-132"><a href="#cb7-132" aria-hidden="true" tabindex="-1"></a>        domain : dolfinx_mesh.Mesh,</span>
+<span id="cb7-133"><a href="#cb7-133" aria-hidden="true" tabindex="-1"></a>        side   : <span class="bu">str</span> <span class="op">=</span> <span class="st">"+"</span></span>
+<span id="cb7-134"><a href="#cb7-134" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">tuple</span>[npt.NDArray[np.floating],  <span class="co"># X_mid_all  (N_tot, gdim)</span></span>
+<span id="cb7-135"><a href="#cb7-135" aria-hidden="true" tabindex="-1"></a>           npt.NDArray[np.inexact]]:   <span class="co"># values_all (N_tot, …)</span></span>
+<span id="cb7-136"><a href="#cb7-136" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb7-137"><a href="#cb7-137" aria-hidden="true" tabindex="-1"></a><span class="co">    Mid-point evaluation on *all* facets owned by this rank.</span></span>
+<span id="cb7-138"><a href="#cb7-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-139"><a href="#cb7-139" aria-hidden="true" tabindex="-1"></a><span class="co">    • interior facets – take value according to `side` ("+", "-", "avg")</span></span>
+<span id="cb7-140"><a href="#cb7-140" aria-hidden="true" tabindex="-1"></a><span class="co">    • exterior facets – the only available value</span></span>
+<span id="cb7-141"><a href="#cb7-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-142"><a href="#cb7-142" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns concatenated arrays of coordinates and values.</span></span>
+<span id="cb7-143"><a href="#cb7-143" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb7-144"><a href="#cb7-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-145"><a href="#cb7-145" aria-hidden="true" tabindex="-1"></a>    X_int,  val_int  <span class="op">=</span> evaluate_on_all_interior_facets_midpoint(expr, domain, side)</span>
+<span id="cb7-146"><a href="#cb7-146" aria-hidden="true" tabindex="-1"></a>    X_ext,  val_ext  <span class="op">=</span> evaluate_on_all_exterior_facets_midpoint(expr, domain)</span>
+<span id="cb7-147"><a href="#cb7-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-148"><a href="#cb7-148" aria-hidden="true" tabindex="-1"></a>    X_all   <span class="op">=</span> np.vstack((X_int, X_ext))</span>
+<span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>    values  <span class="op">=</span> np.concatenate((val_int, val_ext), axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X_all, values</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="f6763676" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpi4py <span class="im">import</span> MPI</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dolfinx</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx <span class="im">import</span> mesh, fem, geometry</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ufl</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> basix</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> basix.quadrature <span class="im">as</span> bxquad</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------------------------------------------</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 0. Mesh and function space</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>domain, cell_tags, facet_tags, unique_facet_tags, facet_boundary_function_id, min_inradius <span class="op">=</span> load_mesh(path_to_mesh)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>space_Q, space_Qaux <span class="op">=</span> create_function_space(domain)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> fem.Function(space_Q)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>Q.interpolate(<span class="kw">lambda</span> x: np.vstack((x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x[<span class="dv">1</span>], x[<span class="dv">0</span>] <span class="op">-</span> x[<span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span> , x[<span class="dv">0</span>] <span class="op">-</span> x[<span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span>)))  <span class="co"># dummy data</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>Qa <span class="op">=</span> fem.Function(space_Qaux)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>Qa.interpolate(<span class="kw">lambda</span> x: np.vstack((x[<span class="dv">0</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x[<span class="dv">1</span>], x[<span class="dv">0</span>] <span class="op">-</span> x[<span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span> )))  <span class="co"># dummy data</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> ufl.FacetNormal(domain)</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Info    : Reading '/home/ingo/Git/Zoomy/meshes/channel_quad_2d/mesh_coarse.msh'...
+Info    : 729 nodes
+Info    : 816 elements
+Info    : Done reading '/home/ingo/Git/Zoomy/meshes/channel_quad_2d/mesh_coarse.msh'</code></pre>
+</div>
+</div>
+<div id="3c92d4dd" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluate_expression_at_facet_midpoints(Q("+"), domain, np.array([0, 1, 2, 3], dtype=np.int32))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fa097ce3" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pde <span class="op">=</span> trafo.FenicsXRuntimeModel.from_model(domain, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="ff622622" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> pde.eigenvalues(Q(<span class="st">"+"</span>), Qa(<span class="st">"+"</span>), pde.parameters, n)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>expr2 <span class="op">=</span> pde.flux(Q(<span class="st">"+"</span>), Qa(<span class="st">"+"</span>), pde.parameters)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>expr3 <span class="op">=</span> pde.eigenvalues(Q, Qa, pde.parameters, n)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>expr4 <span class="op">=</span> pde.eigenvalues(Q(<span class="st">"-"</span>), Qa(<span class="st">"-"</span>), pde.parameters, ufl.as_vector((<span class="dv">1</span>, <span class="dv">0</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e1bb7de3" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>dolfinx.__version__</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>'0.9.0'</code></pre>
+</div>
+</div>
+<div id="1a6645da" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluate_on_all_facets_midpoint(expr3, domain)[1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="1a1f7f3b" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#################TODO#################################</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>I <span class="op">=</span> ufl.as_tensor([[<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                  [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>],</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                  [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>]])</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">######################################################</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> numerical_flux(model, Ql, Qr, Qauxl, Qauxr, parameters, n, domain):</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ufl.dot(<span class="fl">0.5</span> <span class="op">*</span>(model.flux(Ql, Qauxl, parameters)<span class="op">+</span> model.flux(Qr, Qauxr, parameters)), n)<span class="op">-</span> <span class="fl">0.5</span> <span class="op">*</span> <span class="fl">0.5</span><span class="op">*</span>(max_abs_eigenvalue(model, Ql, Qauxl, n, domain) <span class="op">+</span> max_abs_eigenvalue(model, Qr, Qauxr, n, domain) )<span class="op">*</span> I <span class="op">*</span> (Qr<span class="op">-</span> Ql)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> extract_scalar_fields(Q):</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    n_dofs <span class="op">=</span> Q.function_space.num_sub_spaces</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> []</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n_dofs):</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>        qi <span class="op">=</span> Q.sub(i).collapse()</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># qi.x.array[qi.x.array &lt; 1e-12] = 0.</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        qi.name <span class="op">=</span> <span class="ss">f"q_</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>        out.append(qi)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _max_abs_eigenvalue(model, Q, Qaux, n, domain):</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    eigenvalues <span class="op">=</span> model.eigenvalues(Q, Qaux, model.parameters, n)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    evs <span class="op">=</span> evaluate_on_all_facets_midpoint(eigenvalues, domain)[<span class="dv">1</span>]</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.<span class="bu">max</span>(<span class="bu">abs</span>(evs))</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> max_abs_eigenvalue(model, Q, Qaux, n, domain):</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>    ev <span class="op">=</span> model.eigenvalues(Q, Qaux, model.parameters, n)</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    max_ev <span class="op">=</span> <span class="bu">abs</span>(ev[<span class="dv">0</span>, <span class="dv">0</span>])</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, model.n_variables):</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>        max_ev <span class="op">=</span> ufl.conditional(ev[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">&gt;</span> max_ev, ev[<span class="dv">1</span>, <span class="dv">0</span>], max_ev)</span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> max_ev</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_time_step_size(model, Q, Qaux, n, reference_cell_diameter, domain, CFL<span class="op">=</span><span class="fl">0.45</span>):</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    n1 <span class="op">=</span> ufl.as_vector((<span class="dv">1</span>, <span class="dv">0</span>))</span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>    n2 <span class="op">=</span> ufl.as_vector((<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>    evs_m <span class="op">=</span> _max_abs_eigenvalue(model, Q, Qaux, n1, domain)</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    evs_p <span class="op">=</span> _max_abs_eigenvalue(model, Q, Qaux, n2, domain)</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>    local_max_eigenvalue <span class="op">=</span> <span class="bu">max</span>(evs_m, evs_p)</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Global maximum reduction across all ranks</span></span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>    global_max_eigenvalue <span class="op">=</span> MPI.COMM_WORLD.allreduce( local_max_eigenvalue, op<span class="op">=</span>MPI.MAX)</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> CFL <span class="op">*</span> reference_cell_diameter <span class="op">/</span> global_max_eigenvalue</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> np.isnan(dt) <span class="kw">or</span> np.isinf(dt) <span class="kw">or</span> dt <span class="op">&lt;</span> <span class="dv">10</span><span class="op">**</span>(<span class="op">-</span><span class="dv">6</span>):</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>        dt <span class="op">=</span> <span class="dv">10</span><span class="op">**</span>(<span class="op">-</span><span class="dv">6</span>)</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> dt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="1399cd58" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> update_qaux(Q, Qaux, Qold, Qauxold, model, parameters, time, dt):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Qaux</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="23c78c58" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> weak_form_swe(model, functionspace, q_n, q_np, qaux_n, qaux_np, parameters, t, x, dt, domain, cell_tags, facet_tags, unique_facet_tags, facet_boundary_function_id):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># facet normals</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># domain = functionspace.mesh</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> ufl.FacetNormal(domain)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># our integration measures over the inner boundaries, the domain boundaries and the whole domain. </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Note that we separate the domain boundaries in order to potentially apply different boundary conditions</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># on each side</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    dS <span class="op">=</span> ufl.Measure(<span class="st">"dS"</span>, domain<span class="op">=</span>domain)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># facet_tags = generate_facets_tags(domain, P0, P1)</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    ds <span class="op">=</span> ufl.Measure(<span class="st">"ds"</span>, domain<span class="op">=</span>domain, subdomain_data<span class="op">=</span>facet_tags)</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> ufl.dx</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># implicit/explicit switch</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> q_n</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    qaux <span class="op">=</span> qaux_n</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># q_ghost = ufl.Function(functionspace)</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We would like to have gradients of the bottom topography. However, DG0 is constant in each cell, resulting in zero gradients.</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># we help ourselves by projecting DG0 to a CG1 (linear continuous functions) space, where the gradients do exist.</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># note that this is a 'cheap trick'. In reality, the computation of the bottom topography gradient is critical and deserves</span></span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># more attention.</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    elem_CG1 <span class="op">=</span> basix.ufl.element(<span class="st">"CG"</span>, domain.topology.cell_name(), <span class="dv">1</span>)</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    space_CG1 <span class="op">=</span> fem.functionspace(domain, elem_CG1)</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>    test_q <span class="op">=</span> ufl.TestFunction(functionspace)</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>    trial_q <span class="op">=</span> ufl.TrialFunction(functionspace)</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># weak formulation</span></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>    weak_form <span class="op">=</span>  ufl.dot(test_q, (trial_q<span class="op">-</span>q)<span class="op">/</span>dt) <span class="op">*</span> dx</span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>    weak_form <span class="op">+=</span> ufl.dot((test_q(<span class="st">"+"</span>) <span class="op">-</span> test_q(<span class="st">"-"</span>)), </span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>                         numerical_flux(model, q(<span class="st">"+"</span>), q(<span class="st">"-"</span>), qaux(<span class="st">"+"</span>), qaux(<span class="st">"-"</span>), parameters, n(<span class="st">"+"</span>), domain)) <span class="op">*</span> dS</span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># weak_form += ufl.dot((test_q), numerical_flux(q, q_extrapolation, n)) * (ds(1) + ds(2) + ds(3) + ds(4))</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, tag <span class="kw">in</span> <span class="bu">enumerate</span>(unique_facet_tags):</span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>        <span class="co"># q_ghost.interpolate(boundary_functions[i](q))</span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">#TODO dX is wrong</span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>        dX <span class="op">=</span> x[<span class="dv">0</span>]</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>        weak_form <span class="op">+=</span> ufl.dot((test_q), numerical_flux(model, q, model.bcs(t, x, dX, q, qaux, parameters, n)[i,:], qaux, qaux,parameters, n, domain)) <span class="op">*</span> ds(tag)</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        <span class="co"># weak_form += ufl.dot((test_q), numerical_flux(q, q, n)) * ds(tag)</span></span>
+<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-45"><a href="#cb18-45" aria-hidden="true" tabindex="-1"></a>    <span class="co">#################TODO#################################</span></span>
+<span id="cb18-46"><a href="#cb18-46" aria-hidden="true" tabindex="-1"></a>    weak_form <span class="op">+=</span> <span class="dv">0</span></span>
+<span id="cb18-47"><a href="#cb18-47" aria-hidden="true" tabindex="-1"></a>    <span class="co">######################################################</span></span>
+<span id="cb18-48"><a href="#cb18-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-49"><a href="#cb18-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-50"><a href="#cb18-50" aria-hidden="true" tabindex="-1"></a>    weak_form_lhs <span class="op">=</span> fem.form(ufl.lhs(weak_form))</span>
+<span id="cb18-51"><a href="#cb18-51" aria-hidden="true" tabindex="-1"></a>    weak_form_rhs <span class="op">=</span> fem.form(ufl.rhs(weak_form))</span>
+<span id="cb18-52"><a href="#cb18-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-53"><a href="#cb18-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> weak_form_lhs, weak_form_rhs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="45f83f64" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prepare_solver(weak_form_lhs, weak_form_rhs):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> petsc.create_matrix(weak_form_lhs)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> petsc.create_vector(weak_form_rhs)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    solver <span class="op">=</span> PETSc.KSP().create(MPI.COMM_WORLD)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    solver.setOperators(A)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    solver.setType(PETSc.KSP.Type.BCGS)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    preconditioner <span class="op">=</span> solver.getPC()</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    preconditioner.setType(PETSc.PC.Type.JACOBI)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> solver, A, b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="85209391" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve_time_loop(name: <span class="bu">str</span>, path_to_mesh: <span class="bu">str</span>, model, weak_form_function,  initial_condition, end_time, output_path, CFL):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    domain, cell_tags, facet_tags, unique_facet_tags, facet_boundary_function_id, min_inradius <span class="op">=</span> load_mesh(path_to_mesh)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    model <span class="op">=</span> trafo.FenicsXRuntimeModel.from_model(domain, model)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">### Parameters</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    gx <span class="op">=</span> dolfinx.fem.Constant(domain, dolfinx.default_scalar_type(<span class="dv">0</span>))</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    gy <span class="op">=</span> dolfinx.fem.Constant(domain, dolfinx.default_scalar_type(<span class="dv">0</span>))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    gz <span class="op">=</span> dolfinx.fem.Constant(domain, dolfinx.default_scalar_type(<span class="fl">9.81</span>))</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    friction_coeff <span class="op">=</span> dolfinx.fem.Constant(domain, dolfinx.default_scalar_type(<span class="fl">0.</span>))</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    reference_edge_length <span class="op">=</span> min_inradius</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    functionspace, functionspace_qaux <span class="op">=</span> create_function_space(domain)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    parameters <span class="op">=</span> model.parameters</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> fem.Constant(domain, dolfinx.default_scalar_type(<span class="fl">0.0</span>))    </span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dt will be overwritten</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    dt <span class="op">=</span> fem.Constant(domain, dolfinx.default_scalar_type(<span class="fl">0.1</span>))    </span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ufl.SpatialCoordinate(domain)</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> ufl.as_vector((x[<span class="dv">0</span>], x[<span class="dv">1</span>], <span class="dv">0</span>)) </span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    q_n <span class="op">=</span> fem.Function(functionspace, name<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">q</span><span class="dv">^</span><span class="vs">n</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    q_np1 <span class="op">=</span> fem.Function(functionspace, name<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">q</span><span class="dv">^</span><span class="vs">{n</span><span class="op">+</span><span class="vs">1}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>    qaux_n <span class="op">=</span> fem.Function(functionspace_qaux, name<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">q_{aux}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>    qaux_np1 <span class="op">=</span> fem.Function(functionspace_qaux, name<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="vs">q_{aux}</span><span class="dv">^</span><span class="vs">{n</span><span class="op">+</span><span class="vs">1}</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>    q_n.interpolate(initial_condition)</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>    q_np1.interpolate(initial_condition)</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>    normals <span class="op">=</span> ufl.FacetNormal(domain)</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    update_qaux(q_n, qaux_n, q_np1, qaux_np1, model, model.parameters, t, dt)</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    weak_form_lhs, weak_form_rhs <span class="op">=</span> weak_form_function(model, functionspace, q_n, q_np1, qaux_n, qaux_np1, parameters, t, x, dt, domain, cell_tags, facet_tags, unique_facet_tags, facet_boundary_function_id)</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    solver, A, b <span class="op">=</span> prepare_solver(weak_form_lhs, weak_form_rhs)    </span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>    A <span class="op">=</span> petsc.create_matrix(weak_form_lhs)</span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> petsc.create_vector(weak_form_rhs)</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    solver <span class="op">=</span> PETSc.KSP().create(domain.comm)</span>
+<span id="cb20-48"><a href="#cb20-48" aria-hidden="true" tabindex="-1"></a>    solver.setOperators(A)</span>
+<span id="cb20-49"><a href="#cb20-49" aria-hidden="true" tabindex="-1"></a>    solver.setType(PETSc.KSP.Type.BCGS)</span>
+<span id="cb20-50"><a href="#cb20-50" aria-hidden="true" tabindex="-1"></a>    preconditioner <span class="op">=</span> solver.getPC()</span>
+<span id="cb20-51"><a href="#cb20-51" aria-hidden="true" tabindex="-1"></a>    preconditioner.setType(PETSc.PC.Type.JACOBI)</span>
+<span id="cb20-52"><a href="#cb20-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-53"><a href="#cb20-53" aria-hidden="true" tabindex="-1"></a>    num_timesteps <span class="op">=</span> <span class="bu">int</span>(end_time<span class="op">/</span>dt.value)</span>
+<span id="cb20-54"><a href="#cb20-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-55"><a href="#cb20-55" aria-hidden="true" tabindex="-1"></a>    <span class="co"># VTK writer</span></span>
+<span id="cb20-56"><a href="#cb20-56" aria-hidden="true" tabindex="-1"></a>    os.makedirs(output_path, exist_ok<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-57"><a href="#cb20-57" aria-hidden="true" tabindex="-1"></a>    vtk_file_abs_path_name <span class="op">=</span> os.path.join(output_path, <span class="ss">f"</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.pvd"</span>)</span>
+<span id="cb20-58"><a href="#cb20-58" aria-hidden="true" tabindex="-1"></a>    vtk_writer <span class="op">=</span> dolfinx.io.VTKFile(</span>
+<span id="cb20-59"><a href="#cb20-59" aria-hidden="true" tabindex="-1"></a>        domain.comm, vtk_file_abs_path_name, <span class="st">"w+"</span></span>
+<span id="cb20-60"><a href="#cb20-60" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-61"><a href="#cb20-61" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-62"><a href="#cb20-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-63"><a href="#cb20-63" aria-hidden="true" tabindex="-1"></a>    vtk_writer.write_function(extract_scalar_fields(q_n), t<span class="op">=</span><span class="fl">0.0</span>)</span>
+<span id="cb20-64"><a href="#cb20-64" aria-hidden="true" tabindex="-1"></a>    n_snapshots <span class="op">=</span> <span class="dv">50</span></span>
+<span id="cb20-65"><a href="#cb20-65" aria-hidden="true" tabindex="-1"></a>    dt_snapshot <span class="op">=</span> end_time <span class="op">/</span> n_snapshots</span>
+<span id="cb20-66"><a href="#cb20-66" aria-hidden="true" tabindex="-1"></a>    next_snapshot_time <span class="op">=</span> dt_snapshot</span>
+<span id="cb20-67"><a href="#cb20-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-68"><a href="#cb20-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-69"><a href="#cb20-69" aria-hidden="true" tabindex="-1"></a>    progress <span class="op">=</span> tqdm.tqdm(desc<span class="op">=</span><span class="st">"Setup "</span> <span class="op">+</span> name <span class="op">+</span> <span class="st">", solving PDE"</span>, total<span class="op">=</span>end_time)</span>
+<span id="cb20-70"><a href="#cb20-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-71"><a href="#cb20-71" aria-hidden="true" tabindex="-1"></a>    max_timesteps <span class="op">=</span> <span class="dv">10000</span></span>
+<span id="cb20-72"><a href="#cb20-72" aria-hidden="true" tabindex="-1"></a>    i<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb20-73"><a href="#cb20-73" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> t.value <span class="op">&lt;</span> end_time <span class="kw">and</span> i <span class="op">&lt;</span> max_timesteps:</span>
+<span id="cb20-74"><a href="#cb20-74" aria-hidden="true" tabindex="-1"></a>        q_n.interpolate(q_np1)</span>
+<span id="cb20-75"><a href="#cb20-75" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-76"><a href="#cb20-76" aria-hidden="true" tabindex="-1"></a>        <span class="co"># time step size estimation</span></span>
+<span id="cb20-77"><a href="#cb20-77" aria-hidden="true" tabindex="-1"></a>        dt.value  <span class="op">=</span> compute_time_step_size(model, q_np1, qaux_np1, normals, reference_edge_length, domain, CFL<span class="op">=</span>CFL)</span>
+<span id="cb20-78"><a href="#cb20-78" aria-hidden="true" tabindex="-1"></a>        progress.update(dt.value)</span>
+<span id="cb20-79"><a href="#cb20-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-80"><a href="#cb20-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-81"><a href="#cb20-81" aria-hidden="true" tabindex="-1"></a>        A.zeroEntries()</span>
+<span id="cb20-82"><a href="#cb20-82" aria-hidden="true" tabindex="-1"></a>        petsc.assemble_matrix(A,weak_form_lhs)</span>
+<span id="cb20-83"><a href="#cb20-83" aria-hidden="true" tabindex="-1"></a>        A.assemble()</span>
+<span id="cb20-84"><a href="#cb20-84" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> b.localForm() <span class="im">as</span> loc:</span>
+<span id="cb20-85"><a href="#cb20-85" aria-hidden="true" tabindex="-1"></a>            loc.<span class="bu">set</span>(<span class="dv">0</span>)</span>
+<span id="cb20-86"><a href="#cb20-86" aria-hidden="true" tabindex="-1"></a>        petsc.assemble_vector(b,weak_form_rhs)</span>
+<span id="cb20-87"><a href="#cb20-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-88"><a href="#cb20-88" aria-hidden="true" tabindex="-1"></a>        b.ghostUpdate(addv<span class="op">=</span>PETSc.InsertMode.ADD_VALUES, mode<span class="op">=</span>PETSc.ScatterMode.REVERSE)</span>
+<span id="cb20-89"><a href="#cb20-89" aria-hidden="true" tabindex="-1"></a>        solver.solve(b, q_np1.x.petsc_vec)</span>
+<span id="cb20-90"><a href="#cb20-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-91"><a href="#cb20-91" aria-hidden="true" tabindex="-1"></a>        q_np1.x.scatter_forward()</span>
+<span id="cb20-92"><a href="#cb20-92" aria-hidden="true" tabindex="-1"></a>        t.value <span class="op">+=</span> dt.value</span>
+<span id="cb20-93"><a href="#cb20-93" aria-hidden="true" tabindex="-1"></a>        i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb20-94"><a href="#cb20-94" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-95"><a href="#cb20-95" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb20-96"><a href="#cb20-96" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> t.value <span class="op">&gt;</span> next_snapshot_time:</span>
+<span id="cb20-97"><a href="#cb20-97" aria-hidden="true" tabindex="-1"></a>            vtk_writer.write_function(extract_scalar_fields(q_np1), t<span class="op">=</span>t.value)</span>
+<span id="cb20-98"><a href="#cb20-98" aria-hidden="true" tabindex="-1"></a>            next_snapshot_time <span class="op">+=</span> dt_snapshot</span>
+<span id="cb20-99"><a href="#cb20-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-100"><a href="#cb20-100" aria-hidden="true" tabindex="-1"></a>    progress.close()</span>
+<span id="cb20-101"><a href="#cb20-101" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> q_np1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="e146c1d6" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>output_dir <span class="op">=</span> <span class="st">'outputs/ufl'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="b82a02be" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a> <span class="co">### Initial condition</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ic_q(x):</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> <span class="fl">0.15</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> np.sqrt((x[<span class="dv">0</span>] <span class="op">-</span> <span class="fl">0.7</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (x[<span class="dv">1</span>] <span class="op">-</span> <span class="fl">0.7</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> <span class="fl">0.1</span><span class="op">*</span>np.sqrt((x[<span class="dv">0</span>] <span class="op">-</span> <span class="fl">3.</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (x[<span class="dv">1</span>] <span class="op">-</span> <span class="fl">3.</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array([np.where(r <span class="op">&lt;=</span> R, <span class="fl">1.</span>, <span class="fl">0.9</span>), <span class="fl">0.</span><span class="op">*</span>x[<span class="dv">0</span>], <span class="fl">0.</span><span class="op">*</span>x[<span class="dv">0</span>]])</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">### Simulation</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>q_sol <span class="op">=</span> solve_time_loop(name<span class="op">=</span><span class="st">"sim0"</span>,path_to_mesh<span class="op">=</span>path_to_mesh, model<span class="op">=</span>model, weak_form_function<span class="op">=</span>weak_form_swe, initial_condition<span class="op">=</span>ic_q, end_time<span class="op">=</span><span class="fl">1.0</span>, output_path<span class="op">=</span>os.path.join(output_dir, <span class="st">'sim'</span>), CFL<span class="op">=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Info    : Reading '/home/ingo/Git/Zoomy/meshes/channel_quad_2d/mesh_coarse.msh'...
+Info    : 729 nodes
+Info    : 816 elements
+Info    : Done reading '/home/ingo/Git/Zoomy/meshes/channel_quad_2d/mesh_coarse.msh'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setup sim0, solving PDE: 100%|██████████| 1.0029765722893627/1.0 [00:06&lt;00:00,  6.07s/it]   </code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/mbd-rwth\.github\.io\/Zoomy\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2025, Ingo Steldermann</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/mbd-rwth/Zoomy/web/blob/main/tutorials/code_printers/to_ufl.ipynb" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="../../legal.html">
+<p>Legal notice and data protection</p>
+</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

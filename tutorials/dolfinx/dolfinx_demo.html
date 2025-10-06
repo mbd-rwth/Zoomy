@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Ingo Steldermann">
+<meta name="dcterms.date" content="2025-08-19">
 
-<title>fvm.solver.settings</title>
+<title>Dolfinx Demo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -58,25 +60,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="..//images/favicon.svg" rel="icon" type="image/svg+xml">
-<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-226bd0f977fa82dfae4534cac220d79a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-3289a1c0eea969fea9a887a3e7302bd0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script src="../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../..//images/favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-226bd0f977fa82dfae4534cac220d79a.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-3289a1c0eea969fea9a887a3e7302bd0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/iconify-2.1.0/iconify-icon.min.js"></script>
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -113,7 +115,8 @@ MathJax = {
 <script data-goatcounter="https://ingosteldermann.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script>
 
 
-<link rel="stylesheet" href="../custom.css">
+<link rel="stylesheet" href="../../custom.css">
+<link rel="stylesheet" href="../notebook.css">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -123,8 +126,8 @@ MathJax = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../images/logo_no_text.svg" alt="" class="navbar-logo">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../images/logo_no_text.svg" alt="" class="navbar-logo">
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -134,27 +137,27 @@ MathJax = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../software.html"> 
+    <a class="nav-link" href="../../software.html"> 
 <span class="menu-text">Software</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../playground/playground.html"> 
+    <a class="nav-link" href="../../playground/playground.html"> 
 <span class="menu-text">Playground</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../docs/index.html"> 
+    <a class="nav-link" href="../../docs/index.html"> 
 <span class="menu-text">Documentation</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../tutorials/index.html"> 
+    <a class="nav-link" href="../../tutorials/index.html"> 
 <span class="menu-text">Tutorials</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../publications.html"> 
+    <a class="nav-link" href="../../publications.html"> 
 <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../about.html"> 
+    <a class="nav-link" href="../../about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
 </ul>
@@ -196,21 +199,160 @@ MathJax = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#library.fvm.solver.Settings" id="toc-library.fvm.solver.Settings" class="nav-link active" data-scroll-target="#library.fvm.solver.Settings">fvm.solver.Settings</a></li>
+  <li><a href="#imports" id="toc-imports" class="nav-link active" data-scroll-target="#imports">Imports</a></li>
+  <li><a href="#transformation-to-ufl-code-medium" id="toc-transformation-to-ufl-code-medium" class="nav-link" data-scroll-target="#transformation-to-ufl-code-medium">Transformation to UFL Code (Medium)</a>
+  <ul class="collapse">
+  <li><a href="#map-from-sympy-to-ufl" id="toc-map-from-sympy-to-ufl" class="nav-link" data-scroll-target="#map-from-sympy-to-ufl">Map from Sympy to UFL</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/mbd-rwth/Zoomy/web/edit/main/api/fvm.solver.Settings.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.dev/mbd-rwth/Zoomy/web/blob/main/tutorials/dolfinx/dolfinx_demo.ipynb" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title">Dolfinx Demo</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li></ul></div></div>
+</div>
 
 
 
+<div class="quarto-title-meta">
 
-<section id="library.fvm.solver.Settings" class="level1">
-<h1>fvm.solver.Settings</h1>
-<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fvm.solver.Settings()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Ingo Steldermann </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 19, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<section id="imports" class="level2">
+<h2 class="anchored" data-anchor-id="imports">Imports</h2>
+<div id="601a29cb" class="cell" data-execution_count="1">
+<details class="code-fold">
+<summary>Load packages</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.utilities.lambdify <span class="im">import</span> lambdify</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpi4py <span class="im">import</span> MPI</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.io <span class="im">import</span> gmshio</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># import gmsh</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># import dolfinx</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx <span class="im">import</span> fem</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> basix</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tqdm</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> petsc4py <span class="im">import</span> PETSc</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ufl</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># import pyvista</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span>  dolfinx.fem <span class="im">import</span> petsc</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># import sys</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># from dolfinx import mesh</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ufl <span class="im">import</span> (</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    TestFunction,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    TrialFunction,</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    dx,</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    inner,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dolfinx</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.fem.petsc <span class="im">import</span> LinearProblem</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.mesh <span class="im">import</span> locate_entities_boundary, meshtags</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx <span class="im">import</span> mesh <span class="im">as</span> dolfinx_mesh</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy.typing <span class="im">as</span> npt</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Settings</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.shallow_water <span class="im">import</span> ShallowWaterEquations</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.mesh.mesh <span class="im">import</span> Mesh</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.misc.misc <span class="im">import</span> Zstruct</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.transformation.to_ufl <span class="im">as</span> trafo</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.dg.dolfinx_solver <span class="im">as</span> dg</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="transformation-to-ufl-code-medium" class="level1">
+<h1>Transformation to UFL Code (Medium)</h1>
+<section id="map-from-sympy-to-ufl" class="level3">
+<h3 class="anchored" data-anchor-id="map-from-sympy-to-ufl">Map from Sympy to UFL</h3>
+<div id="f07b3724" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bcs <span class="op">=</span> BC.BoundaryConditions(</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    [</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="top"),</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="bottom"),</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="left"),</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># BC.Extrapolation(physical_tag="right"),</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"top"</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"bottom"</span>),</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"left"</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        BC.Wall(physical_tag<span class="op">=</span><span class="st">"right"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a> <span class="co">### Initial condition</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ic_q(x):</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    R <span class="op">=</span> <span class="fl">0.15</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> np.sqrt((x[<span class="dv">0</span>] <span class="op">-</span> <span class="fl">0.7</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (x[<span class="dv">1</span>] <span class="op">-</span> <span class="fl">0.7</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> <span class="fl">0.1</span><span class="op">*</span>np.sqrt((x[<span class="dv">0</span>] <span class="op">-</span> <span class="fl">3.</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> (x[<span class="dv">1</span>] <span class="op">-</span> <span class="fl">3.</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array([np.where(r <span class="op">&lt;=</span> R, <span class="fl">1.</span>, <span class="fl">0.9</span>), <span class="fl">0.</span><span class="op">*</span>x[<span class="dv">0</span>], <span class="fl">0.</span><span class="op">*</span>x[<span class="dv">0</span>]])</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>ic <span class="op">=</span> IC.UserFunction(ic_q)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> ShallowWaterEquations(</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    dimension<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(name<span class="op">=</span><span class="st">"Dolfinx"</span>, output<span class="op">=</span>Zstruct(directory<span class="op">=</span><span class="st">"outputs/dolfinx"</span>, filename<span class="op">=</span><span class="st">'dg'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<div class="ansi-escaped-output">
+<pre><span class="ansi-green-fg">2025-09-04 13:47:37.302</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">146</span> - <span class="ansi-yellow-fg ansi-bold">No 'clean_directory' attribute found in output Zstruct. Default: False</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="6ee88fae" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> dg.DolfinxHyperbolicSolver(settings<span class="op">=</span>settings, time_end <span class="op">=</span> <span class="fl">10.</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="bc54d0a9" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">'ZOOMY_DIR'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>path_to_mesh <span class="op">=</span> os.path.join(main_dir, <span class="st">"meshes"</span>, <span class="st">"channel_quad_2d"</span>, <span class="st">"mesh_coarse.msh"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>solver.solve(path_to_mesh, model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Info    : Reading '/home/ingo/Git/Zoomy/meshes/channel_quad_2d/mesh_coarse.msh'...
+Info    : 729 nodes
+Info    : 816 elements
+Info    : Done reading '/home/ingo/Git/Zoomy/meshes/channel_quad_2d/mesh_coarse.msh'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Setup  sim , solving PDE: 100%|██████████| 10.009173603152462/10.0 [00:25&lt;00:00,  2.52s/it]  </code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>Coefficient(FunctionSpace(Mesh(blocked element (Basix element (P, quadrilateral, 1, equispaced, unset, False, float64, []), (2,)), 0), blocked element (Basix element (P, quadrilateral, 0, gll_warped, unset, True, float64, []), (3,))), 1)</code></pre>
+</div>
+</div>
+
+
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -283,6 +425,57 @@ MathJax = {
         container: window.document.getElementById('quarto-embedded-source-code-modal')
       });
       clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
@@ -621,11 +814,11 @@ MathJax = {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/mbd-rwth/Zoomy/web/edit/main/api/fvm.solver.Settings.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.dev/mbd-rwth/Zoomy/web/blob/main/tutorials/dolfinx/dolfinx_demo.ipynb" target="_blank" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/mbd-rwth/Zoomy/web/issues/new" target="_blank" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item">
-    <a class="nav-link" href="../legal.html">
+    <a class="nav-link" href="../../legal.html">
 <p>Legal notice and data protection</p>
 </a>
   </li>  
