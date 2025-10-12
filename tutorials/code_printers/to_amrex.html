@@ -257,8 +257,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../tutorials/swe/simple.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Simple</span></a>
+  <a href="../../tutorials/swe/simple_numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shallow Water Tutorials 1D with Numpy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/swe/simple_jax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shallow Water Tutorial 2d with JAX</span></a>
   </div>
 </li>
       </ul>
@@ -448,12 +454,12 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Settings</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.python.fvm.solver <span class="im">import</span> Settings</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.shallow_water <span class="im">import</span> ShallowWaterEquations</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.misc.misc <span class="im">import</span> Zstruct</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.python.misc.misc <span class="im">import</span> Zstruct</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.transformation.to_amrex <span class="im">as</span> trafo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
@@ -507,7 +513,7 @@ window.Quarto = {
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>trafo.write_code(model, settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">2025-10-05 09:56:08.648</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">146</span> - <span class="ansi-yellow-fg ansi-bold">No 'clean_directory' attribute found in output Zstruct. Default: False</span>
+<pre><span class="ansi-green-fg">2025-10-05 09:56:08.648</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.python.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">146</span> - <span class="ansi-yellow-fg ansi-bold">No 'clean_directory' attribute found in output Zstruct. Default: False</span>
 </pre>
 </div>
 </div>

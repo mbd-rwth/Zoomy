@@ -2,106 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/playground/no-playground.html</loc>
-    <lastmod>2025-07-23T05:17:40.686Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/research.html</loc>
-    <lastmod>2025-07-23T05:17:40.686Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/sme/topo.html</loc>
-    <lastmod>2025-10-06T05:33:42.577Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.282Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/sme/non_legendre.html</loc>
-    <lastmod>2025-10-06T05:33:42.577Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.286Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/sme/simple.html</loc>
-    <lastmod>2025-10-06T05:33:42.577Z</lastmod>
+    <lastmod>2025-10-12T18:11:49.966Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mbd-rwth.github.io/Zoomy/tutorials/swe/simple_numpy.html</loc>
+    <lastmod>2025-10-12T19:28:58.205Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/amrex/from_DEM.html</loc>
-    <lastmod>2025-10-06T05:33:42.465Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.366Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/dolfinx/dolfinx_demo.html</loc>
-    <lastmod>2025-10-06T05:33:42.465Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.334Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/code_printers/to_openfoam.html</loc>
-    <lastmod>2025-10-06T05:33:42.465Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.342Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/examples/index.html</loc>
-    <lastmod>2025-07-23T05:17:40.682Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.503Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/about.html</loc>
-    <lastmod>2025-07-23T12:40:45.604Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.503Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/software.html</loc>
-    <lastmod>2025-07-23T05:17:40.686Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/docs/logging.html</loc>
-    <lastmod>2025-08-18T07:39:58.823Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.503Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/api/fvm.solver.Settings.html</loc>
-    <lastmod>2025-07-23T05:17:40.682Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.478Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/api/index.html</loc>
-    <lastmod>2025-07-23T05:17:40.682Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.478Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/docs/index.html</loc>
-    <lastmod>2025-07-23T05:17:40.682Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.503Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/publications.html</loc>
-    <lastmod>2025-07-23T05:17:40.686Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/legal.html</loc>
-    <lastmod>2025-07-23T05:17:40.686Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/code_printers/to_ufl.html</loc>
-    <lastmod>2025-10-06T05:33:42.465Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.346Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/code_printers/to_amrex.html</loc>
-    <lastmod>2025-10-06T05:33:42.465Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.338Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/vam/simple.html</loc>
-    <lastmod>2025-08-18T07:39:58.827Z</lastmod>
+    <lastmod>2025-10-12T15:49:14.034Z</lastmod>
   </url>
   <url>
-    <loc>https://mbd-rwth.github.io/Zoomy/tutorials/swe/simple.html</loc>
-    <lastmod>2025-10-06T05:33:42.577Z</lastmod>
+    <loc>https://mbd-rwth.github.io/Zoomy/tutorials/swe/simple_jax.html</loc>
+    <lastmod>2025-10-12T19:28:44.273Z</lastmod>
+  </url>
+  <url>
+    <loc>https://mbd-rwth.github.io/Zoomy/tutorials/openfoam/swe.html</loc>
+    <lastmod>2025-10-12T15:49:12.366Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/sme/minimal.html</loc>
-    <lastmod>2025-08-18T07:39:58.827Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.286Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/sme/timedependend_bc.html</loc>
-    <lastmod>2025-10-06T05:33:42.577Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.298Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/tutorials/poisson/simple.html</loc>
-    <lastmod>2025-08-18T07:39:58.827Z</lastmod>
+    <lastmod>2025-10-12T15:49:12.278Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/index.html</loc>
-    <lastmod>2025-08-07T15:01:25.812Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
   <url>
     <loc>https://mbd-rwth.github.io/Zoomy/playground/playground.html</loc>
-    <lastmod>2025-07-23T05:17:40.686Z</lastmod>
+    <lastmod>2025-10-10T14:21:53.527Z</lastmod>
   </url>
 </urlset>

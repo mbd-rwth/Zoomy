@@ -257,8 +257,14 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../tutorials/swe/simple.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Simple</span></a>
+  <a href="../../tutorials/swe/simple_numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shallow Water Tutorials 1D with Numpy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/swe/simple_jax.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Shallow Water Tutorial 2d with JAX</span></a>
   </div>
 </li>
       </ul>
@@ -448,13 +454,14 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.fvm.solver <span class="im">import</span> Settings</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.python.fvm.solver <span class="im">import</span> Settings</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.model.models.shallow_water <span class="im">import</span> ShallowWaterEquations</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.initial_conditions <span class="im">as</span> IC</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.model.boundary_conditions <span class="im">as</span> BC</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.misc.misc <span class="im">import</span> Zstruct</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.transformation.to_openfoam <span class="im">as</span> trafo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> library.python.misc.misc <span class="im">import</span> Zstruct</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.transformation.to_openfoam <span class="im">as</span> trafo</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> library.python.mesh.mesh <span class="im">as</span> petscMesh</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -482,32 +489,41 @@ window.Quarto = {
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    boundary_conditions<span class="op">=</span>bcs,</span>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    initial_conditions<span class="op">=</span>ic,</span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co"># the mesh is necessary to connect the boundary conditions to the mesh tags</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"ZOOMY_DIR"</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>mesh <span class="op">=</span> petscMesh.Mesh.from_gmsh(</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    os.path.join(main_dir, <span class="st">"meshes/channel_quad_2d/mesh.msh"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>model.initialize_boundary_conditions(mesh)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code></code></pre>
+</div>
 </div>
 </section>
 <section id="sympy-model" class="level2">
 <h2 class="anchored" data-anchor-id="sympy-model">Sympy Model</h2>
 <div id="4deb8ab5" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model.flux()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model.flux()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
 <p><span class="math inline">\(\displaystyle \left[ \left[\begin{matrix}q_{1}\\\frac{g q_{0}^{2}}{2} + \frac{q_{1}^{2}}{q_{0}}\\\frac{q_{1} q_{2}}{q_{0}}\end{matrix}\right], \  \left[\begin{matrix}q_{2}\\\frac{q_{1} q_{2}}{q_{0}}\\\frac{g q_{0}^{2}}{2} + \frac{q_{2}^{2}}{q_{0}}\end{matrix}\right]\right]\)</span></p>
 </div>
 </div>
 <div id="15516519" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model.print_boundary_conditions()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model.print_boundary_conditions()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display cell-output-markdown" data-execution_count="4">
-<p><span class="math inline">\(\displaystyle \left[\begin{matrix}q_{0} &amp; - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\\q_{0} &amp; - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\\q_{0} &amp; - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\\q_{0} &amp; - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\end{matrix}\right]\)</span></p>
+<p><span class="math inline">\(\displaystyle \left[\begin{matrix}q_{0} &amp; - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\\q_{0} &amp; - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\\q_{0} &amp; - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\\q_{0} &amp; - n_{0} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{0} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{1} &amp; - n_{1} \left(1.0 n_{0} q_{1} + 1.0 n_{1} q_{2}\right) - 1.0 n_{1} \left(n_{0} q_{1} + n_{1} q_{2}\right) + 1.0 q_{2}\end{matrix}\right]\)</span></p>
 </div>
 </div>
 </section>
 <section id="code-transformation" class="level2">
 <h2 class="anchored" data-anchor-id="code-transformation">Code transformation</h2>
 <div id="0be9f302" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(name<span class="op">=</span><span class="st">"ShallowWater"</span>, output<span class="op">=</span>Zstruct(directory<span class="op">=</span><span class="st">"outputs/trafo"</span>, filename<span class="op">=</span><span class="st">"swe.h5"</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>trafo.write_code(model, settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>settings <span class="op">=</span> Settings(name<span class="op">=</span><span class="st">"ShallowWater"</span>, output<span class="op">=</span>Zstruct(directory<span class="op">=</span><span class="st">"outputs/trafo"</span>, filename<span class="op">=</span><span class="st">"swe.h5"</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>trafo.write_code(model, settings)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <div class="ansi-escaped-output">
-<pre><span class="ansi-green-fg">2025-10-05 10:59:56.911</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">146</span> - <span class="ansi-yellow-fg ansi-bold">No 'clean_directory' attribute found in output Zstruct. Default: False</span>
+<pre><span class="ansi-green-fg">2025-10-06 15:07:50.644</span> | <span class="ansi-yellow-fg ansi-bold">WARNING </span> | <span class="ansi-cyan-fg">library.python.misc.misc</span>:<span class="ansi-cyan-fg">__init__</span>:<span class="ansi-cyan-fg">146</span> - <span class="ansi-yellow-fg ansi-bold">No 'clean_directory' attribute found in output Zstruct. Default: False</span>
 </pre>
 </div>
 </div>
@@ -515,11 +531,11 @@ window.Quarto = {
 </section>
 <section id="check-the-output" class="level2">
 <h2 class="anchored" data-anchor-id="check-the-output">Check the output</h2>
-<div id="28fd7c60" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"ZOOMY_DIR"</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> os.path.join(main_dir, os.path.join(settings.output.directory, <span class="st">'.foam_interface/Model.h'</span>))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(f.read())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="28fd7c60" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>main_dir <span class="op">=</span> os.getenv(<span class="st">"ZOOMY_DIR"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> os.path.join(main_dir, os.path.join(settings.output.directory, <span class="st">'.foam_interface/Model.H'</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(path, <span class="st">"r"</span>) <span class="im">as</span> f:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(f.read())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>#pragma once
 #include "List.H"
@@ -531,6 +547,7 @@ namespace Model
 constexpr int n_dof_q    = 3;
 constexpr int n_dof_qaux = 2;
 constexpr int dimension  = 2;
+constexpr Foam::List&lt;string&gt; map_boundary_tag_to_function_index{ "bottom", "top", "left", "right" };
 
 inline Foam::List&lt;Foam::List&lt;Foam::scalar&gt;&gt; flux_x(
     const Foam::List&lt;Foam::scalar&gt;&amp; Q,
